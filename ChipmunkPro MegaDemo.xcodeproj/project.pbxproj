@@ -84,6 +84,7 @@
 		D3FB39B5148F480100E0BA9E /* cpPolyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cpPolyline.h; sourceTree = "<group>"; };
 		D3FB39B6148F480100E0BA9E /* libChipmunkPro-iPhone.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libChipmunkPro-iPhone.a"; sourceTree = "<group>"; };
 		D3FB39B7148F480100E0BA9E /* ObjectiveChipmunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectiveChipmunk.h; sourceTree = "<group>"; };
+		D3FB39BD148F5DE300E0BA9E /* transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transform.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,6 +137,7 @@
 		D3FB3964148F353600E0BA9E /* ChipmunkPro MegaDemo */ = {
 			isa = PBXGroup;
 			children = (
+				D3FB39BD148F5DE300E0BA9E /* transform.h */,
 				D3FB396D148F353600E0BA9E /* AppDelegate.h */,
 				D3FB396E148F353600E0BA9E /* AppDelegate.m */,
 				D3FB3970148F353600E0BA9E /* Shader.fsh */,
