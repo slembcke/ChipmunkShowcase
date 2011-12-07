@@ -7,9 +7,11 @@
 //
 
 varying lowp vec4 frag_color;
-varying lowp vec2 texcoord;
+varying lowp vec2 frag_texcoord;
+
+uniform lowp float fwidth;
 
 void main()
 {
-    gl_FragColor = frag_color;
+	gl_FragColor = frag_color*smoothstep(0.0, fwidth, 1.0 - length(frag_texcoord));
 }
