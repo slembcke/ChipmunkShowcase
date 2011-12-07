@@ -122,11 +122,12 @@ typedef struct Triangle {Vertex a, b, c;} Triangle;
 		Color black = {0.0, 0.0, 0.0, 1.0};
 		Color clear = {0.0, 0.0, 0.0, 1.0};
 		
+		cpFloat size = 10.0;
 		int vert_count = 5;
 		cpVect verts[vert_count];
 		for(int i=0; i<vert_count; i++){
 			cpFloat angle = -2*M_PI*i/((cpFloat)vert_count);
-			verts[i] = cpv(10.0*cos(angle), 10.0*sin(angle));
+			verts[i] = cpv(size*cos(angle), size*sin(angle));
 		}
 		
 		struct ExtrudeVerts {cpVect offset, n1, n2;};
@@ -145,7 +146,8 @@ typedef struct Triangle {Vertex a, b, c;} Triangle;
 			extrude[i] = (struct ExtrudeVerts){offset, n1, n2};
 		}
 		
-		_triangleCount = (vert_count - 2) + 6*vert_count;
+		int border_verts = 6;
+		_triangleCount = (vert_count - 2) + border_verts*vert_count;
 		_triangles = calloc(_triangleCount, sizeof(Triangle));
 		
 		for(int i=0; i<vert_count-2; i++){
@@ -165,6 +167,7 @@ typedef struct Triangle {Vertex a, b, c;} Triangle;
 			cpVect offset1 = extrude[j].offset;
 			cpVect inner0 = cpvsub(v0, cpvmult(offset0, WIDTH));
 			cpVect inner1 = cpvsub(v1, cpvmult(offset1, WIDTH));
+//			cpVect outer0 = cpvadd(v0, cpvmult(offset0, WIDTH));
 			cpVect outer1 = cpvadd(v1, cpvmult(offset1, WIDTH));
 			
 			cpVect n0 = extrude[i].n2;
@@ -173,12 +176,14 @@ typedef struct Triangle {Vertex a, b, c;} Triangle;
 			cpVect e2 = cpvadd(v1, cpvmult(n0, WIDTH));
 			cpVect e3 = cpvadd(v1, cpvmult(n1, WIDTH));
 			
-			_triangles[vert_count-2 + 6*i + 0] = (Triangle){{inner0, cpvneg(n0), clear}, {inner1, cpvneg(n0), clear}, {v1, cpvzero, black}};
-			_triangles[vert_count-2 + 6*i + 1] = (Triangle){{inner0, cpvneg(n0), clear}, {v0, cpvzero, black}, {v1, cpvzero, black}};
-			_triangles[vert_count-2 + 6*i + 2] = (Triangle){{e2, n0, clear}, {v0, cpvzero, black}, {v1, cpvzero, black}};
-			_triangles[vert_count-2 + 6*i + 3] = (Triangle){{e2, n0, clear}, {v0, cpvzero, black}, {e1, n0, clear}};
-			_triangles[vert_count-2 + 6*i + 4] = (Triangle){{v1, cpvzero, black}, {e2, n0, clear}, {outer1, offset1, clear}};
-			_triangles[vert_count-2 + 6*i + 5] = (Triangle){{v1, cpvzero, black}, {e3, n1, clear}, {outer1, offset1, clear}};
+			_triangles[vert_count-2 + border_verts*i + 0] = (Triangle){{inner0, cpvneg(n0), clear}, {inner1, cpvneg(n0), clear}, {v1, cpvzero, black}};
+			_triangles[vert_count-2 + border_verts*i + 1] = (Triangle){{inner0, cpvneg(n0), clear}, {v0, cpvzero, black}, {v1, cpvzero, black}};
+			_triangles[vert_count-2 + border_verts*i + 2] = (Triangle){{e2, n0, clear}, {v0, cpvzero, black}, {v1, cpvzero, black}};
+			_triangles[vert_count-2 + border_verts*i + 3] = (Triangle){{e2, n0, clear}, {v0, cpvzero, black}, {e1, n0, clear}};
+			_triangles[vert_count-2 + border_verts*i + 4] = (Triangle){{v1, cpvzero, black}, {e2, n0, clear}, {outer1, offset1, clear}};
+			_triangles[vert_count-2 + border_verts*i + 5] = (Triangle){{v1, cpvzero, black}, {e3, n1, clear}, {outer1, offset1, clear}};
+//			_triangles[vert_count-2 + border_verts*i + 2] = (Triangle){{outer1, n0, clear}, {v0, cpvzero, black}, {v1, cpvzero, black}};
+//			_triangles[vert_count-2 + border_verts*i + 3] = (Triangle){{outer1, n0, clear}, {v0, cpvzero, black}, {outer0, n0, clear}};
 		}
     
     glGenBuffers(1, &_vertexBuffer);
@@ -213,65 +218,73 @@ typedef struct Triangle {Vertex a, b, c;} Triangle;
 
 static inline cpFloat frand(){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 
-#define POLY_COUNT 1000
+#define POLY_COUNT 500
 
 - (void)update
 {
-		int vertex_count = POLY_COUNT*_triangleCount*3;
-		
-		Vertex *vertex_src = (Vertex *)_triangles;
-		Vertex *vertex_dst = calloc(vertex_count, sizeof(Vertex));
-		Vertex *cursor = vertex_dst;
-		
-		for(int i=0; i<POLY_COUNT; i++){
-//			Transform t = t_translate(cpv(512, 384));
-			cpVect pos = cpv(1024.0*frand(), 768.0*frand());
-			cpVect rot = cpvforangle(frand()*M_PI*2.0);
-			
-			Transform t = {
-				rot.x, -rot.y, pos.x,
-				rot.y,  rot.x, pos.y,
-			};
-			
-			int poly_vertex_count = _triangleCount*3;
-			
-			memcpy(cursor, vertex_src, poly_vertex_count*sizeof(Vertex));
-#if __ARM_NEON__
-			float32x2_t col0 = vld1_f32(&t.a);
-			float32x2_t col1 = vld1_f32(&t.d);
-			float32x2_t col2 = (float32x2_t){t.c, t.f};
-			
-			for(int i=0; i<poly_vertex_count; i++){
-				float32x2_t *ptr = (float32x2_t *)&cursor[i].vertex;
-				float32x2_t p = vld1_f32(ptr);
-				float32x2_t x = vmul_f32(col0, p);
-				float32x2_t y = vmul_f32(col1, p);
-				vst1_f32(ptr, vadd_f32(vpadd_f32(x, y), col2));
-			}
-#else
-			for(int i=0; i<poly_vertex_count; i++) cursor[i].vertex = t_point(t, cursor[i].vertex);
-#endif
-			cursor += _triangleCount*3;
-		}
-    
-    glBindVertexArrayOES(_vertexArray);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*vertex_count, vertex_dst, GL_STREAM_DRAW);
-		free(vertex_dst);
+	if(self.framesDisplayed%100 == 0) NSLog(@"TPS: %f", 1.0/self.timeSinceLastUpdate);
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+	if(self.framesDisplayed%100 == 0) NSLog(@"FPS: %f", 1.0/self.timeSinceLastDraw);
+	
+	glClear(GL_COLOR_BUFFER_BIT);
+	cpFloat width = [(GLKView *)self.view drawableWidth];
+	cpFloat height = [(GLKView *)self.view drawableHeight];
+	
+	// Render the object again with ES2
+	glUseProgram(_program);
+	
+	GLKMatrix4 mvp = GLKMatrix4MakeOrtho(0.0, width, 0.0, height, -1.0, 1.0);
+	glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, mvp.m);
+	glUniform1f(uniforms[UNIFORM_FWIDTH], 1.0/WIDTH);
+	
+	srand(97234);
+	cpFloat time = self.timeSinceLastResume;
+	
+	int vertex_count = POLY_COUNT*_triangleCount*3;
+	
+	Vertex *vertex_src = (Vertex *)_triangles;
+	Vertex *vertex_dst = calloc(vertex_count, sizeof(Vertex));
+	Vertex *cursor = vertex_dst;
+	
+	for(int i=0; i<POLY_COUNT; i++){
+		cpVect pos = cpv(width*frand(), height*frand());
+		cpVect rot = cpvforangle((frand()*2.0 - 1.0)*time*3.0);
 		
-    // Render the object again with ES2
-    glUseProgram(_program);
-    
-		GLKMatrix4 mvp = GLKMatrix4MakeOrtho(0.0, 1024.0, 0.0, 768.0, -1.0, 1.0);
-    glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, mvp.m);
-		glUniform1f(uniforms[UNIFORM_FWIDTH], 1.0/WIDTH);
-    
-		int vertex_count = POLY_COUNT*_triangleCount*3;
-    glDrawArrays(GL_TRIANGLES, 0, vertex_count);
+		Transform t = {
+			rot.x, -rot.y, pos.x,
+			rot.y,  rot.x, pos.y,
+		};
+		t = t_wrap(t_translate(cpv(0.0, -50.0)), t);
+		
+		int poly_vertex_count = _triangleCount*3;
+		
+		memcpy(cursor, vertex_src, poly_vertex_count*sizeof(Vertex));
+#if __ARM_NEON__
+		float32x2_t col0 = vld1_f32(&t.a);
+		float32x2_t col1 = vld1_f32(&t.d);
+		float32x2_t col2 = (float32x2_t){t.c, t.f};
+		
+		for(int i=0; i<poly_vertex_count; i++){
+			float32x2_t *ptr = (float32x2_t *)&cursor[i].vertex;
+			float32x2_t p = vld1_f32(ptr);
+			float32x2_t x = vmul_f32(col0, p);
+			float32x2_t y = vmul_f32(col1, p);
+			vst1_f32(ptr, vadd_f32(vpadd_f32(x, y), col2));
+		}
+#else
+		for(int i=0; i<poly_vertex_count; i++) cursor[i].vertex = t_point(t, cursor[i].vertex);
+#endif
+		cursor += _triangleCount*3;
+	}
+	
+	glBindVertexArrayOES(_vertexArray);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*vertex_count, vertex_dst, GL_STREAM_DRAW);
+	free(vertex_dst);
+	
+	glDrawArrays(GL_TRIANGLES, 0, vertex_count);
 }
 
 #pragma mark -  OpenGL ES 2 shader compilation
