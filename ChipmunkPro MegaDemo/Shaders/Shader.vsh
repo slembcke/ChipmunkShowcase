@@ -13,12 +13,12 @@ attribute vec4 color;
 varying lowp vec4 frag_color;
 varying lowp vec2 frag_texcoord;
 
-uniform mat4 modelViewProjectionMatrix;
+//uniform mat4 modelViewProjectionMatrix;
 
 void main()
 {
     frag_color = color;
     frag_texcoord = texcoord;
     
-    gl_Position = modelViewProjectionMatrix * position;
+    gl_Position = position;
 }

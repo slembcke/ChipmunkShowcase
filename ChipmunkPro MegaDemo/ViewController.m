@@ -104,11 +104,16 @@ static inline cpFloat frand(){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	
+	GLfloat width = 1024.0;
+	GLfloat height = 768.0;
+	
+	Transform proj = t_ortho(cpBBNew(0.0, 0.0, width, height));
+	
 	cpFloat time = self.timeSinceLastResume;
 	
 	srand(987434);
-	for(int i=0; i<1000; i++){
-		cpVect pos = cpv(1024.0*frand(), 768.0*frand());
+	for(int i=0; i<500; i++){
+		cpVect pos = cpv(width*frand(), height*frand());
 		cpVect rot = cpvforangle((frand()*2.0 - 1.0)*time*3.0);
 		
 		Transform t = {
@@ -117,7 +122,7 @@ static inline cpFloat frand(){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 		};
 		t = t_wrap(t_translate(cpv(0.0, -50.0)), t);
 		
-		[_renderer drawPoly:_instance withTransform:t];
+		[_renderer drawPoly:_instance withTransform:t_mult(proj, t)];
 	}
 
 	[_renderer render];
