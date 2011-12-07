@@ -27,6 +27,7 @@ GLint uniforms[NUM_UNIFORMS];
 enum
 {
     ATTRIB_VERTEX,
+    ATTRIB_TEXCOORD,
     ATTRIB_COLOR,
     NUM_ATTRIBUTES
 };
@@ -41,7 +42,7 @@ enum
 //};
 
 typedef struct Color {GLfloat r, g, b, a;} Color;
-typedef struct Vertex {cpVect v; Color c;} Vertex;
+typedef struct Vertex {cpVect vertex, texcoord; Color color;} Vertex;
 typedef struct Triangle {Vertex a, b, c;} Triangle;
 
 @interface ViewController () {
@@ -112,6 +113,8 @@ typedef struct Triangle {Vertex a, b, c;} Triangle;
 {
     [EAGLContext setCurrentContext:self.context];
 		
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+		
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     
@@ -158,9 +161,9 @@ typedef struct Triangle {Vertex a, b, c;} Triangle;
 		
 		for(int i=0; i<vert_count-2; i++){
 			_triangles[i] = (Triangle){
-				{verts[0], red},
-				{verts[i+1], red},
-				{verts[i+2], red},
+				{verts[0], cpvzero, red},
+				{verts[i+1], cpvzero, red},
+				{verts[i+2], cpvzero, red},
 			};
 		}
 		
@@ -175,22 +178,25 @@ typedef struct Triangle {Vertex a, b, c;} Triangle;
 			cpVect n2 = extrude[j].n1;
 			cpVect n3 = extrude[j].n2;
 			
-			_triangles[vert_count-2 + 6*i + 0] = (Triangle){{inner0, clear}, {inner1, clear}, {v1, black}};
-			_triangles[vert_count-2 + 6*i + 1] = (Triangle){{inner0, clear}, {v0, black}, {v1, black}};
-			_triangles[vert_count-2 + 6*i + 2] = (Triangle){{n2, clear}, {v0, black}, {v1, black}};
-			_triangles[vert_count-2 + 6*i + 3] = (Triangle){{n2, clear}, {v0, black}, {n1, clear}};
-			_triangles[vert_count-2 + 6*i + 4] = (Triangle){{v1, black}, {n2, clear}, {outer1, clear}};
-			_triangles[vert_count-2 + 6*i + 5] = (Triangle){{v1, black}, {n3, clear}, {outer1, clear}};
+			_triangles[vert_count-2 + 6*i + 0] = (Triangle){{inner0, cpvzero, clear}, {inner1, cpvzero, clear}, {v1, cpvzero, black}};
+			_triangles[vert_count-2 + 6*i + 1] = (Triangle){{inner0, cpvzero, clear}, {v0, cpvzero, black}, {v1, cpvzero, black}};
+			_triangles[vert_count-2 + 6*i + 2] = (Triangle){{n2, cpvzero, clear}, {v0, cpvzero, black}, {v1, cpvzero, black}};
+			_triangles[vert_count-2 + 6*i + 3] = (Triangle){{n2, cpvzero, clear}, {v0, cpvzero, black}, {n1, cpvzero, clear}};
+			_triangles[vert_count-2 + 6*i + 4] = (Triangle){{v1, cpvzero, black}, {n2, cpvzero, clear}, {outer1, cpvzero, clear}};
+			_triangles[vert_count-2 + 6*i + 5] = (Triangle){{v1, cpvzero, black}, {n3, cpvzero, clear}, {outer1, cpvzero, clear}};
 		}
     
     glGenBuffers(1, &_vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
     
     glEnableVertexAttribArray(ATTRIB_VERTEX);
-    glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, v));
+    glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, vertex));
+    
+    glEnableVertexAttribArray(ATTRIB_TEXCOORD);
+    glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, texcoord));
     
     glEnableVertexAttribArray(ATTRIB_COLOR);
-    glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, c));
+    glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, color));
     
     glBindVertexArrayOES(0);
 }
@@ -219,7 +225,6 @@ static inline cpFloat frand(){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    glClearColor(1.0, 1.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
 		
 		int poly_count = 1000;
@@ -243,13 +248,13 @@ static inline cpFloat frand(){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 			memcpy(cursor, vertex_src, poly_vertex_count*sizeof(Vertex));
 			for(int i=0; i<poly_vertex_count; i++){
 #if __ARM_NEON__
-				float32x2_t *ptr = (float32x2_t *)&cursor[i].v;
+				float32x2_t *ptr = (float32x2_t *)&cursor[i].vertex;
 				float32x2_t p = vld1_f32(ptr);
 				float32x2_t x = vmul_f32((float32x2_t){t.a, t.b}, p);
 				float32x2_t y = vmul_f32((float32x2_t){t.d, t.e}, p);
 				vst1_f32(ptr, vadd_f32(vpadd_f32(x, y), (float32x2_t){t.c, t.f}));
 #else
-				cursor[i].v = t_point(t, cursor[i].v);
+				cursor[i].vertex = t_point(t, cursor[i].vertex);
 #endif
 			}
 			cursor += _triangleCount*3;
@@ -301,6 +306,7 @@ static inline cpFloat frand(){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
     // Bind attribute locations.
     // This needs to be done prior to linking.
     glBindAttribLocation(_program, ATTRIB_VERTEX, "position");
+    glBindAttribLocation(_program, ATTRIB_TEXCOORD, "texcoord");
     glBindAttribLocation(_program, ATTRIB_COLOR, "color");
     
     // Link program.

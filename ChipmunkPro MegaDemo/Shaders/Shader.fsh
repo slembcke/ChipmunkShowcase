@@ -7,6 +7,7 @@
 //
 
 varying lowp vec4 frag_color;
+varying lowp vec2 texcoord;
 
 void main()
 {
