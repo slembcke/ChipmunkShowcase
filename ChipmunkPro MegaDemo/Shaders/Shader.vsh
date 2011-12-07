@@ -7,14 +7,15 @@
 //
 
 attribute vec4 position;
+attribute vec4 color;
 
-varying lowp vec4 colorVarying;
+varying lowp vec4 frag_color;
 
 uniform mat4 modelViewProjectionMatrix;
 
 void main()
 {
-    colorVarying = vec4(1,0,0,1);
+    frag_color = color;
     
     gl_Position = modelViewProjectionMatrix * position;
 }

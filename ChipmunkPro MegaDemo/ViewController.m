@@ -8,6 +8,8 @@
 
 #import "ViewController.h"
 
+#import "ObjectiveChipmunk.h"
+
 // Uniform index.
 enum
 {
@@ -20,24 +22,21 @@ GLint uniforms[NUM_UNIFORMS];
 enum
 {
     ATTRIB_VERTEX,
+    ATTRIB_COLOR,
     NUM_ATTRIBUTES
 };
 
-GLfloat gCubeVertexData[] = {
-    0.5f, 0.5f,
-    -0.5f, 0.5f,
-    0.5f, -0.5f,
-    0.5f, -0.5f,
-    -0.5f, 0.5f,
-    -0.5f, -0.5f,
-};
+//GLfloat gCubeVertexData[] = {
+//    512.0, 512.0,
+//    256.0, 512.0,
+//    512.0, 256.0,
+//    512.0, 256.0,
+//    256.0, 512.0,
+//    256.0, 256.0,
+//};
 
 @interface ViewController () {
     GLuint _program;
-    
-    GLKMatrix4 _modelViewProjectionMatrix;
-    GLKMatrix3 _normalMatrix;
-    float _rotation;
     
     GLuint _vertexArray;
     GLuint _vertexBuffer;
@@ -101,6 +100,10 @@ GLfloat gCubeVertexData[] = {
     }
 }
 
+typedef struct Color {GLfloat r, g, b, a;} Color;
+typedef struct Vertex {cpVect v; Color c;} Vertex;
+typedef Vertex Triangle[3];
+
 - (void)setupGL
 {
     [EAGLContext setCurrentContext:self.context];
@@ -109,13 +112,41 @@ GLfloat gCubeVertexData[] = {
     
     glGenVertexArraysOES(1, &_vertexArray);
     glBindVertexArrayOES(_vertexArray);
+		
+		Vertex verts[] = {
+			{{256.0, 256.0}, {1.0, 0.0, 0.0, 1.0}},
+			{{256.0, 512.0}, {1.0, 1.0, 0.0, 1.0}},
+			{{512.0, 512.0}, {1.0, 1.0, 1.0, 1.0}},
+			{{512.0, 256.0}, {0.0, 1.0, 1.0, 1.0}},
+		};
+		
+		Triangle triangles[] = {
+			{verts[0], verts[1], verts[2]},
+			{verts[0], verts[2], verts[3]},
+		};
     
+//		cpVect vdup[count];
+//		for(int i=0; i<count; i++){
+//			cpVect v0 = verts[(i-1+count)%count];
+//			cpVect v1 = verts[i];
+//			cpVect v2 = verts[(i+1)%count];
+//			
+//			cpVect a = cpvnormalize(cpvperp(cpvsub(v1, v0)));
+//			cpVect b = cpvnormalize(cpvperp(cpvsub(v2, v1)));
+//			
+//			cpFloat r = 10.0;
+//			vdup[i] = cpvadd(v1, cpvmult(cpvadd(a, b), r/(cpvdot(a, b) + 1.0)));
+//		}
+		
     glGenBuffers(1, &_vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(gCubeVertexData), gCubeVertexData, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Triangle)*2, triangles, GL_STATIC_DRAW);
     
-    glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(ATTRIB_VERTEX);
+    glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, v));
+    
+    glEnableVertexAttribArray(ATTRIB_COLOR);
+    glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, c));
     
     glBindVertexArrayOES(0);
 }
@@ -137,13 +168,12 @@ GLfloat gCubeVertexData[] = {
 
 - (void)update
 {
-    _normalMatrix = GLKMatrix3Identity;
-    _modelViewProjectionMatrix = GLKMatrix4Identity;
+	// TODO transform geometry here.
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    glClearColor(0.65f, 0.65f, 0.65f, 1.0f);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     glBindVertexArrayOES(_vertexArray);
@@ -151,7 +181,8 @@ GLfloat gCubeVertexData[] = {
     // Render the object again with ES2
     glUseProgram(_program);
     
-    glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _modelViewProjectionMatrix.m);
+		GLKMatrix4 mvp = GLKMatrix4MakeOrtho(0.0, 1024.0, 0.0, 768.0, -1.0, 1.0);
+    glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, mvp.m);
     
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
@@ -189,6 +220,7 @@ GLfloat gCubeVertexData[] = {
     // Bind attribute locations.
     // This needs to be done prior to linking.
     glBindAttribLocation(_program, ATTRIB_VERTEX, "position");
+    glBindAttribLocation(_program, ATTRIB_COLOR, "color");
     
     // Link program.
     if (![self linkProgram:_program]) {
