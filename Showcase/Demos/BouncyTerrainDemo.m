@@ -65,8 +65,9 @@ static cpVect frand_unit_circle(){
 	cpVect offset = cpv(-320, -240);
 	for(int i=0; i<(bouncy_terrain_count - 1); i++){
 		cpVect a = bouncy_terrain_verts[i], b = bouncy_terrain_verts[i+1];
-		ChipmunkShape *shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:self.staticBody from:cpvadd(a, offset) to:cpvadd(b, offset) radius:0.0]];
+		ChipmunkShape *shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:self.staticBody from:cpvadd(a, offset) to:cpvadd(b, offset) radius:4.0]];
 		shape.elasticity = 1.0f;
+		shape.layers = NOT_GRABABLE_MASK;
 	}
 	
 	cpFloat radius = 5.0f;
