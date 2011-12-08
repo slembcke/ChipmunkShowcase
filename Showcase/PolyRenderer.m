@@ -346,6 +346,7 @@ enum {
 	_bufferCount = 0;
 }
 
+// TODO make a second VBO on a renderer instead of separate ones?
 -(void)prepareStatic;
 {
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
