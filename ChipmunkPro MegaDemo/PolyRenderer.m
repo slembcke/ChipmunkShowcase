@@ -1,11 +1,3 @@
-//
-//  PolyRenderer.m
-//  ChipmunkPro MegaDemo
-//
-//  Created by Scott Lembcke on 12/7/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
-//
-
 #import "PolyRenderer.h"
 #import "PolyInstance.h"
 
@@ -20,7 +12,6 @@
 
 enum {
     UNIFORM_PROJECTION_MATRIX,
-    UNIFORM_FWIDTH,
 		UNIFORM_TEXTURE,
     NUM_UNIFORMS
 };
@@ -191,7 +182,6 @@ enum {
     
     // Get uniform locations.
     uniforms[UNIFORM_PROJECTION_MATRIX] = glGetUniformLocation(_program, "projection");
-    uniforms[UNIFORM_FWIDTH] = glGetUniformLocation(_program, "fwidth");
     uniforms[UNIFORM_TEXTURE] = glGetUniformLocation(_program, "texture");
     
     // Release vertex and fragment shaders.
@@ -209,9 +199,21 @@ enum {
 
 //MARK: Memory
 
+-(void)ensureCapacity:(NSUInteger)count
+{
+	if(_bufferCount + count > _bufferCapacity){
+		_bufferCapacity += MAX(_bufferCapacity, count);
+		_buffer = realloc(_buffer, _bufferCapacity*sizeof(Vertex));
+		
+		NSLog(@"Resized vertex buffer to %d", _bufferCapacity);
+	}
+}
+
 -(id)init
 {
 	if((self = [super init])){
+		[self ensureCapacity:10000];
+		
     [self loadShaders];
 		
 		NSURL *texture_url = [[NSBundle mainBundle] URLForResource:@"gradient.png" withExtension:nil];
@@ -273,10 +275,7 @@ enum {
 -(void)drawPoly:(PolyInstance *)poly withTransform:(Transform)transform;
 {
 	NSUInteger vertex_count = poly.vertexCount;
-	if(_bufferCount + vertex_count > _bufferCapacity){
-		_bufferCapacity += MAX(_bufferCapacity, vertex_count);
-		_buffer = realloc(_buffer, _bufferCapacity*sizeof(Vertex));
-	}
+	[self ensureCapacity:vertex_count];
 	
 	Vertex *vertex_src = poly.vertexes;
 	Vertex *vertex_dst = _buffer + _bufferCount;
@@ -302,10 +301,7 @@ enum {
 -(void)drawDot:(cpVect)pos radius:(cpFloat)radius color:(Color)color;
 {
 	NSUInteger vertex_count = 6;
-	if(_bufferCount + vertex_count > _bufferCapacity){
-		_bufferCapacity += MAX(_bufferCapacity, vertex_count);
-		_buffer = realloc(_buffer, _bufferCapacity*sizeof(Vertex));
-	}
+	[self ensureCapacity:vertex_count];
 	
 	Vertex a = {{pos.x - radius, pos.y - radius}, {-1.0, -1.0}, color};
 	Vertex b = {{pos.x - radius, pos.y + radius}, {-1.0,  1.0}, color};
@@ -323,9 +319,12 @@ enum {
 
 -(void)render
 {
-	glBindVertexArrayOES(_vao);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*_bufferCount, _buffer, GL_STREAM_DRAW);
+//	[self drawDot:cpvzero radius:0 color:(Color){0,0,0,0}];
+	_bufferCount += 1;
 	
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*_bufferCount, _buffer, GL_DYNAMIC_DRAW);
+		
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _texture);
 	
@@ -336,6 +335,7 @@ enum {
 	glUniformMatrix4fv(uniforms[UNIFORM_PROJECTION_MATRIX], 1, GL_FALSE, projection.m);
 	
 	
+	glBindVertexArrayOES(_vao);
 	glDrawArrays(GL_TRIANGLES, 0, _bufferCount);
 	
 	_bufferCount = 0;

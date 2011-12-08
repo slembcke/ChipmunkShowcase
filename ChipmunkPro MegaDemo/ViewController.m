@@ -58,6 +58,8 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 	
 	for(ChipmunkShape *shape in self.shapes){
 		cpBody *body = shape.body.body;
+		if(cpBodyIsStatic(body)) continue;
+		
 		cpVect pos = body->p;
 		cpVect rot = body->rot;
 		
@@ -65,9 +67,24 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 			rot.x, -rot.y, pos.x,
 			rot.y,  rot.x, pos.y,
 		};
-
+		
 		[_renderer drawPoly:shape.data withTransform:t_body];
 	}
+	
+//	for(ChipmunkShape *shape in self.shapes){
+//		cpBody *body = shape.body.body;
+//		if(!cpBodyIsStatic(body)) continue;
+//		
+//		cpVect pos = body->p;
+//		cpVect rot = body->rot;
+//		
+//		Transform t_body = {
+//			rot.x, -rot.y, pos.x,
+//			rot.y,  rot.x, pos.y,
+//		};
+//
+//		[_renderer drawPoly:shape.data withTransform:t_body];
+//	}
 	
 	cpArray *arbiters = self.space->arbiters;
 	for(int i=0; i<arbiters->num; i++){
@@ -98,11 +115,6 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 @implementation ViewController
 
 @synthesize context = _context;
-
--(void)awakeFromNib
-{
-	NSLog(@"awake");
-}
 
 -(void)viewDidLoad
 {
@@ -234,6 +246,9 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 	Transform proj = t_ortho(cpBBNew(-320, -240, 320, 240));
 	
 	[_space render:proj];
+	
+	GLenum err;
+	while((err = glGetError())) NSLog(@"GLError %X", err);
 }
 
 @end
