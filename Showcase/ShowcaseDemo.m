@@ -27,7 +27,7 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 
 -(id)add:(NSObject<ChipmunkObject> *)obj;
 {
-	if([obj isKindOfClass:[ChipmunkPolyShape class]]){
+	if([obj isKindOfClass:[ChipmunkShape class]]){
 		ChipmunkShape *shape = (id)obj;
 		
 		Color line = {0,0,0,1};
