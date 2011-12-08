@@ -1,10 +1,4 @@
-//
-//  ViewController.m
-//  ChipmunkPro MegaDemo
-//
-//  Created by Scott Lembcke on 12/6/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
-//
+#define CP_ALLOW_PRIVATE_ACCESS
 
 #import "ViewController.h"
 
@@ -37,7 +31,7 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 	if([obj isKindOfClass:[ChipmunkPolyShape class]]){
 		ChipmunkShape *shape = (id)obj;
 		
-		Color line = {0,0,0,0};
+		Color line = {0,0,0,1};
 		Color fill = {};
 		[[UIColor colorWithHue:frand() saturation:1.0 brightness:0.8 alpha:1.0] getRed:&fill.r green:&fill.g blue:&fill.b alpha:&fill.a];
 		PolyInstance *poly = [[PolyInstance alloc] initWithShape:shape FillColor:fill lineColor:line];
@@ -60,6 +54,8 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 
 -(void)render:(Transform)projection
 {
+	_renderer.projection = projection;
+	
 	for(ChipmunkShape *shape in self.shapes){
 		cpBody *body = shape.body.body;
 		cpVect pos = body->p;
@@ -70,7 +66,16 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 			rot.y,  rot.x, pos.y,
 		};
 
-		[_renderer drawPoly:shape.data withTransform:t_mult(projection, t_body)];
+		[_renderer drawPoly:shape.data withTransform:t_body];
+	}
+	
+	cpArray *arbiters = self.space->arbiters;
+	for(int i=0; i<arbiters->num; i++){
+		cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
+		
+		for(int i=0; i<arb->numContacts; i++){
+			[_renderer drawDot:arb->contacts[i].p radius:3.0 color:(Color){1,0,0,1}];
+		}
 	}
 	
 	[_renderer render];
@@ -167,13 +172,12 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 	return interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight;
 }
 
-#define WIDTH 1.5
-
 -(void)setupGL
 {
     [EAGLContext setCurrentContext:self.context];
 		
-    glClearColor(1.0, 1.0, 1.0, 1.0);
+		GLfloat clear = 1.0;
+    glClearColor(clear, clear, clear, 1.0);
 		
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
@@ -191,7 +195,7 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 //	_space.gravity = cpvmult([Accelerometer getAcceleration], 100);
 	_space.gravity = cpv(0.0, -100);
 	
-	if([_pentagons count] < 350){
+	if([_pentagons count] < 500){
 		cpFloat size = 7.0;
 		
 		cpVect pentagon[5];
