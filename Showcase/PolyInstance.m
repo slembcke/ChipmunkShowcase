@@ -14,7 +14,7 @@
 
 @synthesize vertexCount = _vertexCount, vertexes = _vertexes;
 
--(id)initWithShape:(ChipmunkShape *)shape FillColor:(Color)fill lineColor:(Color)line;
+-(id)initWithShape:(ChipmunkShape *)shape width:(cpFloat)width FillColor:(Color)fill lineColor:(Color)line;
 {
 	if((self = [super init])){
 		ChipmunkPolyShape *poly = (id)shape;
@@ -45,7 +45,7 @@
 		
 		if(fill.a > 0.0){
 			for(int i=0; i<vert_count-2; i++){
-				cpFloat inset = (line.a == 0.0 ? WIDTH : 0.0);
+				cpFloat inset = (line.a == 0.0 ? width : 0.0);
 				cpVect v0 = cpvsub([poly getVertex:0  ], cpvmult(extrude[0  ].offset, inset));
 				cpVect v1 = cpvsub([poly getVertex:i+1], cpvmult(extrude[i+1].offset, inset));
 				cpVect v2 = cpvsub([poly getVertex:i+2], cpvmult(extrude[i+2].offset, inset));
@@ -65,15 +65,15 @@
 			
 			cpVect offset0 = extrude[i].offset;
 			cpVect offset1 = extrude[j].offset;
-			cpVect inner0 = cpvsub(v0, cpvmult(offset0, WIDTH));
-			cpVect inner1 = cpvsub(v1, cpvmult(offset1, WIDTH));
-			cpVect outer1 = cpvadd(v1, cpvmult(offset1, WIDTH));
+			cpVect inner0 = cpvsub(v0, cpvmult(offset0, width));
+			cpVect inner1 = cpvsub(v1, cpvmult(offset1, width));
+			cpVect outer1 = cpvadd(v1, cpvmult(offset1, width));
 			
 			cpVect n0 = extrude[i].n;
 			cpVect n1 = extrude[j].n;
-			cpVect e1 = cpvadd(v0, cpvmult(n0, WIDTH));
-			cpVect e2 = cpvadd(v1, cpvmult(n0, WIDTH));
-			cpVect e3 = cpvadd(v1, cpvmult(n1, WIDTH));
+			cpVect e1 = cpvadd(v0, cpvmult(n0, width));
+			cpVect e2 = cpvadd(v1, cpvmult(n0, width));
+			cpVect e3 = cpvadd(v1, cpvmult(n1, width));
 			
 			if(line.a > 0.0){
 				*cursor++ = (Triangle){{inner0, cpvneg(n0), line}, {inner1, cpvneg(n0), line}, {v1, cpvzero, line}};

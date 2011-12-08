@@ -33,7 +33,8 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 		Color line = {0,0,0,1};
 		Color fill = {};
 		[[UIColor colorWithHue:frand() saturation:1.0 brightness:0.8 alpha:1.0] getRed:&fill.r green:&fill.g blue:&fill.b alpha:&fill.a];
-		PolyInstance *poly = [[PolyInstance alloc] initWithShape:shape FillColor:fill lineColor:line];
+		
+		PolyInstance *poly = [[PolyInstance alloc] initWithShape:shape width:1.0 FillColor:fill lineColor:line];
 		
 		shape.data = poly;
 		[_polys setObject:poly forKey:[NSValue valueWithPointer:(__bridge void *)obj]];
@@ -56,12 +57,19 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 
 @interface ShowcaseDemo(){
 	DemoSpace *_space;
+	
+	ChipmunkMultiGrab *_multiGrab;
+	// Convert touches to absolute coords.
+	Transform _touchTransform;
 }
 
 @end
 
 
 @implementation ShowcaseDemo
+
+@synthesize touchTransform = _touchTransform;
+
 
 -(id)init
 {
@@ -85,8 +93,12 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 				cpVect offset = cpv(i*80 - 320 + stagger, j*70 - 240);
 				ChipmunkShape *shape = [_space add:[ChipmunkPolyShape polyWithBody:staticBody count:3 verts:verts offset:offset]];
 				shape.elasticity = 1.0; shape.friction = 1.0;
+				shape.layers = NOT_GRABABLE_MASK;
 			}
 		}
+		
+		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:_space withSmoothing:cpfpow(0.8, 60) withGrabForce:1e4];
+		_multiGrab.layers = GRABABLE_MASK_BIT;
 	}
 	
 	return self;
@@ -126,39 +138,32 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 	[_space step:1.0/60.0];
 }
 
+//MARK: Rendering
+
+static inline Transform
+t_shape(ChipmunkShape *shape)
+{
+	cpBody *body = shape.body.body;
+	cpVect pos = body->p;
+	cpVect rot = body->rot;
+	
+	return (Transform){
+		rot.x, -rot.y, pos.x,
+		rot.y,  rot.x, pos.y,
+	};
+}
+
 -(void)prepareStaticRenderer:(PolyRenderer *)renderer;
 {
 	for(ChipmunkShape *shape in _space.shapes){
-		cpBody *body = shape.body.body;
-		if(!cpBodyIsStatic(body)) continue;
-		
-		cpVect pos = body->p;
-		cpVect rot = body->rot;
-		
-		Transform t_body = {
-			rot.x, -rot.y, pos.x,
-			rot.y,  rot.x, pos.y,
-		};
-		
-		[renderer drawPoly:shape.data withTransform:t_body];
+		if(shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape)];
 	}
 }
 
 -(void)render:(PolyRenderer *)renderer
 {
 	for(ChipmunkShape *shape in _space.shapes){
-		cpBody *body = shape.body.body;
-		if(cpBodyIsStatic(body)) continue;
-		
-		cpVect pos = body->p;
-		cpVect rot = body->rot;
-		
-		Transform t_body = {
-			rot.x, -rot.y, pos.x,
-			rot.y,  rot.x, pos.y,
-		};
-		
-		[renderer drawPoly:shape.data withTransform:t_body];
+		if(!shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape)];
 	}
 	
 	cpArray *arbiters = _space.space->arbiters;
@@ -170,5 +175,39 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 		}
 	}
 }
+
+//MARK: Input
+
+-(cpVect)convertTouch:(UITouch *)touch;
+{
+	return t_point(_touchTransform, [touch locationInView:touch.view]);
+}
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+{
+	for(UITouch *touch in touches){
+		[_multiGrab beginLocation:[self convertTouch:touch]];
+	}
+}
+
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
+{
+	for(UITouch *touch in touches){
+		[_multiGrab updateLocation:[self convertTouch:touch]];
+	}
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
+{
+	for(UITouch *touch in touches){
+		[_multiGrab endLocation:[self convertTouch:touch]];
+	}
+}
+
+-(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[self touchesEnded:touches withEvent:event];
+}
+
 
 @end
