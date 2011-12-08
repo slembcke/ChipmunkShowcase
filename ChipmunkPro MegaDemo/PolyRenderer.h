@@ -21,4 +21,7 @@ typedef struct Triangle {Vertex a, b, c;} Triangle;
 
 -(void)render;
 
+-(void)prepareStatic;
+-(void)renderStatic;
+
 @end

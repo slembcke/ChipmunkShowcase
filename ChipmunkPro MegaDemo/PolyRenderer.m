@@ -44,6 +44,15 @@ enum {
 
 @synthesize projection = _projection;
 
+-(void)setProjection:(Transform)projection
+{
+	_projection = projection;
+	
+	glUseProgram(_program);
+	Matrix mat = t_matrix(_projection);
+	glUniformMatrix4fv(uniforms[UNIFORM_PROJECTION_MATRIX], 1, GL_FALSE, mat.m);
+}
+
 //MARK: Shaders
 
 - (BOOL)compileShader:(GLuint *)shader type:(GLenum)type file:(NSString *)file
@@ -205,6 +214,9 @@ enum {
 		_bufferCapacity += MAX(_bufferCapacity, count);
 		_buffer = realloc(_buffer, _bufferCapacity*sizeof(Vertex));
 		
+		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*_bufferCapacity, NULL, GL_STREAM_DRAW);
+		
 		NSLog(@"Resized vertex buffer to %d", _bufferCapacity);
 	}
 }
@@ -212,9 +224,10 @@ enum {
 -(id)init
 {
 	if((self = [super init])){
-		[self ensureCapacity:10000];
-		
     [self loadShaders];
+		
+		glUseProgram(_program);
+		glUniform1i(uniforms[UNIFORM_TEXTURE], 0);
 		
 		NSURL *texture_url = [[NSBundle mainBundle] URLForResource:@"gradient.png" withExtension:nil];
 		
@@ -244,6 +257,7 @@ enum {
 		
     glGenBuffers(1, &_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+		[self ensureCapacity:512];
     
     glEnableVertexAttribArray(ATTRIB_VERTEX);
     glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, vertex));
@@ -319,38 +333,33 @@ enum {
 
 -(void)render
 {
-//	[self drawDot:cpvzero radius:0 color:(Color){0,0,0,0}];
-	_bufferCount += 1;
-	
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*_bufferCount, _buffer, GL_DYNAMIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex)*_bufferCount, _buffer);
 		
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _texture);
 	
 	glUseProgram(_program);
-	glUniform1i(uniforms[UNIFORM_TEXTURE], 0);
-	
-	Matrix projection = t_matrix(_projection);
-	glUniformMatrix4fv(uniforms[UNIFORM_PROJECTION_MATRIX], 1, GL_FALSE, projection.m);
-	
-	
 	glBindVertexArrayOES(_vao);
 	glDrawArrays(GL_TRIANGLES, 0, _bufferCount);
 	
 	_bufferCount = 0;
 }
 
-//-(void)prepareStatic
-//{
-//	glBindVertexArrayOES(_vao);
-//	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*_bufferCount, _buffer, GL_STATIC_DRAW);
-//}
-//
-//-(void)renderStatic
-//{
-//	glUseProgram(_program);
-//	glDrawArrays(GL_TRIANGLES, 0, _bufferCount);
-//}
+-(void)prepareStatic;
+{
+	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*_bufferCount, _buffer, GL_STATIC_DRAW);
+}
+
+-(void)renderStatic;
+{
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, _texture);
+	
+	glUseProgram(_program);
+	glBindVertexArrayOES(_vao);
+	glDrawArrays(GL_TRIANGLES, 0, _bufferCount);
+}
 
 @end

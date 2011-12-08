@@ -7,6 +7,7 @@
 
 @interface DemoSpace : ChipmunkHastySpace {
 	// TODO separate renderer for static shapes?
+	PolyRenderer *_staticRenderer;
 	PolyRenderer *_renderer;
 	NSMutableDictionary *_polys;
 }
@@ -52,10 +53,30 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 	return [super remove:obj];
 }
 
+-(void)prepareStaticRenderer
+{
+	_staticRenderer = [[PolyRenderer alloc] init];
+	
+	for(ChipmunkShape *shape in self.shapes){
+		cpBody *body = shape.body.body;
+		if(!cpBodyIsStatic(body)) continue;
+		
+		cpVect pos = body->p;
+		cpVect rot = body->rot;
+		
+		Transform t_body = {
+			rot.x, -rot.y, pos.x,
+			rot.y,  rot.x, pos.y,
+		};
+		
+		[_staticRenderer drawPoly:shape.data withTransform:t_body];
+	}
+	
+	[_staticRenderer prepareStatic];
+}
+
 -(void)render:(Transform)projection
 {
-	_renderer.projection = projection;
-	
 	for(ChipmunkShape *shape in self.shapes){
 		cpBody *body = shape.body.body;
 		if(cpBodyIsStatic(body)) continue;
@@ -71,21 +92,6 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 		[_renderer drawPoly:shape.data withTransform:t_body];
 	}
 	
-//	for(ChipmunkShape *shape in self.shapes){
-//		cpBody *body = shape.body.body;
-//		if(!cpBodyIsStatic(body)) continue;
-//		
-//		cpVect pos = body->p;
-//		cpVect rot = body->rot;
-//		
-//		Transform t_body = {
-//			rot.x, -rot.y, pos.x,
-//			rot.y,  rot.x, pos.y,
-//		};
-//
-//		[_renderer drawPoly:shape.data withTransform:t_body];
-//	}
-	
 	cpArray *arbiters = self.space->arbiters;
 	for(int i=0; i<arbiters->num; i++){
 		cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
@@ -95,7 +101,11 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 		}
 	}
 	
+	_renderer.projection = projection;
 	[_renderer render];
+	
+	_staticRenderer.projection = projection;
+	[_staticRenderer renderStatic];
 }
 
 @end
@@ -156,6 +166,7 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 			}
 		}
 		
+		[_space prepareStaticRenderer];
 		_pentagons = [NSMutableArray array];
 	}
 }
