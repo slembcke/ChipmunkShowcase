@@ -30,11 +30,17 @@
 	return [super init];
 }
 
+static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
+
 -(id)add:(NSObject<ChipmunkObject> *)obj;
 {
 	if([obj isKindOfClass:[ChipmunkPolyShape class]]){
 		ChipmunkShape *shape = (id)obj;
-		PolyInstance *poly = [[PolyInstance alloc] initWithShape:shape FillColor:(Color){1,0,0,1} lineColor:(Color){0,0,0,1}];
+		
+		Color line = {0,0,0,0};
+		Color fill = {};
+		[[UIColor colorWithHue:frand() saturation:1.0 brightness:0.8 alpha:1.0] getRed:&fill.r green:&fill.g blue:&fill.b alpha:&fill.a];
+		PolyInstance *poly = [[PolyInstance alloc] initWithShape:shape FillColor:fill lineColor:line];
 		
 		shape.data = poly;
 		[_polys setObject:poly forKey:[NSValue valueWithPointer:(__bridge void *)obj]];
@@ -185,7 +191,7 @@
 //	_space.gravity = cpvmult([Accelerometer getAcceleration], 100);
 	_space.gravity = cpv(0.0, -100);
 	
-	if([_pentagons count] < 300){
+	if([_pentagons count] < 350){
 		cpFloat size = 7.0;
 		
 		cpVect pentagon[5];
