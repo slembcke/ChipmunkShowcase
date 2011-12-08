@@ -96,6 +96,7 @@
 	}
 
 	ShowcaseGLView *view = (ShowcaseGLView *)self.view;
+	view.multipleTouchEnabled = TRUE;
 	view.drawableColorFormat = GLKViewDrawableColorFormatRGB565;
 	view.context = self.context;
 	view.touchesDelegate = _demo;

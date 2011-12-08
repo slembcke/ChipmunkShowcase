@@ -1,4 +1,5 @@
 #import "PolyRenderer.h"
+#import "Accelerometer.h"
 
 #define GRABABLE_MASK_BIT (1<<31)
 #define NOT_GRABABLE_MASK (~GRABABLE_MASK_BIT)
@@ -9,6 +10,8 @@
 @property(nonatomic, readonly) ChipmunkBody *staticBody;
 
 @property(nonatomic, assign) Transform touchTransform;
+
+@property(nonatomic, readonly) NSTimeInterval fixedDt;
 
 -(void)update:(NSTimeInterval)dt;
 -(void)tick:(cpFloat)dt;

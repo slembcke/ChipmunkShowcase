@@ -4,9 +4,7 @@
 
 static Accelerometer *shared_instance = nil;
 static float alpha = 1.0f;
-static float x = 0.0f;
-static float y = 0.0f;
-static float z = 0.0f;
+static cpVect accel = {};
 
 + (void)initialize {
 	static bool done = FALSE;
@@ -28,17 +26,11 @@ static float z = 0.0f;
 }
 
 + (cpVect)getAcceleration {
-	cpVect v = cpv(x, y);
-	if(v.x == 0.0f && v.y == 0.0f)
-		v = cpv(-1, 0);
-	
-	return cpv(-v.y, v.x);
+	return accel;
 }
 
--(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)accel {
-	x = x*(1.0f - alpha) + accel.x*alpha;
-	y = y*(1.0f - alpha) + accel.y*alpha;
-	z = z*(1.0f - alpha) + accel.z*alpha;
+-(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)a {
+	accel = cpvlerp(accel, cpv(-a.y, a.x), alpha);
 }
 
 @end

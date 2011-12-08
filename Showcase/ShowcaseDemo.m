@@ -87,7 +87,7 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 {
 	if((self = [super init])){
 		_space = [[DemoSpace alloc] init];
-		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:self.space withSmoothing:cpfpow(0.8, 60) withGrabForce:1e4];
+		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:self.space withSmoothing:cpfpow(0.8, 60) withGrabForce:1e5];
 		_multiGrab.layers = GRABABLE_MASK_BIT;
 		
 		[self setup];
@@ -96,7 +96,7 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 	return self;
 }
 
--(NSTimeInterval)fixedDt
+-(NSTimeInterval)fixedDt;
 {
 	return 1.0/60.0;
 }
@@ -144,10 +144,10 @@ t_shape(ChipmunkShape *shape, cpFloat extrapolate)
 
 -(void)render:(PolyRenderer *)renderer timeSinceLastUpdate:(NSTimeInterval)timeSinceLastUpdate;
 {
-	cpFloat extrapolate = _accumulator + timeSinceLastUpdate;
+//	cpFloat extrapolate = _accumulator + timeSinceLastUpdate;
 	
 	for(ChipmunkShape *shape in _space.shapes){
-		if(!shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, extrapolate)];
+		if(!shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, 0.0)];
 	}
 	
 	cpArray *arbiters = _space.space->arbiters;

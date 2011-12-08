@@ -9,9 +9,14 @@
 
 @implementation TumbleDemo
 
+-(NSTimeInterval)fixedDt
+{
+	return 1.0/120.0;
+}
+
 -(void)tick:(cpFloat)dt
 {
-//	space.gravity = cpvmult([Accelerometer getAcceleration], 600);
+	self.space.gravity = cpvmult([Accelerometer getAcceleration], 600);
 	box.angle += box.angVel*dt;
 	
 	[super tick:dt];
@@ -19,7 +24,7 @@
 
 - (void)setup
 {
-	self.space.gravity = cpv(0.0, -600.0);
+	self.space.iterations = 5;
 	
 	ChipmunkBody *body;
 	ChipmunkShape *shape;
@@ -50,13 +55,13 @@
 	shape.layers = NOT_GRABABLE_MASK;
 	
 	// Add the bricks.
-	for(int i=0; i<7; i++){
-		for(int j=0; j<7; j++){
-			cpFloat width = 30.0;
-			cpFloat height = 30.0;
+	for(int i=0; i<10; i++){
+		for(int j=0; j<10; j++){
+			cpFloat width = 20;
+			cpFloat height = 20;
 			
 			body = [self.space add:[ChipmunkBody bodyWithMass:1.0 andMoment:cpMomentForBox(1.0, width, height)]];
-			body.pos = cpv(i*31 - 150, j*31 - 150);
+			body.pos = cpv(i*(width+1) - 150, j*(height+1) - 150);
 			
 			shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:width height:height]];
 			shape.elasticity = 0.0; shape.friction = 1.0;
