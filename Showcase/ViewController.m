@@ -84,7 +84,7 @@
 // TODO get rid of .xib loading
 -(void)viewDidLoad
 {
-	_demo = [[NSClassFromString(@"TumbleDemo") alloc] init]; // TODO should be passed in fully initialized already
+	_demo = [[NSClassFromString(@"BouncyTerrainDemo") alloc] init]; // TODO should be passed in fully initialized already
 	
 	[super viewDidLoad];
 
