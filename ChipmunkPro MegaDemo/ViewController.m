@@ -218,7 +218,7 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 //	_space.gravity = cpvmult([Accelerometer getAcceleration], 100);
 	_space.gravity = cpv(0.0, -100);
 	
-	if([_pentagons count] < 500){
+	if([_pentagons count] < 450){
 		cpFloat size = 7.0;
 		
 		cpVect pentagon[5];

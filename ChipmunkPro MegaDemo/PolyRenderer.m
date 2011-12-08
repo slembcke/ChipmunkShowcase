@@ -217,7 +217,7 @@ enum {
 		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*_bufferCapacity, NULL, GL_STREAM_DRAW);
 		
-		NSLog(@"Resized vertex buffer to %d", _bufferCapacity);
+//		NSLog(@"Resized vertex buffer to %d", _bufferCapacity);
 	}
 }
 
