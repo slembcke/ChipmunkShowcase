@@ -30,16 +30,16 @@
 /* Begin PBXFileReference section */
 		D3582DEF1490899400AB0C37 /* Accelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accelerometer.h; sourceTree = "<group>"; };
 		D3582DF01490899400AB0C37 /* Accelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accelerometer.m; sourceTree = "<group>"; };
-		D3FB3956148F353600E0BA9E /* ChipmunkPro MegaDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ChipmunkPro MegaDemo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3FB3956148F353600E0BA9E /* Chipmunk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chipmunk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3FB395A148F353600E0BA9E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D3FB395C148F353600E0BA9E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D3FB395E148F353600E0BA9E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		D3FB3960148F353600E0BA9E /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		D3FB3962148F353600E0BA9E /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		D3FB3966148F353600E0BA9E /* ChipmunkPro MegaDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ChipmunkPro MegaDemo-Info.plist"; sourceTree = "<group>"; };
+		D3FB3966148F353600E0BA9E /* ChipmunkShowcase-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ChipmunkShowcase-Info.plist"; sourceTree = "<group>"; };
 		D3FB3968148F353600E0BA9E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D3FB396A148F353600E0BA9E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		D3FB396C148F353600E0BA9E /* ChipmunkPro MegaDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ChipmunkPro MegaDemo-Prefix.pch"; sourceTree = "<group>"; };
+		D3FB396C148F353600E0BA9E /* ChipmunkShowcase-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ChipmunkShowcase-Prefix.pch"; sourceTree = "<group>"; };
 		D3FB396D148F353600E0BA9E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D3FB396E148F353600E0BA9E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		D3FB3970148F353600E0BA9E /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 		D3FB394B148F353600E0BA9E = {
 			isa = PBXGroup;
 			children = (
-				D3FB3964148F353600E0BA9E /* ChipmunkPro MegaDemo */,
+				D3FB3964148F353600E0BA9E /* Showcase */,
 				D3FB3959148F353600E0BA9E /* Frameworks */,
 				D3FB3957148F353600E0BA9E /* Products */,
 				D3FB398B148F480100E0BA9E /* ChipmunkPro-iPhone */,
@@ -128,7 +128,7 @@
 		D3FB3957148F353600E0BA9E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D3FB3956148F353600E0BA9E /* ChipmunkPro MegaDemo.app */,
+				D3FB3956148F353600E0BA9E /* Chipmunk.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -145,7 +145,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		D3FB3964148F353600E0BA9E /* ChipmunkPro MegaDemo */ = {
+		D3FB3964148F353600E0BA9E /* Showcase */ = {
 			isa = PBXGroup;
 			children = (
 				D3582DEF1490899400AB0C37 /* Accelerometer.h */,
@@ -163,7 +163,7 @@
 				D3FB39C5149008BC00E0BA9E /* PolyInstance.m */,
 				D3FB3965148F353600E0BA9E /* Supporting Files */,
 			);
-			path = "ChipmunkPro MegaDemo";
+			path = Showcase;
 			sourceTree = "<group>";
 		};
 		D3FB3965148F353600E0BA9E /* Supporting Files */ = {
@@ -172,10 +172,10 @@
 				D3FB39DB1490451100E0BA9E /* gradient.png */,
 				D3FB3977148F353600E0BA9E /* ViewController_iPhone.xib */,
 				D3FB397A148F353600E0BA9E /* ViewController_iPad.xib */,
-				D3FB3966148F353600E0BA9E /* ChipmunkPro MegaDemo-Info.plist */,
+				D3FB3966148F353600E0BA9E /* ChipmunkShowcase-Info.plist */,
 				D3FB3967148F353600E0BA9E /* InfoPlist.strings */,
 				D3FB396A148F353600E0BA9E /* main.m */,
-				D3FB396C148F353600E0BA9E /* ChipmunkPro MegaDemo-Prefix.pch */,
+				D3FB396C148F353600E0BA9E /* ChipmunkShowcase-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -249,9 +249,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D3FB3955148F353600E0BA9E /* ChipmunkPro MegaDemo */ = {
+		D3FB3955148F353600E0BA9E /* ChipmunkShowcase */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D3FB397F148F353600E0BA9E /* Build configuration list for PBXNativeTarget "ChipmunkPro MegaDemo" */;
+			buildConfigurationList = D3FB397F148F353600E0BA9E /* Build configuration list for PBXNativeTarget "ChipmunkShowcase" */;
 			buildPhases = (
 				D3FB3952148F353600E0BA9E /* Sources */,
 				D3FB3953148F353600E0BA9E /* Frameworks */,
@@ -261,9 +261,9 @@
 			);
 			dependencies = (
 			);
-			name = "ChipmunkPro MegaDemo";
+			name = ChipmunkShowcase;
 			productName = "ChipmunkPro MegaDemo";
-			productReference = D3FB3956148F353600E0BA9E /* ChipmunkPro MegaDemo.app */;
+			productReference = D3FB3956148F353600E0BA9E /* Chipmunk.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -274,7 +274,7 @@
 			attributes = {
 				LastUpgradeCheck = 0420;
 			};
-			buildConfigurationList = D3FB3950148F353600E0BA9E /* Build configuration list for PBXProject "ChipmunkPro MegaDemo" */;
+			buildConfigurationList = D3FB3950148F353600E0BA9E /* Build configuration list for PBXProject "ChipmunkShowcase" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -286,7 +286,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D3FB3955148F353600E0BA9E /* ChipmunkPro MegaDemo */,
+				D3FB3955148F353600E0BA9E /* ChipmunkShowcase */,
 			);
 		};
 /* End PBXProject section */
@@ -402,9 +402,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ChipmunkPro MegaDemo/ChipmunkPro MegaDemo-Prefix.pch";
+				GCC_PREFIX_HEADER = "Showcase/ChipmunkShowcase-Prefix.pch";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
-				INFOPLIST_FILE = "ChipmunkPro MegaDemo/ChipmunkPro MegaDemo-Info.plist";
+				INFOPLIST_FILE = "Showcase/ChipmunkShowcase-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../ChipmunkPro/ChipmunkPro-iPhone\"",
@@ -418,9 +418,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ChipmunkPro MegaDemo/ChipmunkPro MegaDemo-Prefix.pch";
+				GCC_PREFIX_HEADER = "Showcase/ChipmunkShowcase-Prefix.pch";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
-				INFOPLIST_FILE = "ChipmunkPro MegaDemo/ChipmunkPro MegaDemo-Info.plist";
+				INFOPLIST_FILE = "Showcase/ChipmunkShowcase-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../ChipmunkPro/ChipmunkPro-iPhone\"",
@@ -433,7 +433,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D3FB3950148F353600E0BA9E /* Build configuration list for PBXProject "ChipmunkPro MegaDemo" */ = {
+		D3FB3950148F353600E0BA9E /* Build configuration list for PBXProject "ChipmunkShowcase" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D3FB397D148F353600E0BA9E /* Debug */,
@@ -442,7 +442,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D3FB397F148F353600E0BA9E /* Build configuration list for PBXNativeTarget "ChipmunkPro MegaDemo" */ = {
+		D3FB397F148F353600E0BA9E /* Build configuration list for PBXNativeTarget "ChipmunkShowcase" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D3FB3980148F353600E0BA9E /* Debug */,
