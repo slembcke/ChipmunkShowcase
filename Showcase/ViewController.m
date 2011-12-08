@@ -84,7 +84,7 @@
 // TODO get rid of .xib loading
 -(void)viewDidLoad
 {
-	_demo = [[ShowcaseDemo alloc] init]; // TODO should be passed in fully initialized already
+	_demo = [[NSClassFromString(@"PlinkDemo") alloc] init]; // TODO should be passed in fully initialized already
 	
 	[super viewDidLoad];
 
@@ -126,7 +126,7 @@
 
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight;
+	return interfaceOrientation == UIInterfaceOrientationLandscapeRight;
 }
 
 //MARK: GLKView and GLKViewController delegate methods
@@ -141,7 +141,7 @@
 	glClear(GL_COLOR_BUFFER_BIT);
 	
 	// TODO interpolated rendering?
-	[_demo render:_renderer];
+	[_demo render:_renderer timeSinceLastUpdate:self.timeSinceLastUpdate];
 	[_renderer render];
 	
 	[_staticRenderer renderStatic];

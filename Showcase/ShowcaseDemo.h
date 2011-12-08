@@ -5,11 +5,15 @@
 
 @interface ShowcaseDemo : NSObject
 
+@property(nonatomic, readonly) ChipmunkSpace *space;
+@property(nonatomic, readonly) ChipmunkBody *staticBody;
+
 @property(nonatomic, assign) Transform touchTransform;
 
 -(void)update:(NSTimeInterval)dt;
+-(void)tick:(cpFloat)dt;
 
 -(void)prepareStaticRenderer:(PolyRenderer *)renderer;
--(void)render:(PolyRenderer *)renderer;
+-(void)render:(PolyRenderer *)renderer timeSinceLastUpdate:(NSTimeInterval)timeSinceLastUpdate;
 
 @end

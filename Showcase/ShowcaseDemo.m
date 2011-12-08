@@ -61,6 +61,9 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 	ChipmunkMultiGrab *_multiGrab;
 	// Convert touches to absolute coords.
 	Transform _touchTransform;
+	
+	NSTimeInterval _accumulator;
+	NSTimeInterval _fixedTime;
 }
 
 @end
@@ -70,82 +73,61 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 
 @synthesize touchTransform = _touchTransform;
 
+@synthesize space = _space;
+
+-(ChipmunkBody *)staticBody
+{
+	return _space.staticBody;
+}
+
+
+-(void)setup {}
 
 -(id)init
 {
 	if((self = [super init])){
 		_space = [[DemoSpace alloc] init];
-		_space.iterations = 5;
-		
-		ChipmunkBody *staticBody = _space.staticBody;
-		
-		// Vertexes for a triangle shape.
-		cpVect verts[] = {
-			cpv(-15,-15),
-			cpv(  0, 10),
-			cpv( 15,-15),
-		};
-
-		// Create the static triangles.
-		for(int i=0; i<9; i++){
-			for(int j=0; j<6; j++){
-				cpFloat stagger = (j%2)*40;
-				cpVect offset = cpv(i*80 - 320 + stagger, j*70 - 240);
-				ChipmunkShape *shape = [_space add:[ChipmunkPolyShape polyWithBody:staticBody count:3 verts:verts offset:offset]];
-				shape.elasticity = 1.0; shape.friction = 1.0;
-				shape.layers = NOT_GRABABLE_MASK;
-			}
-		}
-		
-		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:_space withSmoothing:cpfpow(0.8, 60) withGrabForce:1e4];
+		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:self.space withSmoothing:cpfpow(0.8, 60) withGrabForce:1e4];
 		_multiGrab.layers = GRABABLE_MASK_BIT;
+		
+		[self setup];
 	}
 	
 	return self;
 }
 
+-(NSTimeInterval)fixedDt
+{
+	return 1.0/60.0;
+}
+
+-(void)tick:(cpFloat)dt {
+	[self.space step:dt];
+}
+
+#define MAX_FRAMESKIP 5
+
 -(void)update:(NSTimeInterval)dt;
 {
-//	_space.gravity = cpvmult([Accelerometer getAcceleration], 100);
-	_space.gravity = cpv(0.0, -100);
+	NSTimeInterval fixed_dt = [self fixedDt];
 	
-	NSArray *bodies = _space.bodies;
-	if([bodies count] < 450){
-		cpFloat size = 7.0;
-		
-		cpVect pentagon[5];
-		for(int i=0; i<5; i++){
-			cpFloat angle = -2*M_PI*i/5.0;
-			pentagon[i] = cpv(size*cos(angle), size*sin(angle));
-		}
-		
-		ChipmunkBody *body = [_space add:[ChipmunkBody bodyWithMass:1.0 andMoment:cpMomentForPoly(1.0, 5, pentagon, cpvzero)]];
-		cpFloat x = rand()/(cpFloat)RAND_MAX*640 - 320;
-		cpFloat y = rand()/(cpFloat)RAND_MAX*300 + 350;
-		body.pos = cpv(x, y);
-		
-		ChipmunkShape *shape = [_space add:[ChipmunkPolyShape polyWithBody:body count:5 verts:pentagon offset:cpvzero]];
-		shape.elasticity = 0.0; shape.friction = 0.4;
+	_accumulator = MIN(_accumulator + dt, fixed_dt*MAX_FRAMESKIP);
+	while(_accumulator > fixed_dt){
+		[self tick:fixed_dt
+		];
+		_accumulator -= fixed_dt;
+		_fixedTime += fixed_dt;
 	}
-	
-	for(ChipmunkBody *body in bodies){
-		cpVect pos = body.pos;
-		if(pos.y < -260 || fabsf(pos.x) > 340){
-			body.pos = cpv(((cpFloat)rand()/(cpFloat)RAND_MAX)*640.0 - 320.0, 260);
-		}
-	}
-	
-	[_space step:1.0/60.0];
 }
 
 //MARK: Rendering
 
 static inline Transform
-t_shape(ChipmunkShape *shape)
+t_shape(ChipmunkShape *shape, cpFloat extrapolate)
 {
 	cpBody *body = shape.body.body;
-	cpVect pos = body->p;
-	cpVect rot = body->rot;
+	cpVect pos = cpvadd(body->p, cpvmult(body->v, extrapolate));;
+	cpVect rot = cpvrotate(body->rot, cpvforangle(body->w*extrapolate));
 	
 	return (Transform){
 		rot.x, -rot.y, pos.x,
@@ -156,14 +138,16 @@ t_shape(ChipmunkShape *shape)
 -(void)prepareStaticRenderer:(PolyRenderer *)renderer;
 {
 	for(ChipmunkShape *shape in _space.shapes){
-		if(shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape)];
+		if(shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, 0.0)];
 	}
 }
 
--(void)render:(PolyRenderer *)renderer
+-(void)render:(PolyRenderer *)renderer timeSinceLastUpdate:(NSTimeInterval)timeSinceLastUpdate;
 {
+	cpFloat extrapolate = _accumulator + timeSinceLastUpdate;
+	
 	for(ChipmunkShape *shape in _space.shapes){
-		if(!shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape)];
+		if(!shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, extrapolate)];
 	}
 	
 	cpArray *arbiters = _space.space->arbiters;
