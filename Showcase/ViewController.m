@@ -52,9 +52,20 @@
 
 @end
 
+
 @implementation ViewController
 
 @synthesize context = _context;
+
+-(id)initWithDemoClassName:(NSString *)demo
+{
+	NSString *nib_name = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? @"ViewController_iPhone" : @"ViewController_iPad");
+	if((self = [super initWithNibName:nib_name bundle:nil])){
+		_demo = [[NSClassFromString(@"BouncyTerrainDemo") alloc] init];
+	}
+	
+	return self;
+}
 
 -(void)setupGL
 {
@@ -81,11 +92,8 @@
 	[_staticRenderer prepareStatic];
 }
 
-// TODO get rid of .xib loading
 -(void)viewDidLoad
 {
-	_demo = [[NSClassFromString(@"BouncyTerrainDemo") alloc] init]; // TODO should be passed in fully initialized already
-	
 	[super viewDidLoad];
 
 	self.preferredFramesPerSecond = 60;
@@ -100,6 +108,12 @@
 	view.drawableColorFormat = GLKViewDrawableColorFormatRGB565;
 	view.context = self.context;
 	view.touchesDelegate = _demo;
+	
+	id appDelegate = [UIApplication sharedApplication].delegate;
+	UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:appDelegate action:@selector(nextDemo:)];
+	swipe.numberOfTouchesRequired = 4;
+	
+	[view addGestureRecognizer:swipe];
 
 	[self setupGL];
 }

@@ -3,22 +3,46 @@
 #import "ViewController.h"
 #import "Accelerometer.h"
 
+#import "ShowcaseDemo.h"
+#import <objc/runtime.h>
+
 @implementation AppDelegate
 
 @synthesize window = _window;
 @synthesize viewController = _viewController;
 
+@synthesize currentDemo = _currentDemo;
+-(void)setCurrentDemo:(NSString *)currentDemo
+{
+	_currentDemo = currentDemo;
+	self.viewController = [[ViewController alloc] initWithDemoClassName:@"PlinkDemo"];
+}
+
+NSArray *DEMO_CLASSES = nil;
+
++(void)initialize
+{
+	DEMO_CLASSES = [NSArray arrayWithObjects:
+		@"PlinkDemo",
+		@"TumbleDemo",
+		@"BouncyTerrainDemo",
+		nil
+	];
+}
+
+-(void)nextDemo
+{
+	NSUInteger index = [DEMO_CLASSES indexOfObject:self.currentDemo];
+	self.currentDemo = [DEMO_CLASSES objectAtIndex:(index + 1)%[DEMO_CLASSES count]];
+}
+
+//MARK: Appdelegate Methods
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+	self.currentDemo = [DEMO_CLASSES objectAtIndex:0];
+	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	
-	// Override point for customization after application launch.
-	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-		self.viewController = [[ViewController alloc] initWithNibName:@"ViewController_iPhone" bundle:nil];
-	} else {
-		self.viewController = [[ViewController alloc] initWithNibName:@"ViewController_iPad" bundle:nil];
-	}
-	
 	self.window.rootViewController = self.viewController;
 	[self.window makeKeyAndVisible];
 	

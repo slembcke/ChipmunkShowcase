@@ -3,4 +3,6 @@
 
 @interface ViewController : GLKViewController
 
+-(id)initWithDemoClassName:(NSString *)demo;
+
 @end
