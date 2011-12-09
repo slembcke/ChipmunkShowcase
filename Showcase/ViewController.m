@@ -6,6 +6,9 @@
 #import "ShowcaseDemo.h"
 #import "PolyRenderer.h"
 
+@interface FuckViews : UIView
+@end
+
 @interface ShowcaseGLView : GLKView {
 	__weak id _touchesDelegate;
 }
@@ -45,30 +48,33 @@
 @interface ViewController(){
 	ShowcaseDemo *_demo;
 	
+	GLKViewController *_glkViewController;
+	
 	PolyRenderer *_staticRenderer;
 	PolyRenderer *_renderer;
 }
 
 @property(strong, nonatomic) EAGLContext *context;
-@property(strong, nonatomic) ShowcaseGLView *view;
+@property(strong, readonly) ShowcaseGLView *glView;
 
 @end
+
 
 
 @implementation ViewController
 
 @synthesize context = _context;
 
-@dynamic view;
--(ShowcaseGLView *)view
+-(ShowcaseGLView *)glView
 {
-	return (ShowcaseGLView *)[super view];
+	return (ShowcaseGLView *)[_glkViewController view];
 }
 
 -(id)initWithDemoClassName:(NSString *)demo
 {
-	NSString *nib_name = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? @"ViewController_iPhone" : @"ViewController_iPad");
-	if((self = [super initWithNibName:nib_name bundle:nil])){
+//	NSString *nib_name = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? @"ViewController_iPhone" : @"ViewController_iPad");
+//	if((self = [super initWithNibName:nib_name bundle:nil])){
+	if((self = [super init])){
 		_demo = [[NSClassFromString(demo) alloc] init];
 	}
 	
@@ -77,20 +83,27 @@
 
 -(void)showControls
 {
-	[self.view setUserInteractionEnabled:FALSE];
-	self.view.enableSetNeedsDisplay = YES;
+	[self.glView setUserInteractionEnabled:FALSE];
+	_glkViewController.paused = TRUE;
 	
 	[UIView animateWithDuration:0.5 animations:^{
 		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 		
-		CGRect frame = self.view.superview.bounds;
-		frame.origin.y += 100.0;
+		CGRect frame = self.view.bounds;
+		frame.origin.x -= 150.0;
 		
-		self.view.frame = frame;
+		self.glView.frame = frame;
 	}];
 }
 
 //MARK: Load/Unload
+
+-(void)loadView
+{
+	[super loadView];
+	
+	self.view.backgroundColor = [UIColor magentaColor];
+}
 
 -(void)setupGL
 {
@@ -105,11 +118,11 @@
 	Transform proj = t_ortho(cpBBNew(-320, -240, 320, 240));
 	proj = t_mult(t_scale(8.0/9.0, 1.0), proj);
 	
-//	CGSize viewSize = self.view.frame.size; // TODO why does this return 768x1004??
-	CGSize viewSize = self.view.bounds.size;
+	CGSize viewSize = self.glView.bounds.size;
 	NSLog(@"View size: %@", NSStringFromCGSize(viewSize)); 
 	_demo.touchTransform = t_inverse(t_mult(t_inverse(t_ortho(cpBBNew(0, 768, 1024, 0))), proj));
 	
+	// TODO initializer should take a projection
 	_staticRenderer = [[PolyRenderer alloc] init];
 	_renderer = [[PolyRenderer alloc] init];
 	
@@ -123,29 +136,35 @@
 -(void)viewDidLoad
 {
 	[super viewDidLoad];
-
-	self.preferredFramesPerSecond = 60;
 	
 	self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 	NSAssert(self.context, @"Failed to create ES context");
 
-	self.view.backgroundColor = [UIColor whiteColor];
-	self.view.multipleTouchEnabled = TRUE;
-	self.view.drawableColorFormat = GLKViewDrawableColorFormatRGB565;
-	self.view.context = self.context;
-	self.view.touchesDelegate = _demo;
+	_glkViewController = [[GLKViewController alloc] init];
+	_glkViewController.view = [[ShowcaseGLView alloc] initWithFrame:self.view.bounds context:self.context];
+	_glkViewController.preferredFramesPerSecond = 60;
+	_glkViewController.delegate = self;
+	
+	self.glView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	self.glView.delegate = self;
+	self.glView.backgroundColor = [UIColor whiteColor];
+	self.glView.multipleTouchEnabled = TRUE;
+	self.glView.drawableColorFormat = GLKViewDrawableColorFormatRGB565;
+	self.glView.context = self.context;
+	self.glView.touchesDelegate = _demo;
+	[self.view addSubview:self.glView];
 	
 	{
 		id appDelegate = [UIApplication sharedApplication].delegate;
 		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:appDelegate action:@selector(nextDemo)];
 		swipe.numberOfTouchesRequired = 1;
 		swipe.direction = UISwipeGestureRecognizerDirectionRight;
-		[self.view addGestureRecognizer:swipe];
+		[self.glView addGestureRecognizer:swipe];
 	}{
 		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showControls)];
 		swipe.numberOfTouchesRequired = 1;
 		swipe.direction = UISwipeGestureRecognizerDirectionLeft;
-		[self.view addGestureRecognizer:swipe];
+		[self.glView addGestureRecognizer:swipe];
 	}
 
 	[self setupGL];
@@ -172,6 +191,8 @@
 	self.context = nil;
 }
 
+//MARK: Rotation
+
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return interfaceOrientation == UIInterfaceOrientationLandscapeRight;
@@ -179,20 +200,19 @@
 
 //MARK: GLKView and GLKViewController delegate methods
 
-- (void)update
+-(void)glkViewControllerUpdate:(GLKViewController *)controller
 {
-	[_demo update:self.timeSinceLastUpdate];
+	[_demo update:_glkViewController.timeSinceLastUpdate];
 }
 
 -(void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-	
 	[EAGLContext setCurrentContext:self.context];
 	glClear(GL_COLOR_BUFFER_BIT);
 	
 	[_staticRenderer renderStatic];
 	
-	[_demo render:_renderer timeSinceLastUpdate:self.timeSinceLastUpdate];
+	[_demo render:_renderer timeSinceLastUpdate:_glkViewController.timeSinceLastUpdate];
 	[_renderer render];
 	
 	PRINT_GL_ERRORS();

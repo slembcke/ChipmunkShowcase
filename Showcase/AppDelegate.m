@@ -59,7 +59,7 @@ NSArray *DEMO_CLASSES = nil;
 	[Accelerometer installWithInterval:1.0/60.0 andAlpha:0.2];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.backgroundColor = [UIColor whiteColor];
+	self.window.backgroundColor = [UIColor redColor];
 	
 	self.currentDemo = [DEMO_CLASSES objectAtIndex:0];
 	
