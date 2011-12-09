@@ -151,4 +151,9 @@
 	}
 }
 
+-(void)dealloc
+{
+	free(_vertexes);
+}
+
 @end

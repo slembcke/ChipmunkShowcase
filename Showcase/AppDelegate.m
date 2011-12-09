@@ -22,7 +22,7 @@
 	transition.subtype = kCATransitionFromBottom;
 	
 	[self.window.layer addAnimation:transition forKey:nil];
-	self.window.rootViewController = _viewController = viewController;
+	self.window.rootViewController = viewController;
 }
 
 @synthesize currentDemo = _currentDemo;
@@ -59,7 +59,7 @@ NSArray *DEMO_CLASSES = nil;
 	[Accelerometer installWithInterval:1.0/60.0 andAlpha:0.2];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.backgroundColor = [UIColor redColor];
+	self.window.backgroundColor = [UIColor whiteColor];
 	
 	self.currentDemo = [DEMO_CLASSES objectAtIndex:0];
 	

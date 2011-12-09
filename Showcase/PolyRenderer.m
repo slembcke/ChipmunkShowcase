@@ -230,22 +230,22 @@ enum {
 		glUseProgram(_program);
 //		glUniform1i(uniforms[UNIFORM_TEXTURE], 0);
 		
-		NSURL *texture_url = [[NSBundle mainBundle] URLForResource:@"gradient.png" withExtension:nil];
-		
-		NSError *error = nil;
-		GLKTextureInfo *tex_info = [GLKTextureLoader textureWithContentsOfURL:texture_url
-			options:[NSDictionary dictionaryWithObjectsAndKeys:
-				[NSNumber numberWithBool:TRUE], GLKTextureLoaderGenerateMipmaps,
-				[NSNumber numberWithBool:TRUE], GLKTextureLoaderOriginBottomLeft,
-				[NSNumber numberWithBool:TRUE], GLKTextureLoaderGrayscaleAsAlpha,
-				nil]
-			error:&error
-		];
-		
-		if(error){
-			NSLog(@"%@", error);
-		}
-		
+//		NSURL *texture_url = [[NSBundle mainBundle] URLForResource:@"gradient.png" withExtension:nil];
+//		
+//		NSError *error = nil;
+//		GLKTextureInfo *tex_info = [GLKTextureLoader textureWithContentsOfURL:texture_url
+//			options:[NSDictionary dictionaryWithObjectsAndKeys:
+//				[NSNumber numberWithBool:TRUE], GLKTextureLoaderGenerateMipmaps,
+//				[NSNumber numberWithBool:TRUE], GLKTextureLoaderOriginBottomLeft,
+//				[NSNumber numberWithBool:TRUE], GLKTextureLoaderGrayscaleAsAlpha,
+//				nil]
+//			error:&error
+//		];
+//		
+//		if(error){
+//			NSLog(@"%@", error);
+//		}
+//		
 //		_texture = tex_info.name;
 //		glBindTexture(GL_TEXTURE_2D, _texture);
 //		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

@@ -10,11 +10,9 @@
 @interface FuckViews : UIView
 @end
 
-@interface ShowcaseGLView : GLKView {
-	__weak id _touchesDelegate;
-}
+@interface ShowcaseGLView : GLKView
 
-@property(nonatomic, weak) id touchesDelegate;
+@property(nonatomic, assign) id touchesDelegate;
 
 @end
 
@@ -23,25 +21,25 @@
 
 @synthesize touchesDelegate = _touchesDelegate;
 
-//-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
-//{
-//	[_touchesDelegate touchesBegan:touches withEvent:event];
-//}
-//
-//-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
-//{
-//	[_touchesDelegate touchesMoved:touches withEvent:event];
-//}
-//
-//-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
-//{
-//	[_touchesDelegate touchesEnded:touches withEvent:event];
-//}
-//
-//-(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-//{
-//	[_touchesDelegate touchesCancelled:touches withEvent:event];
-//}
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+{
+	[_touchesDelegate touchesBegan:touches withEvent:event];
+}
+
+-(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
+{
+	[_touchesDelegate touchesMoved:touches withEvent:event];
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
+{
+	[_touchesDelegate touchesEnded:touches withEvent:event];
+}
+
+-(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	[_touchesDelegate touchesCancelled:touches withEvent:event];
+}
 
 @end
 
@@ -85,6 +83,11 @@
 
 -(IBAction)nextDemo:(id)sender;
 {
+	[CATransaction begin]; {
+		[self.view addSubview:[[UIImageView alloc] initWithImage:self.glView.snapshot]];
+		[self.glView removeFromSuperview];
+	}; [CATransaction commit];
+	
 	[(AppDelegate *)[UIApplication sharedApplication].delegate nextDemo];
 }
 
@@ -120,13 +123,6 @@
 
 //MARK: Load/Unload
 
--(void)loadView
-{
-	[super loadView];
-	
-	self.view.backgroundColor = [UIColor magentaColor];
-}
-
 -(void)setupGL
 {
 	[EAGLContext setCurrentContext:_context];
@@ -140,16 +136,15 @@
 	Transform proj = t_ortho(cpBBNew(-320, -240, 320, 240));
 	proj = t_mult(t_scale(8.0/9.0, 1.0), proj);
 	
-	CGSize viewSize = self.glView.bounds.size;
-	NSLog(@"View size: %@", NSStringFromCGSize(viewSize)); 
-	_demo.touchTransform = t_inverse(t_mult(t_inverse(t_ortho(cpBBNew(0, 768, 1024, 0))), proj));
-	
 	// TODO initializer should take a projection
 	_staticRenderer = [[PolyRenderer alloc] init];
 	_renderer = [[PolyRenderer alloc] init];
 	
 	_staticRenderer.projection = proj;
 	_renderer.projection = proj;
+	
+	CGSize viewSize = self.glView.bounds.size;
+	_demo.touchTransform = t_mult(t_inverse(proj), t_ortho(cpBBNew(0, viewSize.height, viewSize.width, 0)));
 	
 	[_demo prepareStaticRenderer:_staticRenderer];
 	[_staticRenderer prepareStatic];
@@ -161,57 +156,48 @@
 	
 	_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 	NSAssert(_context, @"Failed to create ES context");
-
-//	_glkViewController = [[GLKViewController alloc] init];
-//	_glkViewController.view = [[ShowcaseGLView alloc] initWithFrame:self.view.bounds context:self.context];
-//	_glkViewController.preferredFramesPerSecond = 60;
-//	_glkViewController.delegate = self;
 	
-//	self.glView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//	self.glView.delegate = self;
-//	self.glView.backgroundColor = [UIColor whiteColor];
-//	self.glView.multipleTouchEnabled = TRUE;
-//	self.glView.drawableColorFormat = GLKViewDrawableColorFormatRGB565;
+	[self.view addSubview:self.glView];
 	self.glView.context = _context;
 	self.glView.touchesDelegate = _demo;
-//	[self.view addSubview:self.glView];
 	
-//	{
-//		id appDelegate = [UIApplication sharedApplication].delegate;
-//		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:appDelegate action:@selector(nextDemo)];
-//		swipe.numberOfTouchesRequired = 1;
-//		swipe.direction = UISwipeGestureRecognizerDirectionRight;
-//		[self.glView addGestureRecognizer:swipe];
-//	}{
-//		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showTray)];
-//		swipe.numberOfTouchesRequired = 1;
-//		swipe.direction = UISwipeGestureRecognizerDirectionLeft;
-//		[self.glView addGestureRecognizer:swipe];
-//	}
+	{
+		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextDemo:)];
+		swipe.direction = UISwipeGestureRecognizerDirectionRight;
+		swipe.numberOfTouchesRequired = 3;
+		[self.glView addGestureRecognizer:swipe];
+	}{
+		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(openTray:)];
+		swipe.direction = UISwipeGestureRecognizerDirectionLeft;
+		swipe.numberOfTouchesRequired = 3;
+		[self.glView addGestureRecognizer:swipe];
+	}
 
 	[self setupGL];
 }
 
 - (void)tearDownGL
 {
+	NSLog(@"Tearing down GL");
 	[EAGLContext setCurrentContext:_context];
 	
 	_staticRenderer = nil;
 	_renderer = nil;
+
+	_context = nil;
+	[EAGLContext setCurrentContext:nil];
 }
 
 -(void)viewDidUnload
 {    
 	[super viewDidUnload];
-
 	[self tearDownGL];
-
-	if([EAGLContext currentContext] == _context){
-		[EAGLContext setCurrentContext:nil];
-	}
-	
-	_context = nil;
 }
+
+//-(void)dealloc
+//{
+//	[self tearDownGL];
+//}
 
 //MARK: Rotation
 

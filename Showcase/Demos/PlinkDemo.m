@@ -18,8 +18,9 @@
 	};
 
 	// Create the static triangles.
-	for(int i=0; i<9; i++){
-		for(int j=0; j<6; j++){
+	for(int j=0; j<6; j++){
+		int columns = (j%2 == 0 ? 9 : 8);
+		for(int i=0; i<columns; i++){
 			cpFloat stagger = (j%2)*40;
 			cpVect offset = cpv(i*80 - 320 + stagger, j*70 - 240);
 			ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape polyWithBody:self.staticBody count:3 verts:verts offset:offset]];
@@ -55,7 +56,7 @@
 	
 	for(ChipmunkBody *body in bodies){
 		cpVect pos = body.pos;
-		if(pos.y < -260 || fabsf(pos.x) > 340){
+		if(pos.y < -260 || fabsf(pos.x) > 400){
 			body.pos = cpv(((cpFloat)rand()/(cpFloat)RAND_MAX)*640.0 - 320.0, 260);
 		}
 	}
