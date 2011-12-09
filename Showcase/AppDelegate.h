@@ -9,4 +9,6 @@
 
 @property(nonatomic, retain) NSString *currentDemo;
 
+-(void)nextDemo;
+
 @end

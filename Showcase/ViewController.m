@@ -3,6 +3,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#import "AppDelegate.h"
 #import "ShowcaseDemo.h"
 #import "PolyRenderer.h"
 
@@ -48,22 +49,21 @@
 @interface ViewController(){
 	ShowcaseDemo *_demo;
 	
-	GLKViewController *_glkViewController;
-	
+	EAGLContext *_context;
 	PolyRenderer *_staticRenderer;
 	PolyRenderer *_renderer;
+	
+	IBOutlet GLKViewController *_glkViewController;
+	IBOutlet UIView *_tray;
 }
 
-@property(strong, nonatomic) EAGLContext *context;
-@property(strong, readonly) ShowcaseGLView *glView;
+@property(nonatomic, readonly) ShowcaseGLView *glView;
 
 @end
 
 
 
 @implementation ViewController
-
-@synthesize context = _context;
 
 -(ShowcaseGLView *)glView
 {
@@ -72,17 +72,25 @@
 
 -(id)initWithDemoClassName:(NSString *)demo
 {
-//	NSString *nib_name = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? @"ViewController_iPhone" : @"ViewController_iPad");
-//	if((self = [super initWithNibName:nib_name bundle:nil])){
-	if((self = [super init])){
+	NSString *nib_name = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? @"ViewController_iPhone" : @"ViewController_iPad");
+	if((self = [super initWithNibName:nib_name bundle:nil])){
+//	if((self = [super init])){
 		_demo = [[NSClassFromString(demo) alloc] init];
 	}
 	
 	return self;
 }
 
--(void)showControls
+//MARK: Actions
+
+-(IBAction)nextDemo:(id)sender;
 {
+	[(AppDelegate *)[UIApplication sharedApplication].delegate nextDemo];
+}
+
+-(IBAction)openTray:(id)sender;
+{
+	_tray.hidden = FALSE;
 	[self.glView setUserInteractionEnabled:FALSE];
 	_glkViewController.paused = TRUE;
 	
@@ -90,9 +98,23 @@
 		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 		
 		CGRect frame = self.view.bounds;
-		frame.origin.x -= 150.0;
+		frame.origin.x -= _tray.frame.size.width;
 		
 		self.glView.frame = frame;
+	}];
+}
+
+-(IBAction)closeTray:(id)sender;
+{
+	[UIView animateWithDuration:0.5 animations:^{
+		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+		self.glView.frame = self.view.bounds;
+	} completion:^(BOOL finished){
+		if(finished){
+			_tray.hidden = TRUE;
+			[self.glView setUserInteractionEnabled:TRUE];
+			_glkViewController.paused = FALSE;
+		}
 	}];
 }
 
@@ -107,7 +129,7 @@
 
 -(void)setupGL
 {
-	[EAGLContext setCurrentContext:self.context];
+	[EAGLContext setCurrentContext:_context];
 
 	GLfloat clear = 1.0;
 	glClearColor(clear, clear, clear, 1.0);
@@ -137,42 +159,42 @@
 {
 	[super viewDidLoad];
 	
-	self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-	NSAssert(self.context, @"Failed to create ES context");
+	_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+	NSAssert(_context, @"Failed to create ES context");
 
-	_glkViewController = [[GLKViewController alloc] init];
-	_glkViewController.view = [[ShowcaseGLView alloc] initWithFrame:self.view.bounds context:self.context];
-	_glkViewController.preferredFramesPerSecond = 60;
-	_glkViewController.delegate = self;
+//	_glkViewController = [[GLKViewController alloc] init];
+//	_glkViewController.view = [[ShowcaseGLView alloc] initWithFrame:self.view.bounds context:self.context];
+//	_glkViewController.preferredFramesPerSecond = 60;
+//	_glkViewController.delegate = self;
 	
-	self.glView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	self.glView.delegate = self;
-	self.glView.backgroundColor = [UIColor whiteColor];
-	self.glView.multipleTouchEnabled = TRUE;
-	self.glView.drawableColorFormat = GLKViewDrawableColorFormatRGB565;
-	self.glView.context = self.context;
+//	self.glView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//	self.glView.delegate = self;
+//	self.glView.backgroundColor = [UIColor whiteColor];
+//	self.glView.multipleTouchEnabled = TRUE;
+//	self.glView.drawableColorFormat = GLKViewDrawableColorFormatRGB565;
+	self.glView.context = _context;
 	self.glView.touchesDelegate = _demo;
-	[self.view addSubview:self.glView];
+//	[self.view addSubview:self.glView];
 	
-	{
-		id appDelegate = [UIApplication sharedApplication].delegate;
-		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:appDelegate action:@selector(nextDemo)];
-		swipe.numberOfTouchesRequired = 1;
-		swipe.direction = UISwipeGestureRecognizerDirectionRight;
-		[self.glView addGestureRecognizer:swipe];
-	}{
-		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showControls)];
-		swipe.numberOfTouchesRequired = 1;
-		swipe.direction = UISwipeGestureRecognizerDirectionLeft;
-		[self.glView addGestureRecognizer:swipe];
-	}
+//	{
+//		id appDelegate = [UIApplication sharedApplication].delegate;
+//		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:appDelegate action:@selector(nextDemo)];
+//		swipe.numberOfTouchesRequired = 1;
+//		swipe.direction = UISwipeGestureRecognizerDirectionRight;
+//		[self.glView addGestureRecognizer:swipe];
+//	}{
+//		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showTray)];
+//		swipe.numberOfTouchesRequired = 1;
+//		swipe.direction = UISwipeGestureRecognizerDirectionLeft;
+//		[self.glView addGestureRecognizer:swipe];
+//	}
 
 	[self setupGL];
 }
 
 - (void)tearDownGL
 {
-	[EAGLContext setCurrentContext:self.context];
+	[EAGLContext setCurrentContext:_context];
 	
 	_staticRenderer = nil;
 	_renderer = nil;
@@ -184,11 +206,11 @@
 
 	[self tearDownGL];
 
-	if([EAGLContext currentContext] == self.context) {
+	if([EAGLContext currentContext] == _context){
 		[EAGLContext setCurrentContext:nil];
 	}
 	
-	self.context = nil;
+	_context = nil;
 }
 
 //MARK: Rotation
@@ -207,7 +229,7 @@
 
 -(void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-	[EAGLContext setCurrentContext:self.context];
+	NSAssert([EAGLContext currentContext] == _context, @"Wrong context set?");
 	glClear(GL_COLOR_BUFFER_BIT);
 	
 	[_staticRenderer renderStatic];

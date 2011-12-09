@@ -46,7 +46,7 @@ NSArray *DEMO_CLASSES = nil;
 	];
 }
 
--(void)nextDemo
+-(void)nextDemo;
 {
 	NSUInteger index = [DEMO_CLASSES indexOfObject:self.currentDemo];
 	self.currentDemo = [DEMO_CLASSES objectAtIndex:(index + 1)%[DEMO_CLASSES count]];
