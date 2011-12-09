@@ -113,8 +113,7 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 	
 	_accumulator = MIN(_accumulator + dt, fixed_dt*MAX_FRAMESKIP);
 	while(_accumulator > fixed_dt){
-		[self tick:fixed_dt
-		];
+		[self tick:fixed_dt];
 		_accumulator -= fixed_dt;
 		_fixedTime += fixed_dt;
 	}
@@ -155,7 +154,7 @@ t_shape(ChipmunkShape *shape, cpFloat extrapolate)
 		cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
 		
 		for(int i=0; i<arb->numContacts; i++){
-			[renderer drawDot:arb->contacts[i].p radius:3.0 color:(Color){1,0,0,1}];
+			[renderer drawDot:arb->contacts[i].p radius:2.0 color:(Color){1,0,0,1}];
 		}
 	}
 }

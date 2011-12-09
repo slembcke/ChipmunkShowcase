@@ -18,7 +18,7 @@
 	CATransition *transition = [CATransition animation];
 	transition.duration = 0.5;
 	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-	transition.type = kCATransitionPush;
+	transition.type = kCATransitionReveal;
 	transition.subtype = kCATransitionFromBottom;
 	
 	[self.window.layer addAnimation:transition forKey:nil];
@@ -59,6 +59,8 @@ NSArray *DEMO_CLASSES = nil;
 	[Accelerometer installWithInterval:1.0/60.0 andAlpha:0.2];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	self.window.backgroundColor = [UIColor whiteColor];
+	
 	self.currentDemo = [DEMO_CLASSES objectAtIndex:0];
 	
 	[self.window makeKeyAndVisible];

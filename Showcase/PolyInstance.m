@@ -35,14 +35,15 @@
 			extrude[i] = (struct ExtrudeVerts){offset, n2};
 		}
 		
-		NSUInteger triangleCount = (fill.a > 0.0 ? vert_count - 2 : 0) + (line.a > 0.0 ? 6 : 2)*vert_count;
+//		NSUInteger triangleCount = (fill.a > 0.0 ? vert_count - 2 : 0) + (line.a > 0.0 ? 6 : 2)*vert_count;
+		NSUInteger triangleCount = (fill.a > 0.0 ? vert_count - 2 : 0) + 2*vert_count;
 		
 		Triangle *triangles = calloc(triangleCount, sizeof(Triangle));
 		Triangle *cursor = triangles;
 		
 		if(fill.a > 0.0){
 			for(int i=0; i<vert_count-2; i++){
-				cpFloat inset = (line.a == 0.0 ? width : 0.0);
+				cpFloat inset = (line.a == 0.0 ? 0.5 : 0.0);
 				cpVect v0 = cpvsub([poly getVertex:0  ], cpvmult(extrude[0  ].offset, inset));
 				cpVect v1 = cpvsub([poly getVertex:i+1], cpvmult(extrude[i+1].offset, inset));
 				cpVect v2 = cpvsub([poly getVertex:i+2], cpvmult(extrude[i+2].offset, inset));
@@ -56,29 +57,38 @@
 			cpVect v0 = [poly getVertex:i];
 			cpVect v1 = [poly getVertex:j];
 			
+			cpVect n0 = extrude[i].n;
+//			cpVect n1 = extrude[j].n;
+			
 			cpVect offset0 = extrude[i].offset;
 			cpVect offset1 = extrude[j].offset;
-			cpVect inner0 = cpvsub(v0, cpvmult(offset0, width));
-			cpVect inner1 = cpvsub(v1, cpvmult(offset1, width));
-			cpVect outer1 = cpvadd(v1, cpvmult(offset1, width));
-			
-			cpVect n0 = extrude[i].n;
-			cpVect n1 = extrude[j].n;
-			cpVect e1 = cpvadd(v0, cpvmult(n0, width));
-			cpVect e2 = cpvadd(v1, cpvmult(n0, width));
-			cpVect e3 = cpvadd(v1, cpvmult(n1, width));
 			
 			if(line.a > 0.0){
-				*cursor++ = (Triangle){{inner0, cpvneg(n0), line}, {inner1, cpvneg(n0), line}, {v1, cpvzero, line}};
-				*cursor++ = (Triangle){{inner0, cpvneg(n0), line}, {v0, cpvzero, line}, {v1, cpvzero, line}};
-				*cursor++ = (Triangle){{e2, n0, line}, {v0, cpvzero, line}, {v1, cpvzero, line}};
-				*cursor++ = (Triangle){{e2, n0, line}, {v0, cpvzero, line}, {e1, n0, line}};
-				*cursor++ = (Triangle){{v1, cpvzero, line}, {e2, n0, line}, {outer1, offset1, line}};
-				*cursor++ = (Triangle){{v1, cpvzero, line}, {e3, n1, line}, {outer1, offset1, line}};
+				cpVect inner0 = cpvsub(v0, cpvmult(offset0, width));
+				cpVect inner1 = cpvsub(v1, cpvmult(offset1, width));
+				cpVect outer0 = cpvadd(v0, cpvmult(offset0, width));
+				cpVect outer1 = cpvadd(v1, cpvmult(offset1, width));
+				
+//				cpVect e1 = cpvadd(v0, cpvmult(n0, width));
+//				cpVect e2 = cpvadd(v1, cpvmult(n0, width));
+//				cpVect e3 = cpvadd(v1, cpvmult(n1, width));
+				
+				*cursor++ = (Triangle){{inner0, cpvneg(n0), line}, {inner1, cpvneg(n0), line}, {outer1, n0, line}};
+				*cursor++ = (Triangle){{inner0, cpvneg(n0), line}, {outer0, n0, line}, {outer1, n0, line}};
+//				*cursor++ = (Triangle){{inner0, cpvneg(n0), line}, {inner1, cpvneg(n0), line}, {v1, cpvzero, line}};
+//				*cursor++ = (Triangle){{inner0, cpvneg(n0), line}, {v0, cpvzero, line}, {v1, cpvzero, line}};
+//				*cursor++ = (Triangle){{e2, n0, line}, {v0, cpvzero, line}, {v1, cpvzero, line}};
+//				*cursor++ = (Triangle){{e2, n0, line}, {v0, cpvzero, line}, {e1, n0, line}};
+//				*cursor++ = (Triangle){{v1, cpvzero, line}, {e2, n0, line}, {outer1, offset1, line}};
+//				*cursor++ = (Triangle){{v1, cpvzero, line}, {e3, n1, line}, {outer1, offset1, line}};
 			} else {
-				// TODO, need to extrude these to the full poly boundary.
-				*cursor++ = (Triangle){{inner0, cpvzero, fill}, {inner1, cpvzero, fill}, {v1, n0, fill}};
-				*cursor++ = (Triangle){{inner0, cpvzero, fill}, {v0, n0, fill}, {v1, n0, fill}};
+				cpVect inner0 = cpvsub(v0, cpvmult(offset0, 0.5));
+				cpVect inner1 = cpvsub(v1, cpvmult(offset1, 0.5));
+				cpVect outer0 = cpvadd(v0, cpvmult(offset0, 0.5));
+				cpVect outer1 = cpvadd(v1, cpvmult(offset1, 0.5));
+				
+				*cursor++ = (Triangle){{inner0, cpvzero, fill}, {inner1, cpvzero, fill}, {outer1, n0, fill}};
+				*cursor++ = (Triangle){{inner0, cpvzero, fill}, {outer0, n0, fill}, {outer1, n0, fill}};
 			}
 		}
 		
