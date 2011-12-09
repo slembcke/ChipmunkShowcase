@@ -59,6 +59,7 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 	DemoSpace *_space;
 	
 	ChipmunkMultiGrab *_multiGrab;
+	
 	// Convert touches to absolute coords.
 	Transform _touchTransform;
 	

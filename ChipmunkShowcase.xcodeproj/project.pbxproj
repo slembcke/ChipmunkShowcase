@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D325DB3C1491970D00F1B411 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D325DB3B1491970D00F1B411 /* QuartzCore.framework */; };
 		D3582DF11490899400AB0C37 /* Accelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3582DF01490899400AB0C37 /* Accelerometer.m */; };
+		D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */; };
 		D3C10FBB1490944000F00AAE /* ShowcaseDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C10FBA1490944000F00AAE /* ShowcaseDemo.m */; };
 		D3C10FD31490ADCE00F00AAE /* PlinkDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */; };
 		D3C4358F1490B15800875EA3 /* TumbleDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C4358E1490B15800875EA3 /* TumbleDemo.m */; };
@@ -25,7 +26,6 @@
 		D3FB3973148F353600E0BA9E /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = D3FB3972148F353600E0BA9E /* Shader.vsh */; };
 		D3FB3976148F353600E0BA9E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FB3975148F353600E0BA9E /* ViewController.m */; };
 		D3FB3979148F353600E0BA9E /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3FB3977148F353600E0BA9E /* ViewController_iPhone.xib */; };
-		D3FB397C148F353600E0BA9E /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3FB397A148F353600E0BA9E /* ViewController_iPad.xib */; };
 		D3FB39B8148F480100E0BA9E /* libChipmunkPro-iPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB39B6148F480100E0BA9E /* libChipmunkPro-iPhone.a */; };
 		D3FB39C31490083400E0BA9E /* PolyRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FB39C21490083400E0BA9E /* PolyRenderer.m */; };
 		D3FB39C6149008BC00E0BA9E /* PolyInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FB39C5149008BC00E0BA9E /* PolyInstance.m */; };
@@ -36,6 +36,7 @@
 		D325DB3B1491970D00F1B411 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D3582DEF1490899400AB0C37 /* Accelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accelerometer.h; sourceTree = "<group>"; };
 		D3582DF01490899400AB0C37 /* Accelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accelerometer.m; sourceTree = "<group>"; };
+		D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController_iPad.xib; sourceTree = "<group>"; };
 		D3C10FB91490944000F00AAE /* ShowcaseDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowcaseDemo.h; sourceTree = "<group>"; };
 		D3C10FBA1490944000F00AAE /* ShowcaseDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowcaseDemo.m; sourceTree = "<group>"; };
 		D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlinkDemo.m; path = Showcase/Demos/PlinkDemo.m; sourceTree = "<group>"; };
@@ -58,7 +59,6 @@
 		D3FB3974148F353600E0BA9E /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		D3FB3975148F353600E0BA9E /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		D3FB3978148F353600E0BA9E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
-		D3FB397B148F353600E0BA9E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
 		D3FB398D148F480100E0BA9E /* chipmunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chipmunk.h; sourceTree = "<group>"; };
 		D3FB398E148F480100E0BA9E /* chipmunk_ffi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chipmunk_ffi.h; sourceTree = "<group>"; };
 		D3FB398F148F480100E0BA9E /* chipmunk_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chipmunk_private.h; sourceTree = "<group>"; };
@@ -214,7 +214,7 @@
 			children = (
 				D3FB39DB1490451100E0BA9E /* gradient.png */,
 				D3FB3977148F353600E0BA9E /* ViewController_iPhone.xib */,
-				D3FB397A148F353600E0BA9E /* ViewController_iPad.xib */,
+				D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */,
 				D3FB3966148F353600E0BA9E /* ChipmunkShowcase-Info.plist */,
 				D3FB3967148F353600E0BA9E /* InfoPlist.strings */,
 				D3FB396A148F353600E0BA9E /* main.m */,
@@ -344,8 +344,8 @@
 				D3FB3971148F353600E0BA9E /* Shader.fsh in Resources */,
 				D3FB3973148F353600E0BA9E /* Shader.vsh in Resources */,
 				D3FB3979148F353600E0BA9E /* ViewController_iPhone.xib in Resources */,
-				D3FB397C148F353600E0BA9E /* ViewController_iPad.xib in Resources */,
 				D3FB39DC1490451100E0BA9E /* gradient.png in Resources */,
+				D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,14 +386,6 @@
 				D3FB3978148F353600E0BA9E /* en */,
 			);
 			name = ViewController_iPhone.xib;
-			sourceTree = "<group>";
-		};
-		D3FB397A148F353600E0BA9E /* ViewController_iPad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D3FB397B148F353600E0BA9E /* en */,
-			);
-			name = ViewController_iPad.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
