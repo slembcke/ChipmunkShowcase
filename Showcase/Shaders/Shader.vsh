@@ -10,7 +10,7 @@ varying lowp vec2 frag_texcoord;
 void main()
 {
     frag_color = color;
-    frag_texcoord = texcoord*0.5 + 0.5;
+    frag_texcoord = texcoord;//*0.5 + 0.5;
     
     gl_Position = projection*position;
 }

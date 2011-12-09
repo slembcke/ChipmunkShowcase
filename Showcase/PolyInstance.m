@@ -76,6 +76,7 @@
 				*cursor++ = (Triangle){{v1, cpvzero, line}, {e2, n0, line}, {outer1, offset1, line}};
 				*cursor++ = (Triangle){{v1, cpvzero, line}, {e3, n1, line}, {outer1, offset1, line}};
 			} else {
+				// TODO, need to extrude these to the full poly boundary.
 				*cursor++ = (Triangle){{inner0, cpvzero, fill}, {inner1, cpvzero, fill}, {v1, n0, fill}};
 				*cursor++ = (Triangle){{inner0, cpvzero, fill}, {v0, n0, fill}, {v1, n0, fill}};
 			}

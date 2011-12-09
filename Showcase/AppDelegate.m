@@ -1,3 +1,5 @@
+#import <QuartzCore/QuartzCore.h>
+
 #import "AppDelegate.h"
 
 #import "ViewController.h"
@@ -9,13 +11,27 @@
 @implementation AppDelegate
 
 @synthesize window = _window;
+
 @synthesize viewController = _viewController;
+-(void)setViewController:(ViewController *)viewController
+{
+	CATransition *transition = [CATransition animation];
+	transition.duration = 0.5;
+	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+	transition.type = kCATransitionPush;
+	transition.subtype = kCATransitionFromBottom;
+	
+	[self.window.layer addAnimation:transition forKey:nil];
+	self.window.rootViewController = _viewController = viewController;
+}
 
 @synthesize currentDemo = _currentDemo;
 -(void)setCurrentDemo:(NSString *)currentDemo
 {
+	NSLog(@"Changing demo to %@", currentDemo);
+	
 	_currentDemo = currentDemo;
-	self.viewController = [[ViewController alloc] initWithDemoClassName:@"PlinkDemo"];
+	self.viewController = [[ViewController alloc] initWithDemoClassName:currentDemo];
 }
 
 NSArray *DEMO_CLASSES = nil;
@@ -40,14 +56,12 @@ NSArray *DEMO_CLASSES = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	self.currentDemo = [DEMO_CLASSES objectAtIndex:0];
-	
-	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.rootViewController = self.viewController;
-	[self.window makeKeyAndVisible];
-	
 	[Accelerometer installWithInterval:1.0/60.0 andAlpha:0.2];
 	
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	self.currentDemo = [DEMO_CLASSES objectAtIndex:0];
+	
+	[self.window makeKeyAndVisible];
 	return YES;
 }
 

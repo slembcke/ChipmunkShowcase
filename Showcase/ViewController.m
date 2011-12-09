@@ -61,7 +61,7 @@
 {
 	NSString *nib_name = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? @"ViewController_iPhone" : @"ViewController_iPad");
 	if((self = [super initWithNibName:nib_name bundle:nil])){
-		_demo = [[NSClassFromString(@"BouncyTerrainDemo") alloc] init];
+		_demo = [[NSClassFromString(demo) alloc] init];
 	}
 	
 	return self;
@@ -78,6 +78,7 @@
 	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
 	Transform proj = t_ortho(cpBBNew(-320, -240, 320, 240));
+	proj = t_mult(t_scale(8.0/9.0, 1.0), proj);
 	
 //	CGSize viewSize = self.view.frame.size; // TODO why does this return 768x1004??
 	_demo.touchTransform = t_inverse(t_mult(t_inverse(t_ortho(cpBBNew(0, 768, 1024, 0))), proj));
@@ -110,8 +111,8 @@
 	view.touchesDelegate = _demo;
 	
 	id appDelegate = [UIApplication sharedApplication].delegate;
-	UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:appDelegate action:@selector(nextDemo:)];
-	swipe.numberOfTouchesRequired = 4;
+	UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:appDelegate action:@selector(nextDemo)];
+	swipe.numberOfTouchesRequired = 3;
 	
 	[view addGestureRecognizer:swipe];
 
@@ -153,16 +154,16 @@
 
 -(void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-	glClear(GL_COLOR_BUFFER_BIT);
 	
-	// TODO interpolated rendering?
-	[_demo render:_renderer timeSinceLastUpdate:self.timeSinceLastUpdate];
-	[_renderer render];
+	[EAGLContext setCurrentContext:self.context];
+	glClear(GL_COLOR_BUFFER_BIT);
 	
 	[_staticRenderer renderStatic];
 	
-	GLenum err;
-	while((err = glGetError())) NSLog(@"GLError %X", err);
+	[_demo render:_renderer timeSinceLastUpdate:self.timeSinceLastUpdate];
+	[_renderer render];
+	
+	PRINT_GL_ERRORS();
 }
 
 @end

@@ -12,7 +12,7 @@
 
 enum {
     UNIFORM_PROJECTION_MATRIX,
-		UNIFORM_TEXTURE,
+//		UNIFORM_TEXTURE,
     NUM_UNIFORMS
 };
 GLint uniforms[NUM_UNIFORMS];
@@ -26,7 +26,7 @@ enum {
 
 @interface PolyRenderer(){
 	GLuint _program;
-	GLuint _texture;
+//	GLuint _texture;
 
 	GLuint _vao;
 	GLuint _vbo;
@@ -191,7 +191,7 @@ enum {
     
     // Get uniform locations.
     uniforms[UNIFORM_PROJECTION_MATRIX] = glGetUniformLocation(_program, "projection");
-    uniforms[UNIFORM_TEXTURE] = glGetUniformLocation(_program, "texture");
+//    uniforms[UNIFORM_TEXTURE] = glGetUniformLocation(_program, "texture");
     
     // Release vertex and fragment shaders.
     if (vertShader) {
@@ -217,6 +217,7 @@ enum {
 		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*_bufferCapacity, NULL, GL_STREAM_DRAW);
 		
+		PRINT_GL_ERRORS();
 //		NSLog(@"Resized vertex buffer to %d", _bufferCapacity);
 	}
 }
@@ -227,7 +228,7 @@ enum {
     [self loadShaders];
 		
 		glUseProgram(_program);
-		glUniform1i(uniforms[UNIFORM_TEXTURE], 0);
+//		glUniform1i(uniforms[UNIFORM_TEXTURE], 0);
 		
 		NSURL *texture_url = [[NSBundle mainBundle] URLForResource:@"gradient.png" withExtension:nil];
 		
@@ -245,12 +246,12 @@ enum {
 			NSLog(@"%@", error);
 		}
 		
-		_texture = tex_info.name;
-		glBindTexture(GL_TEXTURE_2D, _texture);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//		_texture = tex_info.name;
+//		glBindTexture(GL_TEXTURE_2D, _texture);
+//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     
     glGenVertexArraysOES(1, &_vao);
     glBindVertexArrayOES(_vao);
@@ -269,6 +270,7 @@ enum {
     glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, color));
     
     glBindVertexArrayOES(0);
+		PRINT_GL_ERRORS();
 	}
 	
 	return self;
@@ -279,7 +281,7 @@ enum {
 	free(_buffer); _buffer = 0;
 	
 	glDeleteProgram(_program); _program = 0;
-	glDeleteTextures(1, &_texture); _texture = 0;
+//	glDeleteTextures(1, &_texture); _texture = 0;
 	glDeleteBuffers(1, &_vbo); _vbo = 0;
 	glDeleteVertexArraysOES(1, &_vao); _vao = 0;
 }
@@ -336,14 +338,15 @@ enum {
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex)*_bufferCount, _buffer);
 		
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _texture);
+//	glActiveTexture(GL_TEXTURE0);
+//	glBindTexture(GL_TEXTURE_2D, _texture);
 	
 	glUseProgram(_program);
 	glBindVertexArrayOES(_vao);
 	glDrawArrays(GL_TRIANGLES, 0, _bufferCount);
 	
 	_bufferCount = 0;
+	PRINT_GL_ERRORS();
 }
 
 // TODO make a second VBO on a renderer instead of separate ones?
@@ -351,16 +354,18 @@ enum {
 {
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*_bufferCount, _buffer, GL_STATIC_DRAW);
+	PRINT_GL_ERRORS();
 }
 
 -(void)renderStatic;
 {
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _texture);
+//	glActiveTexture(GL_TEXTURE0);
+//	glBindTexture(GL_TEXTURE_2D, _texture);
 	
 	glUseProgram(_program);
 	glBindVertexArrayOES(_vao);
 	glDrawArrays(GL_TRIANGLES, 0, _bufferCount);
+	PRINT_GL_ERRORS();
 }
 
 @end

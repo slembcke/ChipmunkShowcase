@@ -35,7 +35,7 @@
 	self.space.gravity = cpv(0.0, -100);
 	
 	NSArray *bodies = self.space.bodies;
-	if([bodies count] < 400){
+	if([bodies count] < 300){
 		cpFloat size = 7.0;
 		
 		cpVect pentagon[5];
