@@ -55,6 +55,7 @@ enum {
 
 //MARK: Shaders
 
+// TODO get rid of this gross code
 - (BOOL)compileShader:(GLuint *)shader type:(GLenum)type file:(NSString *)file
 {
     GLint status;
@@ -135,7 +136,7 @@ enum {
     return YES;
 }
 
-- (BOOL)loadShaders
+- (BOOL)loadShaders:(BOOL)antialias;
 {
     GLuint vertShader, fragShader;
     NSString *vertShaderPathname, *fragShaderPathname;
@@ -144,14 +145,15 @@ enum {
     _program = glCreateProgram();
     
     // Create and compile vertex shader.
-    vertShaderPathname = [[NSBundle mainBundle] pathForResource:@"Shader" ofType:@"vsh"];
+    vertShaderPathname = [[NSBundle mainBundle] pathForResource:@"AntialiasedShader.vsh" ofType:nil];
     if (![self compileShader:&vertShader type:GL_VERTEX_SHADER file:vertShaderPathname]) {
         NSLog(@"Failed to compile vertex shader");
         return NO;
     }
     
     // Create and compile fragment shader.
-    fragShaderPathname = [[NSBundle mainBundle] pathForResource:@"Shader" ofType:@"fsh"];
+		NSString *fragShaderName = (antialias ? @"AntialiasedShader.fsh" : @"AliasedShader.fsh");
+    fragShaderPathname = [[NSBundle mainBundle] pathForResource:fragShaderName ofType:nil];
     if (![self compileShader:&fragShader type:GL_FRAGMENT_SHADER file:fragShaderPathname]) {
         NSLog(@"Failed to compile fragment shader");
         return NO;
@@ -225,7 +227,7 @@ enum {
 -(id)init
 {
 	if((self = [super init])){
-    [self loadShaders];
+    [self loadShaders:TRUE];
 		
 		glUseProgram(_program);
 //		glUniform1i(uniforms[UNIFORM_TEXTURE], 0);

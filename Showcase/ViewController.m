@@ -81,7 +81,7 @@
 
 //MARK: Actions
 
--(IBAction)nextDemo:(id)sender;
+-(IBAction)nextDemo;
 {
 	[CATransaction begin]; {
 		[self.view addSubview:[[UIImageView alloc] initWithImage:self.glView.snapshot]];
@@ -91,11 +91,11 @@
 	[(AppDelegate *)[UIApplication sharedApplication].delegate nextDemo];
 }
 
--(IBAction)openTray:(id)sender;
+-(IBAction)openTray;
 {
 	_tray.hidden = FALSE;
 	[self.glView setUserInteractionEnabled:FALSE];
-	_glkViewController.paused = TRUE;
+//	_glkViewController.paused = TRUE;
 	
 	[UIView animateWithDuration:0.5 animations:^{
 		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -107,7 +107,7 @@
 	}];
 }
 
--(IBAction)closeTray:(id)sender;
+-(IBAction)closeTray;
 {
 	[UIView animateWithDuration:0.5 animations:^{
 		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -116,9 +116,26 @@
 		if(finished){
 			_tray.hidden = TRUE;
 			[self.glView setUserInteractionEnabled:TRUE];
-			_glkViewController.paused = FALSE;
+//			_glkViewController.paused = FALSE;
 		}
 	}];
+}
+
+-(IBAction)framerate:(UISwitch *)toggle;
+{
+	_glkViewController.preferredFramesPerSecond = (toggle.on ? 30 : 60);
+}
+
+-(IBAction)antialias:(UISwitch *)toggle;
+{
+	BOOL antialias = toggle.on;
+	[_staticRenderer loadShaders:antialias];
+	[_renderer loadShaders:antialias];
+}
+
+-(IBAction)outlines:(UISwitch *)toggle;
+{
+	NSLog(@"outlines");
 }
 
 //MARK: Load/Unload
@@ -162,12 +179,12 @@
 	self.glView.touchesDelegate = _demo;
 	
 	{
-		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextDemo:)];
+		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextDemo)];
 		swipe.direction = UISwipeGestureRecognizerDirectionRight;
 		swipe.numberOfTouchesRequired = 3;
 		[self.glView addGestureRecognizer:swipe];
 	}{
-		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(openTray:)];
+		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(openTray)];
 		swipe.direction = UISwipeGestureRecognizerDirectionLeft;
 		swipe.numberOfTouchesRequired = 3;
 		[self.glView addGestureRecognizer:swipe];
@@ -194,10 +211,10 @@
 	[self tearDownGL];
 }
 
-//-(void)dealloc
-//{
-//	[self tearDownGL];
-//}
+-(void)dealloc
+{
+	[self tearDownGL];
+}
 
 //MARK: Rotation
 
