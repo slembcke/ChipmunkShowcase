@@ -19,8 +19,11 @@
 
 -(id)init
 {
-	_polys = [NSMutableDictionary dictionary];
-	return [super init];
+	if((self = [super init])){
+		_polys = [NSMutableDictionary dictionary];
+	}
+	
+	return self;
 }
 
 static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}

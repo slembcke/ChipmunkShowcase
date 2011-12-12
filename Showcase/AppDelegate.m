@@ -65,6 +65,8 @@ NSArray *DEMO_CLASSES = nil;
 	
 	self.currentDemo = [DEMO_CLASSES objectAtIndex:0];
 	
+	[ChipmunkSpace initialize];
+	
 	[self.window makeKeyAndVisible];
 	return YES;
 }

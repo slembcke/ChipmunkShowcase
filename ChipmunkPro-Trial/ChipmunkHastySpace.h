@@ -1,0 +1,2 @@
+@interface ChipmunkHastySpace : ChipmunkSpace
+@end
