@@ -223,12 +223,14 @@ enum {
 	}
 }
 
--(id)init
+-(id)initWithProjection:(Transform)projection;
 {
 	if((self = [super init])){
     [self loadShaders];
 		
 		glUseProgram(_program);
+		self.projection = projection;
+		
 //		glUniform1i(uniforms[UNIFORM_TEXTURE], 0);
 		
 //		NSURL *texture_url = [[NSBundle mainBundle] URLForResource:@"gradient.png" withExtension:nil];

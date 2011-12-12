@@ -144,7 +144,12 @@
 
 -(IBAction)reset;
 {
+	cpFloat timeScale = _demo.timeScale;
 	_demo = [[[_demo class] alloc] init];
+	_demo.timeScale = timeScale;
+	
+	self.glView.touchesDelegate = _demo;
+	
 	[self setupGL];
 }
 
@@ -169,19 +174,13 @@
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	
-	Transform proj = t_ortho(cpBBNew(-320, -240, 320, 240));
-	proj = t_mult(t_scale(8.0/9.0, 1.0), proj);
-	
-	// TODO initializer should take a projection
-	_staticRenderer = [[PolyRenderer alloc] init];
-	_renderer = [[PolyRenderer alloc] init];
-	
-	_staticRenderer.projection = proj;
-	_renderer.projection = proj;
-	
 	CGSize viewSize = self.glView.bounds.size;
+	Transform proj = t_mult(t_scale((viewSize.height/viewSize.width)*(4.0/3.0), 1.0), t_ortho(cpBBNew(-320, -240, 320, 240)));
 	_demo.touchTransform = t_mult(t_inverse(proj), t_ortho(cpBBNew(0, viewSize.height, viewSize.width, 0)));
 	
+	_staticRenderer = [[PolyRenderer alloc] initWithProjection:proj];
+	_renderer = [[PolyRenderer alloc] initWithProjection:proj];
+		
 	[_demo prepareStaticRenderer:_staticRenderer];
 	[_staticRenderer prepareStatic];
 }
