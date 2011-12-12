@@ -60,6 +60,8 @@
 
 @property(nonatomic, assign) BOOL isTrayOpen;
 
+-(void)setupGL;
+
 @end
 
 
@@ -140,9 +142,10 @@
 	_glkViewController.preferredFramesPerSecond = (toggle.on ? 30 : 60);
 }
 
--(IBAction)outlines:(UISwitch *)toggle;
+-(IBAction)reset;
 {
-	NSLog(@"outlines");
+	_demo = [[[_demo class] alloc] init];
+	[self setupGL];
 }
 
 -(IBAction)timeScale:(UISlider *)slider

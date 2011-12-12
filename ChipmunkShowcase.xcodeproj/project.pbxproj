@@ -12,6 +12,7 @@
 		D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */; };
 		D359FB281495E103001147A9 /* LogoSmashDemo.m in Resources */ = {isa = PBXBuildFile; fileRef = D359FB271495E103001147A9 /* LogoSmashDemo.m */; };
 		D396EC441495E52000B94838 /* LogoSmashDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D359FB271495E103001147A9 /* LogoSmashDemo.m */; };
+		D396EC471495F6C500B94838 /* MultiGrabDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D396EC461495F6C500B94838 /* MultiGrabDemo.m */; };
 		D3C10FBB1490944000F00AAE /* ShowcaseDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C10FBA1490944000F00AAE /* ShowcaseDemo.m */; };
 		D3C10FD31490ADCE00F00AAE /* PlinkDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */; };
 		D3C4358F1490B15800875EA3 /* TumbleDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C4358E1490B15800875EA3 /* TumbleDemo.m */; };
@@ -38,12 +39,13 @@
 		D3582DEF1490899400AB0C37 /* Accelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accelerometer.h; sourceTree = "<group>"; };
 		D3582DF01490899400AB0C37 /* Accelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accelerometer.m; sourceTree = "<group>"; };
 		D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController_iPad.xib; sourceTree = "<group>"; };
-		D359FB271495E103001147A9 /* LogoSmashDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogoSmashDemo.m; path = Showcase/Demos/LogoSmashDemo.m; sourceTree = "<group>"; };
+		D359FB271495E103001147A9 /* LogoSmashDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoSmashDemo.m; sourceTree = "<group>"; };
+		D396EC461495F6C500B94838 /* MultiGrabDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiGrabDemo.m; sourceTree = "<group>"; };
 		D3C10FB91490944000F00AAE /* ShowcaseDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowcaseDemo.h; sourceTree = "<group>"; };
 		D3C10FBA1490944000F00AAE /* ShowcaseDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowcaseDemo.m; sourceTree = "<group>"; };
-		D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlinkDemo.m; path = Showcase/Demos/PlinkDemo.m; sourceTree = "<group>"; };
-		D3C4358E1490B15800875EA3 /* TumbleDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TumbleDemo.m; path = Showcase/Demos/TumbleDemo.m; sourceTree = "<group>"; };
-		D3C435941490C24300875EA3 /* BouncyTerrainDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BouncyTerrainDemo.m; path = Showcase/Demos/BouncyTerrainDemo.m; sourceTree = "<group>"; };
+		D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlinkDemo.m; sourceTree = "<group>"; };
+		D3C4358E1490B15800875EA3 /* TumbleDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TumbleDemo.m; sourceTree = "<group>"; };
+		D3C435941490C24300875EA3 /* BouncyTerrainDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BouncyTerrainDemo.m; sourceTree = "<group>"; };
 		D3FB3956148F353600E0BA9E /* ChipmunkShowcase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChipmunkShowcase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3FB395A148F353600E0BA9E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D3FB395C148F353600E0BA9E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -158,9 +160,9 @@
 				D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */,
 				D3C4358E1490B15800875EA3 /* TumbleDemo.m */,
 				D3C435941490C24300875EA3 /* BouncyTerrainDemo.m */,
+				D396EC461495F6C500B94838 /* MultiGrabDemo.m */,
 			);
-			name = Demos;
-			path = ..;
+			path = Demos;
 			sourceTree = "<group>";
 		};
 		D3FB394B148F353600E0BA9E = {
@@ -368,6 +370,7 @@
 				D3C10FD31490ADCE00F00AAE /* PlinkDemo.m in Sources */,
 				D3C4358F1490B15800875EA3 /* TumbleDemo.m in Sources */,
 				D3C435951490C24300875EA3 /* BouncyTerrainDemo.m in Sources */,
+				D396EC471495F6C500B94838 /* MultiGrabDemo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

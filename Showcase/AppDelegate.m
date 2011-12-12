@@ -43,6 +43,7 @@ NSArray *DEMO_CLASSES = nil;
 		@"PlinkDemo",
 		@"TumbleDemo",
 		@"BouncyTerrainDemo",
+		@"MultiGrabDemo",
 		nil
 	];
 }
