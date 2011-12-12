@@ -53,6 +53,8 @@
 	
 	IBOutlet GLKViewController *_glkViewController;
 	IBOutlet UIView *_tray;
+	
+	IBOutlet UILabel *_timeScaleLabel;
 }
 
 @property(nonatomic, readonly) ShowcaseGLView *glView;
@@ -126,13 +128,6 @@
 	_glkViewController.preferredFramesPerSecond = (toggle.on ? 30 : 60);
 }
 
--(IBAction)antialias:(UISwitch *)toggle;
-{
-	BOOL antialias = toggle.on;
-	[_staticRenderer loadShaders:antialias];
-	[_renderer loadShaders:antialias];
-}
-
 -(IBAction)outlines:(UISwitch *)toggle;
 {
 	NSLog(@"outlines");
@@ -140,18 +135,11 @@
 
 -(IBAction)timeScale:(UISlider *)slider
 {
-	// Snap the slider back to 1.0
-//	if(fabs(slider.value - 0.5) < 0.05){
-//		slider.value = 0.5;
-//		slider.thumbTintColor = [UIColor orangeColor];
-//	} else {
-//		slider.thumbTintColor = nil;
-//	}
-//	
-//	cpFloat scaleMax = 4.0;
-//	_demo.timeScale = cpfpow(scaleMax*scaleMax, slider.value)/scaleMax;
-//	NSLog(@"%f", _demo.timeScale);
-	_demo.timeScale = slider.value;
+	cpFloat min = 1.0/64.0;
+	cpFloat max = 1.0;
+	_demo.timeScale = min*cpfpow(max/min, slider.value);
+	_timeScaleLabel.text = [NSString stringWithFormat:@"Time Scale: 1:%.2f", 1.0/_demo.timeScale];
+//	NSLog(@"%f", 1.0/_demo.timeScale);
 }
 
 //MARK: Load/Unload
@@ -213,7 +201,7 @@
 		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(openTray)];
 		swipe.direction = UISwipeGestureRecognizerDirectionLeft;
 		swipe.numberOfTouchesRequired = 3;
-		[self.glView addGestureRecognizer:swipe];
+		[self.view addGestureRecognizer:swipe];
 	}
 	
 	// TODO add down swipe for an info pane?

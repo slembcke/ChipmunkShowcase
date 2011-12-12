@@ -77,10 +77,10 @@ static cpVect frand_unit_circle(){
 		hexagon[i] = cpvmult(cpv(cos(angle), sin(angle)), radius);
 	}
 	
-	for(int i=0; i<300; i++){
+	for(int i=0; i<600; i++){
 		cpFloat mass = radius*radius;
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForPoly(mass, 6, hexagon, cpvzero)]];
-		body.pos = cpvadd(cpvmult(frand_unit_circle(), 130.0f), cpvzero);
+		body.pos = cpvadd(cpvmult(frand_unit_circle(), 140.0f), cpvzero);
 		body.vel = cpvmult(frand_unit_circle(), 50.0f);
 		
 		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape polyWithBody:body count:6 verts:hexagon offset:cpvzero]];

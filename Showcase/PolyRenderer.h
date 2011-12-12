@@ -18,8 +18,6 @@ typedef struct Triangle {Vertex a, b, c;} Triangle;
 
 @property(nonatomic, assign) Transform projection;
 
-- (BOOL)loadShaders:(BOOL)antialias;
-
 -(void)drawPoly:(PolyInstance *)poly withTransform:(Transform)transform;
 -(void)drawDot:(cpVect)pos radius:(cpFloat)radius color:(Color)color;
 

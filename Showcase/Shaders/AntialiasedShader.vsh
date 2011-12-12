@@ -1,11 +1,11 @@
-uniform mat4 projection;
+uniform mediump mat4 projection;
 
-attribute vec4 position;
-attribute vec2 texcoord;
-attribute vec4 color;
+attribute mediump vec4 position;
+attribute mediump vec2 texcoord;
+attribute mediump vec4 color;
 
-varying lowp vec4 frag_color;
-varying lowp vec2 frag_texcoord;
+varying mediump vec4 frag_color;
+varying mediump vec2 frag_texcoord;
 
 void main()
 {
