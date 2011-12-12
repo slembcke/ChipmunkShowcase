@@ -194,13 +194,13 @@
 		D3FB3964148F353600E0BA9E /* Showcase */ = {
 			isa = PBXGroup;
 			children = (
-				D3C10FD41490ADD500F00AAE /* Demos */,
 				D3FB396D148F353600E0BA9E /* AppDelegate.h */,
 				D3FB396E148F353600E0BA9E /* AppDelegate.m */,
 				D3FB3974148F353600E0BA9E /* ViewController.h */,
 				D3FB3975148F353600E0BA9E /* ViewController.m */,
 				D3C10FB91490944000F00AAE /* ShowcaseDemo.h */,
 				D3C10FBA1490944000F00AAE /* ShowcaseDemo.m */,
+				D3C10FD41490ADD500F00AAE /* Demos */,
 				D3C10FBC149097DD00F00AAE /* PolyRenderer */,
 				D3C10FBD149097F700F00AAE /* Misc */,
 			);

@@ -72,6 +72,8 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 
 @implementation ShowcaseDemo
 
+@dynamic name;
+
 @synthesize touchTransform = _touchTransform;
 
 @synthesize space = _space;

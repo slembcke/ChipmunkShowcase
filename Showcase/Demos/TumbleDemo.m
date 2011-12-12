@@ -9,6 +9,11 @@
 
 @implementation TumbleDemo
 
+-(NSString *)name
+{
+	return @"Tumble";
+}
+
 -(NSTimeInterval)fixedDt
 {
 	return 1.0/120.0;

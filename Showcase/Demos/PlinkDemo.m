@@ -6,6 +6,11 @@
 
 @implementation PlinkDemo
 
+-(NSString *)name
+{
+	return @"Plink";
+}
+
 -(void)setup
 {
 	self.space.iterations = 5;

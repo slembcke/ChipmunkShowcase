@@ -52,12 +52,16 @@
 	PolyRenderer *_renderer;
 	
 	IBOutlet GLKViewController *_glkViewController;
-	IBOutlet UIView *_tray;
 	
+	IBOutlet UILabel *_demoLabel;
+	
+	IBOutlet UIView *_tray;
 	IBOutlet UILabel *_timeScaleLabel;
 }
 
 @property(nonatomic, readonly) ShowcaseGLView *glView;
+
+@property(nonatomic, assign) BOOL isTrayOpen;
 
 @end
 
@@ -83,44 +87,55 @@
 
 //MARK: Actions
 
--(IBAction)nextDemo;
+@synthesize isTrayOpen = _isTrayOpen;
+-(void)setIsTrayOpen:(BOOL)isTrayOpen
 {
-	[CATransaction begin]; {
-		[self.view addSubview:[[UIImageView alloc] initWithImage:self.glView.snapshot]];
-		[self.glView removeFromSuperview];
-	}; [CATransaction commit];
+	if(isTrayOpen && !_isTrayOpen){
+		_tray.hidden = FALSE;
+		[self.glView setUserInteractionEnabled:FALSE];
+//		_glkViewController.paused = TRUE;
+		
+		[UIView animateWithDuration:0.5 animations:^{
+			[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+			
+			CGRect frame = self.view.bounds;
+			frame.origin.x -= _tray.frame.size.width;
+			
+			self.glView.frame = frame;
+		}];
+	} else if(!isTrayOpen && _isTrayOpen){
+		[UIView animateWithDuration:0.5 animations:^{
+			[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+			self.glView.frame = self.view.bounds;
+		} completion:^(BOOL finished){
+			if(finished){
+				_tray.hidden = TRUE;
+				[self.glView setUserInteractionEnabled:TRUE];
+//				_glkViewController.paused = FALSE;
+			}
+		}];
+	}
 	
-	[(AppDelegate *)[UIApplication sharedApplication].delegate nextDemo];
+	_isTrayOpen = isTrayOpen;
 }
 
--(IBAction)openTray;
+-(IBAction)swipeLeft;
 {
-	_tray.hidden = FALSE;
-	[self.glView setUserInteractionEnabled:FALSE];
-//	_glkViewController.paused = TRUE;
-	
-	[UIView animateWithDuration:0.5 animations:^{
-		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-		
-		CGRect frame = self.view.bounds;
-		frame.origin.x -= _tray.frame.size.width;
-		
-		self.glView.frame = frame;
-	}];
+	self.isTrayOpen = TRUE;
 }
 
--(IBAction)closeTray;
+-(IBAction)swipeRight;
 {
-	[UIView animateWithDuration:0.5 animations:^{
-		[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-		self.glView.frame = self.view.bounds;
-	} completion:^(BOOL finished){
-		if(finished){
-			_tray.hidden = TRUE;
-			[self.glView setUserInteractionEnabled:TRUE];
-//			_glkViewController.paused = FALSE;
-		}
-	}];
+	if(self.isTrayOpen){
+		self.isTrayOpen = FALSE;
+	} else {
+		[CATransaction begin]; {
+			[self.view addSubview:[[UIImageView alloc] initWithImage:self.glView.snapshot]];
+			[self.glView removeFromSuperview];
+		}; [CATransaction commit];
+		
+		[(AppDelegate *)[UIApplication sharedApplication].delegate nextDemo];
+	}
 }
 
 -(IBAction)framerate:(UISwitch *)toggle;
@@ -171,44 +186,6 @@
 	[_staticRenderer prepareStatic];
 }
 
--(void)viewDidLoad
-{
-	[super viewDidLoad];
-	
-	_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-	NSAssert(_context, @"Failed to create ES context");
-	
-	[self.view addSubview:self.glView];
-	self.glView.context = _context;
-	self.glView.touchesDelegate = _demo;
-	
-	// Add a nice shadow.
-	CALayer *layer = self.glView.layer;
-	layer.shadowColor = [UIColor blackColor].CGColor;
-	layer.shadowOpacity = 1.0f;
-	layer.shadowOffset = CGSizeZero;
-	layer.shadowRadius = 15.0;
-	layer.masksToBounds = NO;
-	layer.shadowPath = [UIBezierPath bezierPathWithRect:self.glView.bounds].CGPath;
-	
-	// Got weird threading crashes when these were added in a nib.
-	{
-		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextDemo)];
-		swipe.direction = UISwipeGestureRecognizerDirectionRight;
-		swipe.numberOfTouchesRequired = 3;
-		[self.glView addGestureRecognizer:swipe];
-	}{
-		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(openTray)];
-		swipe.direction = UISwipeGestureRecognizerDirectionLeft;
-		swipe.numberOfTouchesRequired = 3;
-		[self.view addGestureRecognizer:swipe];
-	}
-	
-	// TODO add down swipe for an info pane?
-
-	[self setupGL];
-}
-
 - (void)tearDownGL
 {
 	NSLog(@"Tearing down GL");
@@ -219,6 +196,73 @@
 
 	_context = nil;
 	[EAGLContext setCurrentContext:nil];
+}
+
+-(void)fadeLabel
+{
+	[UIView animateWithDuration:1.0 animations:^{
+		_demoLabel.alpha = 0.0;
+	} completion:^(BOOL completed){
+		[_demoLabel removeFromSuperview];
+	}];
+}
+
+-(void)viewDidLoad
+{
+	[super viewDidLoad];
+	
+	_demoLabel.text = _demo.name;
+	_demoLabel.alpha = 0.0;
+	
+	[UIView animateWithDuration:1.0 animations:^{
+		_demoLabel.alpha = 1.0;
+	} completion:^(BOOL completed){
+		[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(fadeLabel) userInfo:nil repeats:NO];
+	}];
+	
+	
+	_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+	NSAssert(_context, @"Failed to create ES context");
+	
+	[self.view insertSubview:self.glView belowSubview:_demoLabel];
+//	[self.view addSubview:self.glView];
+	self.glView.context = _context;
+	self.glView.touchesDelegate = _demo;
+	
+	// Add a nice shadow.
+	self.glView.layer.shadowColor = [UIColor blackColor].CGColor;
+	self.glView.layer.shadowOpacity = 1.0f;
+	self.glView.layer.shadowOffset = CGSizeZero;
+	self.glView.layer.shadowRadius = 15.0;
+	self.glView.layer.masksToBounds = NO;
+	self.glView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.glView.bounds].CGPath;
+	
+	// Got weird threading crashes when these were added in a nib.
+	{
+		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft)];
+		swipe.direction = UISwipeGestureRecognizerDirectionLeft;
+		swipe.numberOfTouchesRequired = 3;
+		[self.view addGestureRecognizer:swipe];
+	}{
+		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight)];
+		swipe.direction = UISwipeGestureRecognizerDirectionRight;
+		swipe.numberOfTouchesRequired = 3;
+		[self.view addGestureRecognizer:swipe];
+	}{
+//		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUp)];
+//		swipe.direction = UISwipeGestureRecognizerDirectionUp;
+//		swipe.numberOfTouchesRequired = 3;
+//		[self.view addGestureRecognizer:swipe];
+//	}{
+//		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeDown)];
+//		swipe.direction = UISwipeGestureRecognizerDirectionDown;
+//		swipe.numberOfTouchesRequired = 3;
+//		[self.view addGestureRecognizer:swipe];
+	}
+	
+	// TODO add down swipe for an info pane?
+
+	[self setupGL];
 }
 
 -(void)viewDidUnload
