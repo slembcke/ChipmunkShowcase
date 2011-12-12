@@ -12,10 +12,9 @@
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBUIView</string>
-			<string>IBUIImageView</string>
-			<string>IBGLKViewController</string>
 			<string>IBProxyObject</string>
 			<string>IBUILabel</string>
+			<string>IBGLKViewController</string>
 			<string>IBUISwitch</string>
 			<string>IBUISlider</string>
 			<string>IBGLKView</string>
@@ -55,20 +54,6 @@
 						<reference key="NSNextResponder" ref="788008972"/>
 						<int key="NSvFlags">273</int>
 						<array class="NSMutableArray" key="NSSubviews">
-							<object class="IBUIImageView" id="73284283">
-								<reference key="NSNextResponder" ref="816271063"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrameSize">{200, 320}</string>
-								<reference key="NSSuperview" ref="816271063"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="359000656"/>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">linen.png</string>
-								</object>
-							</object>
 							<object class="IBUIButton" id="656040783">
 								<reference key="NSNextResponder" ref="816271063"/>
 								<int key="NSvFlags">292</int>
@@ -287,7 +272,11 @@
 						<string key="NSFrame">{{280, 0}, {200, 320}}</string>
 						<reference key="NSSuperview" ref="788008972"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="73284283"/>
+						<reference key="NSNextKeyView" ref="359000656"/>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MC4zNTg4NzA5Njc3AA</bytes>
+						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</array>
@@ -295,6 +284,7 @@
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="816271063"/>
+				<reference key="IBUIBackgroundColor" ref="1026857017"/>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
 					<int key="IBUIInterfaceOrientation">3</int>
 					<int key="interfaceOrientation">3</int>
@@ -302,10 +292,9 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBGLKView" id="468903124">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">319</int>
 				<string key="NSFrameSize">{480, 320}</string>
-				<reference key="NSSuperview"/>
 				<bool key="IBUIClipsSubviews">YES</bool>
 				<int key="IBUIContentMode">4</int>
 				<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -432,7 +421,6 @@
 						<int key="objectID">6</int>
 						<reference key="object" ref="816271063"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="73284283"/>
 							<reference ref="359000656"/>
 							<reference ref="877662841"/>
 							<reference ref="656040783"/>
@@ -462,11 +450,6 @@
 						<int key="objectID">15</int>
 						<reference key="object" ref="468903124"/>
 						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">35</int>
-						<reference key="object" ref="73284283"/>
-						<reference key="parent" ref="816271063"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">36</int>
@@ -523,7 +506,6 @@
 				<string key="10.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="15.CustomClassName">ShowcaseGLView</string>
 				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="35.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="36.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="37.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="38.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -581,10 +563,6 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">linen.png</string>
-			<string key="NS.object.0">{200, 320}</string>
-		</object>
 		<string key="IBCocoaTouchPluginVersion">933</string>
 	</data>
 </archive>

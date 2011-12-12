@@ -178,6 +178,15 @@
 	self.glView.context = _context;
 	self.glView.touchesDelegate = _demo;
 	
+	// Add a nice shadow.
+	self.glView.layer.shadowColor = [UIColor blackColor].CGColor;
+	self.glView.layer.shadowOpacity = 1.0f;
+	self.glView.layer.shadowOffset = CGSizeZero;
+	self.glView.layer.shadowRadius = 15.0;
+	self.glView.layer.masksToBounds = NO;
+	self.glView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.glView.bounds].CGPath;
+	
+	// Got weird threading crashes when these were added in a nib.
 	{
 		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextDemo)];
 		swipe.direction = UISwipeGestureRecognizerDirectionRight;
