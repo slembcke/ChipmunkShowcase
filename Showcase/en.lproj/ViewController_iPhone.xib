@@ -52,7 +52,7 @@
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIView" id="816271063">
 						<reference key="NSNextResponder" ref="788008972"/>
-						<int key="NSvFlags">273</int>
+						<int key="NSvFlags">-2147483375</int>
 						<array class="NSMutableArray" key="NSSubviews">
 							<object class="IBUIButton" id="656040783">
 								<reference key="NSNextResponder" ref="816271063"/>
@@ -149,7 +149,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<string key="IBUIText">30 FPS</string>
+								<string key="IBUIText">Cap@30</string>
 								<reference key="IBUITextColor" ref="1026857017"/>
 								<nil key="IBUIHighlightedColor"/>
 								<reference key="IBUIShadowColor" ref="585812031"/>
@@ -266,7 +266,7 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<float key="IBUIValue">0.5</float>
+								<float key="IBUIValue">1</float>
 							</object>
 						</array>
 						<string key="NSFrame">{{280, 0}, {200, 320}}</string>
@@ -275,7 +275,10 @@
 						<reference key="NSNextKeyView" ref="359000656"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MC4zNTg4NzA5Njc3AA</bytes>
+							<bytes key="NSWhite">MC4yNQA</bytes>
+							<object class="NSColorSpace" key="NSCustomColorSpace">
+								<int key="NSID">2</int>
+							</object>
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
@@ -388,6 +391,15 @@
 						<int key="IBEventType">13</int>
 					</object>
 					<int key="connectionID">51</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">timeScale:</string>
+						<reference key="source" ref="329987428"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">13</int>
+					</object>
+					<int key="connectionID">52</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -523,7 +535,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">51</int>
+			<int key="maxID">52</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

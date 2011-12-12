@@ -14,7 +14,6 @@
 		D3C10FD31490ADCE00F00AAE /* PlinkDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */; };
 		D3C4358F1490B15800875EA3 /* TumbleDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C4358E1490B15800875EA3 /* TumbleDemo.m */; };
 		D3C435951490C24300875EA3 /* BouncyTerrainDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C435941490C24300875EA3 /* BouncyTerrainDemo.m */; };
-		D3F549DA1492D39800A73661 /* linen.png in Resources */ = {isa = PBXBuildFile; fileRef = D3F549D91492D39800A73661 /* linen.png */; };
 		D3F549DD1492D9EA00A73661 /* AliasedShader.fsh in Sources */ = {isa = PBXBuildFile; fileRef = D3F549DC1492D9EA00A73661 /* AliasedShader.fsh */; };
 		D3F549DE1492DB6800A73661 /* AliasedShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = D3F549DC1492D9EA00A73661 /* AliasedShader.fsh */; };
 		D3FB395B148F353600E0BA9E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395A148F353600E0BA9E /* UIKit.framework */; };
@@ -44,7 +43,6 @@
 		D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlinkDemo.m; path = Showcase/Demos/PlinkDemo.m; sourceTree = "<group>"; };
 		D3C4358E1490B15800875EA3 /* TumbleDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TumbleDemo.m; path = Showcase/Demos/TumbleDemo.m; sourceTree = "<group>"; };
 		D3C435941490C24300875EA3 /* BouncyTerrainDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BouncyTerrainDemo.m; path = Showcase/Demos/BouncyTerrainDemo.m; sourceTree = "<group>"; };
-		D3F549D91492D39800A73661 /* linen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linen.png; sourceTree = "<group>"; };
 		D3F549DC1492D9EA00A73661 /* AliasedShader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = AliasedShader.fsh; path = Shaders/AliasedShader.fsh; sourceTree = "<group>"; };
 		D3FB3956148F353600E0BA9E /* ChipmunkShowcase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChipmunkShowcase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3FB395A148F353600E0BA9E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -216,7 +214,6 @@
 		D3FB3965148F353600E0BA9E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D3F549D91492D39800A73661 /* linen.png */,
 				D3FB3977148F353600E0BA9E /* ViewController_iPhone.xib */,
 				D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */,
 				D3FB3966148F353600E0BA9E /* ChipmunkShowcase-Info.plist */,
@@ -350,7 +347,6 @@
 				D3FB3973148F353600E0BA9E /* AntialiasedShader.vsh in Resources */,
 				D3FB3979148F353600E0BA9E /* ViewController_iPhone.xib in Resources */,
 				D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */,
-				D3F549DA1492D39800A73661 /* linen.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

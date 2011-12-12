@@ -12,6 +12,7 @@
 @property(nonatomic, assign) Transform touchTransform;
 
 @property(nonatomic, readonly) NSTimeInterval fixedDt;
+@property(nonatomic, assign) cpFloat timeScale;
 
 -(void)update:(NSTimeInterval)dt;
 -(void)tick:(cpFloat)dt;

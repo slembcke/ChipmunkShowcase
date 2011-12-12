@@ -138,6 +138,22 @@
 	NSLog(@"outlines");
 }
 
+-(IBAction)timeScale:(UISlider *)slider
+{
+	// Snap the slider back to 1.0
+//	if(fabs(slider.value - 0.5) < 0.05){
+//		slider.value = 0.5;
+//		slider.thumbTintColor = [UIColor orangeColor];
+//	} else {
+//		slider.thumbTintColor = nil;
+//	}
+//	
+//	cpFloat scaleMax = 4.0;
+//	_demo.timeScale = cpfpow(scaleMax*scaleMax, slider.value)/scaleMax;
+//	NSLog(@"%f", _demo.timeScale);
+	_demo.timeScale = slider.value;
+}
+
 //MARK: Load/Unload
 
 -(void)setupGL
@@ -179,12 +195,13 @@
 	self.glView.touchesDelegate = _demo;
 	
 	// Add a nice shadow.
-	self.glView.layer.shadowColor = [UIColor blackColor].CGColor;
-	self.glView.layer.shadowOpacity = 1.0f;
-	self.glView.layer.shadowOffset = CGSizeZero;
-	self.glView.layer.shadowRadius = 15.0;
-	self.glView.layer.masksToBounds = NO;
-	self.glView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.glView.bounds].CGPath;
+	CALayer *layer = self.glView.layer;
+	layer.shadowColor = [UIColor blackColor].CGColor;
+	layer.shadowOpacity = 1.0f;
+	layer.shadowOffset = CGSizeZero;
+	layer.shadowRadius = 15.0;
+	layer.masksToBounds = NO;
+	layer.shadowPath = [UIBezierPath bezierPathWithRect:self.glView.bounds].CGPath;
 	
 	// Got weird threading crashes when these were added in a nib.
 	{
@@ -198,6 +215,8 @@
 		swipe.numberOfTouchesRequired = 3;
 		[self.glView addGestureRecognizer:swipe];
 	}
+	
+	// TODO add down swipe for an info pane?
 
 	[self setupGL];
 }

@@ -76,11 +76,12 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 
 @synthesize space = _space;
 
+@synthesize timeScale = _timeScale;
+
 -(ChipmunkBody *)staticBody
 {
 	return _space.staticBody;
 }
-
 
 -(void)setup {}
 
@@ -90,6 +91,8 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 		_space = [[DemoSpace alloc] init];
 		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:self.space withSmoothing:cpfpow(0.8, 60) withGrabForce:1e5];
 		_multiGrab.layers = GRABABLE_MASK_BIT;
+		
+		_timeScale = 1.0;
 		
 		[self setup];
 	}
@@ -110,9 +113,9 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 
 -(void)update:(NSTimeInterval)dt;
 {
-	NSTimeInterval fixed_dt = [self fixedDt];
+	NSTimeInterval fixed_dt = self.fixedDt;
 	
-	_accumulator = MIN(_accumulator + dt, fixed_dt*MAX_FRAMESKIP);
+	_accumulator += MIN(dt, fixed_dt*MAX_FRAMESKIP)*self.timeScale;
 	while(_accumulator > fixed_dt){
 		[self tick:fixed_dt];
 		_accumulator -= fixed_dt;
@@ -144,10 +147,8 @@ t_shape(ChipmunkShape *shape, cpFloat extrapolate)
 
 -(void)render:(PolyRenderer *)renderer timeSinceLastUpdate:(NSTimeInterval)timeSinceLastUpdate;
 {
-//	cpFloat extrapolate = _accumulator + timeSinceLastUpdate;
-	
 	for(ChipmunkShape *shape in _space.shapes){
-		if(!shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, 0.0)];
+		if(!shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, _accumulator)];
 	}
 	
 	cpArray *arbiters = _space.space->arbiters;
