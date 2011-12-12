@@ -8,11 +8,12 @@
 
 @property(nonatomic, readonly) NSString *name;
 
-@property(nonatomic, readonly) ChipmunkSpace *space;
+@property(nonatomic, strong) ChipmunkSpace *space;
 @property(nonatomic, readonly) ChipmunkBody *staticBody;
 
 @property(nonatomic, assign) Transform touchTransform;
 
+@property(nonatomic, readonly) NSTimeInterval accumulator;
 @property(nonatomic, readonly) NSTimeInterval fixedDt;
 @property(nonatomic, assign) cpFloat timeScale;
 
@@ -20,6 +21,6 @@
 -(void)tick:(cpFloat)dt;
 
 -(void)prepareStaticRenderer:(PolyRenderer *)renderer;
--(void)render:(PolyRenderer *)renderer timeSinceLastUpdate:(NSTimeInterval)timeSinceLastUpdate;
+-(void)render:(PolyRenderer *)renderer;
 
 @end

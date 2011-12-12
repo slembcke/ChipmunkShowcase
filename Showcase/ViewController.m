@@ -7,9 +7,6 @@
 #import "ShowcaseDemo.h"
 #import "PolyRenderer.h"
 
-@interface FuckViews : UIView
-@end
-
 @interface ShowcaseGLView : GLKView
 
 @property(nonatomic, assign) id touchesDelegate;
@@ -211,14 +208,18 @@
 {
 	[super viewDidLoad];
 	
-	_demoLabel.text = _demo.name;
-	_demoLabel.alpha = 0.0;
-	
-	[UIView animateWithDuration:1.0 animations:^{
-		_demoLabel.alpha = 1.0;
-	} completion:^(BOOL completed){
-		[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(fadeLabel) userInfo:nil repeats:NO];
-	}];
+	if(_demo.name){
+		_demoLabel.text = _demo.name;
+		_demoLabel.alpha = 0.0;
+		
+		[UIView animateWithDuration:1.0 animations:^{
+			_demoLabel.alpha = 1.0;
+		} completion:^(BOOL completed){
+			[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(fadeLabel) userInfo:nil repeats:NO];
+		}];
+	} else {
+		[_demoLabel removeFromSuperview];
+	}
 	
 	
 	_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
@@ -297,7 +298,7 @@
 	
 	[_staticRenderer renderStatic];
 	
-	[_demo render:_renderer timeSinceLastUpdate:_glkViewController.timeSinceLastUpdate];
+	[_demo render:_renderer];
 	[_renderer render];
 	
 	PRINT_GL_ERRORS();

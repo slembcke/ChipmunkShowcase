@@ -78,6 +78,7 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 
 @synthesize space = _space;
 
+@synthesize accumulator = _accumulator;
 @synthesize timeScale = _timeScale;
 
 -(ChipmunkBody *)staticBody
@@ -147,12 +148,14 @@ t_shape(ChipmunkShape *shape, cpFloat extrapolate)
 	}
 }
 
--(void)render:(PolyRenderer *)renderer timeSinceLastUpdate:(NSTimeInterval)timeSinceLastUpdate;
+-(void)render:(PolyRenderer *)renderer;
 {
 	for(ChipmunkShape *shape in _space.shapes){
 		if(!shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, _accumulator)];
 	}
 	
+	// This is using the private API to efficiently render the collision points.
+	// Don't do this in a real game!
 	cpArray *arbiters = _space.space->arbiters;
 	for(int i=0; i<arbiters->num; i++){
 		cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
