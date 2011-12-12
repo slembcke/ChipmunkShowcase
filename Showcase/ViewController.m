@@ -118,12 +118,12 @@
 	_isTrayOpen = isTrayOpen;
 }
 
--(IBAction)swipeLeft;
+-(void)swipeLeft;
 {
 	self.isTrayOpen = TRUE;
 }
 
--(IBAction)swipeRight;
+-(void)swipeRight;
 {
 	if(self.isTrayOpen){
 		self.isTrayOpen = FALSE;
