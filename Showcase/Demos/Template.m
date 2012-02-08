@@ -10,6 +10,8 @@
 
 -(void)setup
 {
+//	CGRect bounds = CGRectMake(-320, -240, 640, 480);
+//	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
 }
 
 //-(NSTimeInterval)fixedDt;

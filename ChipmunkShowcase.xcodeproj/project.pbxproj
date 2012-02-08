@@ -11,6 +11,7 @@
 		D311930F14E258A400B659B3 /* PyramidStackDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311930E14E258A400B659B3 /* PyramidStackDemo.m */; };
 		D311931114E258B200B659B3 /* PyramidToppleDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931014E258B200B659B3 /* PyramidToppleDemo.m */; };
 		D311931314E25F7800B659B3 /* TheoJansenDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931214E25F7700B659B3 /* TheoJansenDemo.m */; };
+		D311931514E265C000B659B3 /* BreakableChainsDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931414E265C000B659B3 /* BreakableChainsDemo.m */; };
 		D325DB3C1491970D00F1B411 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D325DB3B1491970D00F1B411 /* QuartzCore.framework */; };
 		D3582DF11490899400AB0C37 /* Accelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3582DF01490899400AB0C37 /* Accelerometer.m */; };
 		D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */; };
@@ -43,6 +44,7 @@
 		D311930E14E258A400B659B3 /* PyramidStackDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PyramidStackDemo.m; sourceTree = "<group>"; };
 		D311931014E258B200B659B3 /* PyramidToppleDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PyramidToppleDemo.m; sourceTree = "<group>"; };
 		D311931214E25F7700B659B3 /* TheoJansenDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TheoJansenDemo.m; sourceTree = "<group>"; };
+		D311931414E265C000B659B3 /* BreakableChainsDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BreakableChainsDemo.m; sourceTree = "<group>"; };
 		D325DB3B1491970D00F1B411 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D3582DEF1490899400AB0C37 /* Accelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accelerometer.h; sourceTree = "<group>"; };
 		D3582DF01490899400AB0C37 /* Accelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accelerometer.m; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 		D3C10FD41490ADD500F00AAE /* Demos */ = {
 			isa = PBXGroup;
 			children = (
+				D311931414E265C000B659B3 /* BreakableChainsDemo.m */,
 				D311931214E25F7700B659B3 /* TheoJansenDemo.m */,
 				D311931014E258B200B659B3 /* PyramidToppleDemo.m */,
 				D311930E14E258A400B659B3 /* PyramidStackDemo.m */,
@@ -386,6 +389,7 @@
 				D311930F14E258A400B659B3 /* PyramidStackDemo.m in Sources */,
 				D311931114E258B200B659B3 /* PyramidToppleDemo.m in Sources */,
 				D311931314E25F7800B659B3 /* TheoJansenDemo.m in Sources */,
+				D311931514E265C000B659B3 /* BreakableChainsDemo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
