@@ -140,7 +140,7 @@
 -(id)initWithCircleShape:(ChipmunkCircleShape *)circle width:(cpFloat)width FillColor:(Color)fill lineColor:(Color)line;
 {
 	if((self = [super init])){
-		cpVect pos = [circle.body local2world:circle.offset];
+		cpVect pos = circle.offset;
 		
 		NSUInteger triangleCount = (fill.a > 0.0 ? 4 : 2);
 		Triangle *triangles = calloc(triangleCount, sizeof(Triangle));

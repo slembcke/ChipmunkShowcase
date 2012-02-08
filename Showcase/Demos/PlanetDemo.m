@@ -68,9 +68,9 @@ rand_pos(cpFloat radius)
 {
 	// Create a rouge body to control the planet manually.
 	_planetBody = [ChipmunkBody bodyWithMass:INFINITY andMoment:INFINITY];
-	_planetBody.angVel = 0.2f;
+	_planetBody.angVel = 3.0f;
 	
-	for(int i=0; i<30; i++) [self addBox];
+	for(int i=0; i<90; i++) [self addBox];
 	
 	ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:_planetBody radius:70.0f offset:cpvzero]];
 	shape.elasticity = 1.0f;
