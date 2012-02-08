@@ -140,31 +140,35 @@
 -(id)initWithCircleShape:(ChipmunkCircleShape *)circle width:(cpFloat)width FillColor:(Color)fill lineColor:(Color)line;
 {
 	if((self = [super init])){
-		NSUInteger triangleCount = (circle.radius > width/2.0 ? 4 : 2);
-		
 		cpVect pos = [circle.body local2world:circle.offset];
-		cpFloat r1 = circle.radius - width/2.0;
-		cpFloat r2 = circle.radius + width/2.0;
 		
-		Vertex a = {{pos.x - r2, pos.y - r2}, {-1.0, -1.0}, line};
-		Vertex b = {{pos.x - r2, pos.y + r2}, {-1.0,  1.0}, line};
-		Vertex c = {{pos.x + r2, pos.y + r2}, { 1.0,  1.0}, line};
-		Vertex d = {{pos.x + r2, pos.y - r2}, { 1.0, -1.0}, line};
-		
+		NSUInteger triangleCount = (fill.a > 0.0 ? 4 : 2);
 		Triangle *triangles = calloc(triangleCount, sizeof(Triangle));
-		triangles[0] = (Triangle){a, b, c};
-		triangles[1] = (Triangle){a, c, d};
+		Triangle *cursor = triangles;
 		
-		{
-			Vertex a = {{pos.x - r1, pos.y - r1}, {-1.0, -1.0}, fill};
-			Vertex b = {{pos.x - r1, pos.y + r1}, {-1.0,  1.0}, fill};
-			Vertex c = {{pos.x + r1, pos.y + r1}, { 1.0,  1.0}, fill};
-			Vertex d = {{pos.x + r1, pos.y - r1}, { 1.0, -1.0}, fill};
+		if(line.a > 0.0){
+			cpFloat r = circle.radius + width/2.0;
+			Vertex a = {{pos.x - r, pos.y - r}, {-1.0, -1.0}, line};
+			Vertex b = {{pos.x - r, pos.y + r}, {-1.0,  1.0}, line};
+			Vertex c = {{pos.x + r, pos.y + r}, { 1.0,  1.0}, line};
+			Vertex d = {{pos.x + r, pos.y - r}, { 1.0, -1.0}, line};
 			
-			triangles[2] = (Triangle){a, b, c};
-			triangles[3
-			] = (Triangle){a, c, d};
+			*cursor++ = (Triangle){a, b, c};
+			*cursor++ = (Triangle){a, c, d};
 		}
+		
+		if(fill.a > 0.0){
+			cpFloat r = (line.a > 0.0 ? circle.radius - width/2.0 : circle.radius);
+			Vertex a = {{pos.x - r, pos.y - r}, {-1.0, -1.0}, fill};
+			Vertex b = {{pos.x - r, pos.y + r}, {-1.0,  1.0}, fill};
+			Vertex c = {{pos.x + r, pos.y + r}, { 1.0,  1.0}, fill};
+			Vertex d = {{pos.x + r, pos.y - r}, { 1.0, -1.0}, fill};
+			
+			*cursor++ = (Triangle){a, b, c};
+			*cursor++ = (Triangle){a, c, d};
+		}
+		
+		// TODO need to draw some sort of rotation indicator.
 		
 		_vertexCount = triangleCount*3;
 		_vertexes = (Vertex *)triangles;
