@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D311930A14E23C2600B659B3 /* PlanetDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311930914E23C2600B659B3 /* PlanetDemo.m */; };
-		D311930D14E2482D00B659B3 /* PyramidStack.m in Sources */ = {isa = PBXBuildFile; fileRef = D311930C14E2482D00B659B3 /* PyramidStack.m */; };
+		D311930F14E258A400B659B3 /* PyramidStackDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311930E14E258A400B659B3 /* PyramidStackDemo.m */; };
+		D311931114E258B200B659B3 /* PyramidToppleDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931014E258B200B659B3 /* PyramidToppleDemo.m */; };
 		D325DB3C1491970D00F1B411 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D325DB3B1491970D00F1B411 /* QuartzCore.framework */; };
 		D3582DF11490899400AB0C37 /* Accelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3582DF01490899400AB0C37 /* Accelerometer.m */; };
 		D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */; };
@@ -38,7 +39,8 @@
 
 /* Begin PBXFileReference section */
 		D311930914E23C2600B659B3 /* PlanetDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanetDemo.m; sourceTree = "<group>"; };
-		D311930C14E2482D00B659B3 /* PyramidStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PyramidStack.m; sourceTree = "<group>"; };
+		D311930E14E258A400B659B3 /* PyramidStackDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PyramidStackDemo.m; sourceTree = "<group>"; };
+		D311931014E258B200B659B3 /* PyramidToppleDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PyramidToppleDemo.m; sourceTree = "<group>"; };
 		D325DB3B1491970D00F1B411 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D3582DEF1490899400AB0C37 /* Accelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accelerometer.h; sourceTree = "<group>"; };
 		D3582DF01490899400AB0C37 /* Accelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accelerometer.m; sourceTree = "<group>"; };
@@ -160,7 +162,8 @@
 		D3C10FD41490ADD500F00AAE /* Demos */ = {
 			isa = PBXGroup;
 			children = (
-				D311930C14E2482D00B659B3 /* PyramidStack.m */,
+				D311931014E258B200B659B3 /* PyramidToppleDemo.m */,
+				D311930E14E258A400B659B3 /* PyramidStackDemo.m */,
 				D311930914E23C2600B659B3 /* PlanetDemo.m */,
 				D359FB271495E103001147A9 /* LogoSmashDemo.m */,
 				D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */,
@@ -377,7 +380,8 @@
 				D3C435951490C24300875EA3 /* BouncyTerrainDemo.m in Sources */,
 				D396EC471495F6C500B94838 /* MultiGrabDemo.m in Sources */,
 				D311930A14E23C2600B659B3 /* PlanetDemo.m in Sources */,
-				D311930D14E2482D00B659B3 /* PyramidStack.m in Sources */,
+				D311930F14E258A400B659B3 /* PyramidStackDemo.m in Sources */,
+				D311931114E258B200B659B3 /* PyramidToppleDemo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

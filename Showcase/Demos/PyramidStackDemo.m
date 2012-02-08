@@ -10,7 +10,6 @@
 
 -(void)setup
 {
-	self.space.iterations = 30;
 	self.space.gravity = cpv(0, -100.0f);
 	self.space.sleepTimeThreshold = 0.5f;
 	self.space.collisionSlop = 0.5f;
@@ -44,11 +43,6 @@
 		shape.elasticity = 0.0f;
 		shape.friction = 0.9f;
 	}
-}
-
--(NSTimeInterval)fixedDt;
-{
-	return 1.0/180.0;
 }
 
 @end
