@@ -26,8 +26,6 @@
 	return self;
 }
 
-static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
-
 -(id)add:(NSObject<ChipmunkObject> *)obj;
 {
 	if([obj isKindOfClass:[ChipmunkShape class]]){
@@ -38,9 +36,10 @@ static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 		[[UIColor colorWithHue:frand() saturation:1.0 brightness:0.8 alpha:1.0] getRed:&fill.r green:&fill.g blue:&fill.b alpha:&fill.a];
 		
 		PolyInstance *poly = [[PolyInstance alloc] initWithShape:shape width:1.0 FillColor:fill lineColor:line];
-		
-		shape.data = poly;
-		[_polys setObject:poly forKey:[NSValue valueWithPointer:(__bridge void *)obj]];
+		if(poly){
+			shape.data = poly;
+			[_polys setObject:poly forKey:[NSValue valueWithPointer:(__bridge void *)obj]];
+		}
 	}
 	
 	return [super add:obj];

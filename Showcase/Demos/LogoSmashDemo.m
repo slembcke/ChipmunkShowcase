@@ -3,10 +3,7 @@
 #import "ShowcaseDemo.h"
 #import "ChipmunkHastySpace.h"
 
-@interface LogoSmashDemo : ShowcaseDemo
-@end
-
-
+@interface LogoSmashDemo : ShowcaseDemo @end
 @implementation LogoSmashDemo
 
 -(NSString *)name
@@ -45,8 +42,6 @@ get_pixel(int x, int y)
 	shape.elasticity = 0.0;
 	shape.friction = 0.0;
 }
-
-static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
 
 -(void)setup
 {

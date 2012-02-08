@@ -24,3 +24,20 @@
 -(void)render:(PolyRenderer *)renderer;
 
 @end
+
+//MARK: Utility Methods
+
+static inline cpFloat
+frand(void)
+{
+	return (cpFloat)rand()/(cpFloat)RAND_MAX;
+}
+
+static cpVect
+frand_unit_circle()
+{
+	cpVect v = cpv(frand()*2.0f - 1.0f, frand()*2.0f - 1.0f);
+	return (cpvlengthsq(v) < 1.0f ? v : frand_unit_circle());
+}
+
+

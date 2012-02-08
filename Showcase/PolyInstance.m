@@ -137,6 +137,42 @@
 	return self;
 }
 
+-(id)initWithCircleShape:(ChipmunkCircleShape *)circle width:(cpFloat)width FillColor:(Color)fill lineColor:(Color)line;
+{
+	if((self = [super init])){
+		NSUInteger triangleCount = (circle.radius > width/2.0 ? 4 : 2);
+		
+		cpVect pos = [circle.body local2world:circle.offset];
+		cpFloat r1 = circle.radius - width/2.0;
+		cpFloat r2 = circle.radius + width/2.0;
+		
+		Vertex a = {{pos.x - r2, pos.y - r2}, {-1.0, -1.0}, line};
+		Vertex b = {{pos.x - r2, pos.y + r2}, {-1.0,  1.0}, line};
+		Vertex c = {{pos.x + r2, pos.y + r2}, { 1.0,  1.0}, line};
+		Vertex d = {{pos.x + r2, pos.y - r2}, { 1.0, -1.0}, line};
+		
+		Triangle *triangles = calloc(triangleCount, sizeof(Triangle));
+		triangles[0] = (Triangle){a, b, c};
+		triangles[1] = (Triangle){a, c, d};
+		
+		{
+			Vertex a = {{pos.x - r1, pos.y - r1}, {-1.0, -1.0}, fill};
+			Vertex b = {{pos.x - r1, pos.y + r1}, {-1.0,  1.0}, fill};
+			Vertex c = {{pos.x + r1, pos.y + r1}, { 1.0,  1.0}, fill};
+			Vertex d = {{pos.x + r1, pos.y - r1}, { 1.0, -1.0}, fill};
+			
+			triangles[2] = (Triangle){a, b, c};
+			triangles[3
+			] = (Triangle){a, c, d};
+		}
+		
+		_vertexCount = triangleCount*3;
+		_vertexes = (Vertex *)triangles;
+	}
+	
+	return self;
+}
+
 -(id)initWithShape:(ChipmunkShape *)shape width:(cpFloat)width FillColor:(Color)fill lineColor:(Color)line;
 {
 	cpAssertSoft(fill.a > 0.0 || line.a > 0.0, "Creating a poly with a clear fill and line color.");
@@ -145,6 +181,8 @@
 		return [self initWithPolyShape:(id)shape width:width FillColor:fill lineColor:line];
 	}	else if([shape isKindOfClass:[ChipmunkSegmentShape class]]){
 		return [self initWithSegmentShape:(id)shape width:width FillColor:fill lineColor:line];
+	}	else if([shape isKindOfClass:[ChipmunkCircleShape class]]){
+		return [self initWithCircleShape:(id)shape width:width FillColor:fill lineColor:line];
 	} else {
 		NSLog(@"Could not make Poly for this object.");
 		return nil;

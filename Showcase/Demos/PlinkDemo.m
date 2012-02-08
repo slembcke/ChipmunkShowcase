@@ -1,9 +1,6 @@
 #import "ShowcaseDemo.h"
 
-@interface PlinkDemo : ShowcaseDemo
-@end
-
-
+@interface PlinkDemo : ShowcaseDemo @end
 @implementation PlinkDemo
 
 -(NSString *)name

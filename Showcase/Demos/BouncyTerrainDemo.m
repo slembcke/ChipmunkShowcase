@@ -1,10 +1,6 @@
 #import "ShowcaseDemo.h"
 
-@interface BouncyTerrainDemo : ShowcaseDemo
-
-@end
-
-
+@interface BouncyTerrainDemo : ShowcaseDemo @end
 @implementation BouncyTerrainDemo
 
 -(NSString *)name
@@ -58,12 +54,6 @@ static cpVect bouncy_terrain_verts[] = {
 	{404.42,  39.00}, {408.00,  33.88}, {415.00,  29.31}, {429.00,  26.45}, {455.00,  28.77}, {470.00,  33.81}, {482.00,  42.16}, {494.00,  46.85}, {499.65,  36.00}, {513.00,  25.95}, {529.00,  22.42}, {537.18,  23.00}, 
 };
 static int bouncy_terrain_count = sizeof(bouncy_terrain_verts)/sizeof(cpVect);
-
-static inline cpFloat frand(void){return (cpFloat)rand()/(cpFloat)RAND_MAX;}
-static cpVect frand_unit_circle(){
-	cpVect v = cpv(frand()*2.0f - 1.0f, frand()*2.0f - 1.0f);
-	return (cpvlengthsq(v) < 1.0f ? v : frand_unit_circle());
-}
 
 -(void)setup
 {

@@ -1,9 +1,6 @@
 #import "ShowcaseDemo.h"
 
-@interface MultiGrabDemo : ShowcaseDemo
-@end
-
-
+@interface MultiGrabDemo : ShowcaseDemo @end
 @implementation MultiGrabDemo
 
 -(NSString *)name

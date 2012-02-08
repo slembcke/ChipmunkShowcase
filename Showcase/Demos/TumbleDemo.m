@@ -1,13 +1,9 @@
 #import "ShowcaseDemo.h"
 
-@interface TumbleDemo : ShowcaseDemo {
-	ChipmunkBody *box;
+@interface TumbleDemo : ShowcaseDemo @end
+@implementation TumbleDemo {
+	ChipmunkBody *_box;
 }
-
-@end
-
-
-@implementation TumbleDemo
 
 -(NSString *)name
 {
@@ -22,7 +18,7 @@
 -(void)tick:(cpFloat)dt
 {
 	self.space.gravity = cpvmult([Accelerometer getAcceleration], 600);
-	box.angle += box.angVel*dt;
+	_box.angle += _box.angVel*dt;
 	
 	[super tick:dt];
 }
@@ -34,8 +30,8 @@
 	ChipmunkBody *body;
 	ChipmunkShape *shape;
 	
-	box = [ChipmunkBody bodyWithMass:INFINITY andMoment:INFINITY];
-	box.angVel = 0.4;
+	_box = [ChipmunkBody bodyWithMass:INFINITY andMoment:INFINITY];
+	_box.angVel = 0.4;
 	
 	// Set up the static box.
 	cpVect a = cpv(-200, -200);
@@ -43,19 +39,19 @@
 	cpVect c = cpv( 200,  200);
 	cpVect d = cpv( 200, -200);
 	
-	shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:box from:a to:b radius:0.0]];
+	shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:_box from:a to:b radius:0.0]];
 	shape.elasticity = 1.0; shape.friction = 1.0;
 	shape.layers = NOT_GRABABLE_MASK;
 
-	shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:box from:b to:c radius:0.0]];
+	shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:_box from:b to:c radius:0.0]];
 	shape.elasticity = 1.0; shape.friction = 1.0;
 	shape.layers = NOT_GRABABLE_MASK;
 
-	shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:box from:c to:d radius:0.0]];
+	shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:_box from:c to:d radius:0.0]];
 	shape.elasticity = 1.0; shape.friction = 1.0;
 	shape.layers = NOT_GRABABLE_MASK;
 
-	shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:box from:d to:a radius:0.0]];
+	shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:_box from:d to:a radius:0.0]];
 	shape.elasticity = 1.0; shape.friction = 1.0;
 	shape.layers = NOT_GRABABLE_MASK;
 	
