@@ -16,7 +16,7 @@
 -(void)setViewController:(ViewController *)viewController
 {
 	CATransition *transition = [CATransition animation];
-	transition.duration = 0.5;
+	transition.duration = 0.25;
 	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 	transition.type = kCATransitionReveal;
 	transition.subtype = kCATransitionFromBottom;

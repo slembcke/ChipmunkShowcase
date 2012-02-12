@@ -47,6 +47,7 @@
 		D311931214E25F7700B659B3 /* TheoJansenDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TheoJansenDemo.m; sourceTree = "<group>"; };
 		D311931414E265C000B659B3 /* BreakableChainsDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BreakableChainsDemo.m; sourceTree = "<group>"; };
 		D311931614E2699F00B659B3 /* CraneDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CraneDemo.m; sourceTree = "<group>"; };
+		D311931814E271DD00B659B3 /* TODO */ = {isa = PBXFileReference; path = TODO; sourceTree = "<group>"; };
 		D325DB3B1491970D00F1B411 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D3582DEF1490899400AB0C37 /* Accelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accelerometer.h; sourceTree = "<group>"; };
 		D3582DF01490899400AB0C37 /* Accelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accelerometer.m; sourceTree = "<group>"; };
@@ -251,6 +252,7 @@
 		D3FB394B148F353600E0BA9E = {
 			isa = PBXGroup;
 			children = (
+				D311931814E271DD00B659B3 /* TODO */,
 				D3FB3964148F353600E0BA9E /* Showcase */,
 				D3FB3965148F353600E0BA9E /* Supporting Files */,
 				D3FB3959148F353600E0BA9E /* Frameworks */,

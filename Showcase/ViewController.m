@@ -94,7 +94,7 @@
 		[self.glView setUserInteractionEnabled:FALSE];
 //		_glkViewController.paused = TRUE;
 		
-		[UIView animateWithDuration:0.5 animations:^{
+		[UIView animateWithDuration:0.25 animations:^{
 			[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 			
 			CGRect frame = self.view.bounds;
@@ -103,7 +103,7 @@
 			self.glView.frame = frame;
 		}];
 	} else if(!isTrayOpen && _isTrayOpen){
-		[UIView animateWithDuration:0.5 animations:^{
+		[UIView animateWithDuration:0.25 animations:^{
 			[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 			self.glView.frame = self.view.bounds;
 		} completion:^(BOOL finished){
@@ -199,7 +199,7 @@
 
 -(void)fadeLabel
 {
-	[UIView animateWithDuration:1.0 animations:^{
+	[UIView animateWithDuration:0.15 animations:^{
 		_demoLabel.alpha = 0.0;
 	} completion:^(BOOL completed){
 		[_demoLabel removeFromSuperview];
@@ -212,13 +212,7 @@
 	
 	if(_demo.name){
 		_demoLabel.text = _demo.name;
-		_demoLabel.alpha = 0.0;
-		
-		[UIView animateWithDuration:1.0 animations:^{
-			_demoLabel.alpha = 1.0;
-		} completion:^(BOOL completed){
-			[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(fadeLabel) userInfo:nil repeats:NO];
-		}];
+		[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(fadeLabel) userInfo:nil repeats:NO];		
 	} else {
 		[_demoLabel removeFromSuperview];
 	}
