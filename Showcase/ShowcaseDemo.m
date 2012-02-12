@@ -83,6 +83,8 @@
 @synthesize accumulator = _accumulator;
 @synthesize timeScale = _timeScale;
 
+@synthesize timeStep = _timeStep;
+
 -(ChipmunkBody *)staticBody
 {
 	return _space.staticBody;
@@ -98,6 +100,7 @@
 		_multiGrab.layers = GRABABLE_MASK_BIT;
 		
 		_timeScale = 1.0;
+		_timeStep = self.preferredTimeStep;
 		
 		[self setup];
 	}
@@ -105,7 +108,7 @@
 	return self;
 }
 
--(NSTimeInterval)fixedDt;
+-(NSTimeInterval)preferredTimeStep;
 {
 	return 1.0/60.0;
 }
@@ -118,7 +121,7 @@
 
 -(void)update:(NSTimeInterval)dt;
 {
-	NSTimeInterval fixed_dt = self.fixedDt;
+	NSTimeInterval fixed_dt = _timeStep;
 	
 	_accumulator += MIN(dt, fixed_dt*MAX_FRAMESKIP)*self.timeScale;
 	while(_accumulator > fixed_dt){

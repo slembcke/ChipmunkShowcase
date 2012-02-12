@@ -10,7 +10,7 @@
 	return @"Tumble";
 }
 
--(NSTimeInterval)fixedDt
+-(NSTimeInterval)preferredTimeStep
 {
 	return 1.0/120.0;
 }

@@ -7,6 +7,30 @@
 #import "ShowcaseDemo.h"
 #import "PolyRenderer.h"
 
+#define SLIDE_ANIMATION_DURATION 0.25
+#define TITLE_ANIMATION_DURATION 0.15
+
+#define MIN_TIMESCALE (1.0/64.0)
+#define MAX_TIMESCALE 1.0
+
+#define MIN_TIMESTEP (1.0/240.0)
+#define MAX_TIMESTEP (1.0/15.0)
+
+#define MAX_ITERATIONS 30
+
+static cpFloat
+LogSliderToValue(cpFloat min, cpFloat max, cpFloat value)
+{
+	return min*cpfpow(max/min, value);
+}
+
+static cpFloat
+ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
+{
+	return logf(value/min)/logf(max/min);
+}
+
+
 @interface ShowcaseGLView : GLKView
 
 @property(nonatomic, assign) id touchesDelegate;
@@ -53,7 +77,15 @@
 	IBOutlet UILabel *_demoLabel;
 	
 	IBOutlet UIView *_tray;
+	
+	IBOutlet UISlider *_timeScaleSlider;
 	IBOutlet UILabel *_timeScaleLabel;
+	
+	IBOutlet UISlider *_timeStepSlider;
+	IBOutlet UILabel *_timeStepLabel;
+	
+	IBOutlet UISlider *_iterationsSlider;
+	IBOutlet UILabel *_iterationsLabel;
 }
 
 @property(nonatomic, readonly) ShowcaseGLView *glView;
@@ -94,7 +126,7 @@
 		[self.glView setUserInteractionEnabled:FALSE];
 //		_glkViewController.paused = TRUE;
 		
-		[UIView animateWithDuration:0.25 animations:^{
+		[UIView animateWithDuration:SLIDE_ANIMATION_DURATION animations:^{
 			[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 			
 			CGRect frame = self.view.bounds;
@@ -103,7 +135,7 @@
 			self.glView.frame = frame;
 		}];
 	} else if(!isTrayOpen && _isTrayOpen){
-		[UIView animateWithDuration:0.25 animations:^{
+		[UIView animateWithDuration:SLIDE_ANIMATION_DURATION animations:^{
 			[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 			self.glView.frame = self.view.bounds;
 		} completion:^(BOOL finished){
@@ -142,24 +174,39 @@
 	_glkViewController.preferredFramesPerSecond = (toggle.on ? 30 : 60);
 }
 
+-(IBAction)timeScale:(UISlider *)slider
+{
+	cpFloat value = LogSliderToValue(MIN_TIMESCALE, MAX_TIMESCALE, slider.value);
+	_demo.timeScale = value;
+	_timeScaleLabel.text = [NSString stringWithFormat:@"Time Scale: 1:%.2f", 1.0/value];
+}
+
+-(IBAction)timeStep:(UISlider *)slider
+{
+	cpFloat value = LogSliderToValue(MIN_TIMESTEP, MAX_TIMESTEP, slider.value);
+	_demo.timeStep = value;
+	_timeStepLabel.text = [NSString stringWithFormat:@"Time Step: 1:%.2f", 1.0/value];
+}
+
+-(IBAction)iterations:(UISlider *)slider
+{
+	int value = slider.value;
+	_demo.space.iterations = value;
+	_iterationsLabel.text = [NSString stringWithFormat:@"Iterations: %d", value];
+}
+
 -(IBAction)reset;
 {
-	cpFloat timeScale = _demo.timeScale;
 	_demo = [[[_demo class] alloc] init];
-	_demo.timeScale = timeScale;
+	
+	// Pump the slider data
+	[self timeScale:_timeScaleSlider];
+	[self timeStep:_timeStepSlider];
+	[self iterations:_iterationsSlider];
 	
 	self.glView.touchesDelegate = _demo;
 	
 	[self setupGL];
-}
-
--(IBAction)timeScale:(UISlider *)slider
-{
-	cpFloat min = 1.0/64.0;
-	cpFloat max = 1.0;
-	_demo.timeScale = min*cpfpow(max/min, slider.value);
-	_timeScaleLabel.text = [NSString stringWithFormat:@"Time Scale: 1:%.2f", 1.0/_demo.timeScale];
-//	NSLog(@"%f", 1.0/_demo.timeScale);
 }
 
 //MARK: Load/Unload
@@ -199,7 +246,7 @@
 
 -(void)fadeLabel
 {
-	[UIView animateWithDuration:0.15 animations:^{
+	[UIView animateWithDuration:TITLE_ANIMATION_DURATION animations:^{
 		_demoLabel.alpha = 0.0;
 	} completion:^(BOOL completed){
 		[_demoLabel removeFromSuperview];
@@ -217,6 +264,13 @@
 		[_demoLabel removeFromSuperview];
 	}
 	
+	// Set sliders to their default values
+	_timeScaleSlider.value = ValueToLogSlider(MIN_TIMESCALE, MAX_TIMESCALE, 1.0);
+	_timeStepSlider.value = ValueToLogSlider(MIN_TIMESTEP, MAX_TIMESTEP, _demo.timeStep);
+	_iterationsSlider.value = _demo.space.iterations;
+	[self timeScale:_timeScaleSlider];
+	[self timeStep:_timeStepSlider];
+	[self iterations:_iterationsSlider];
 	
 	_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 	NSAssert(_context, @"Failed to create ES context");
