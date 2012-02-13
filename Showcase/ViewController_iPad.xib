@@ -333,7 +333,7 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 				</object>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 				<bool key="IBUIHorizontal">NO</bool>
-				<int key="IBGLKPreferredFramesPerSecond">30</int>
+				<int key="IBGLKPreferredFramesPerSecond">60</int>
 			</object>
 			<object class="IBGLKView" id="934023763">
 				<nil key="NSNextResponder"/>
