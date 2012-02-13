@@ -153,15 +153,16 @@ t_shape(ChipmunkShape *shape, cpFloat extrapolate)
 
 -(void)prepareStaticRenderer:(PolyRenderer *)renderer;
 {
-	for(ChipmunkShape *shape in _space.shapes){
-		if(shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, 0.0)];
-	}
+//	for(ChipmunkShape *shape in _space.shapes){
+//		if(shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, 0.0)];
+//	}
 }
 
 -(void)render:(PolyRenderer *)renderer showContacts:(BOOL)showContacts;
 {
 	for(ChipmunkShape *shape in _space.shapes){
-		if(!shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, _accumulator)];
+		//if(!shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, _accumulator)];
+		[renderer drawPoly:shape.data withTransform:t_shape(shape, _accumulator)];
 	}
 	
 	if(showContacts){

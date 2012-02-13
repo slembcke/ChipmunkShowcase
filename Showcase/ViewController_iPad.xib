@@ -98,6 +98,7 @@
 								<string key="NSFrame">{{67, 713}, {66, 35}}</string>
 								<reference key="NSSuperview" ref="59699970"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
@@ -333,7 +334,7 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 				</object>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 				<bool key="IBUIHorizontal">NO</bool>
-				<int key="IBGLKPreferredFramesPerSecond">60</int>
+				<int key="IBGLKPreferredFramesPerSecond">30</int>
 			</object>
 			<object class="IBGLKView" id="934023763">
 				<nil key="NSNextResponder"/>

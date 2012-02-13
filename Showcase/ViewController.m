@@ -219,6 +219,21 @@ enum DemoReveal {
 //		[(AppDelegate *)[UIApplication sharedApplication].delegate nextDemo];
 }
 
+-(void)swipeUp
+{
+//	_glkViewController.paused = TRUE;
+//	
+//	UIWebView *webView = [[UIWebView alloc] init];
+//	[webView loadHTMLString:[NSString stringWithContentsOfFile:@"MultiGrabDemo.html" usedEncoding:nil error:nil] baseURL:nil];
+//	
+//	UIViewController *webViewController = [[UIViewController alloc] init];
+//	webViewController.view = webView;
+//	
+//	[self presentViewController:webViewController animated:TRUE completion:^{
+//		_glkViewController.paused = FALSE;
+//	}];
+}
+
 -(IBAction)framerate:(UISwitch *)toggle;
 {
 	_glkViewController.preferredFramesPerSecond = (toggle.on ? 30 : 60);
@@ -390,11 +405,11 @@ enum DemoReveal {
 		swipe.numberOfTouchesRequired = 3;
 		[self.view addGestureRecognizer:swipe];
 	}{
-//		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUp)];
-//		swipe.direction = UISwipeGestureRecognizerDirectionUp;
-//		swipe.numberOfTouchesRequired = 3;
-//		[self.view addGestureRecognizer:swipe];
-//	}{
+		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUp)];
+		swipe.direction = UISwipeGestureRecognizerDirectionUp;
+		swipe.numberOfTouchesRequired = 3;
+		[self.view addGestureRecognizer:swipe];
+	}{
 //		UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeDown)];
 //		swipe.direction = UISwipeGestureRecognizerDirectionDown;
 //		swipe.numberOfTouchesRequired = 3;

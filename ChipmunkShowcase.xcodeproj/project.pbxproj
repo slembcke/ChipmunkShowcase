@@ -23,6 +23,8 @@
 		D311931314E25F7800B659B3 /* TheoJansenDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931214E25F7700B659B3 /* TheoJansenDemo.m */; };
 		D311931514E265C000B659B3 /* BreakableChainsDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931414E265C000B659B3 /* BreakableChainsDemo.m */; };
 		D311931714E2699F00B659B3 /* CraneDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931614E2699F00B659B3 /* CraneDemo.m */; };
+		D321D1D114E8F8C400DE2A53 /* DeformableBitmapDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D321D1D014E8F8C400DE2A53 /* DeformableBitmapDemo.m */; };
+		D321D1D414E8F9C600DE2A53 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D321D1D314E8F9C600DE2A53 /* ImageIO.framework */; };
 		D325DB3C1491970D00F1B411 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D325DB3B1491970D00F1B411 /* QuartzCore.framework */; };
 		D3582DF11490899400AB0C37 /* Accelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3582DF01490899400AB0C37 /* Accelerometer.m */; };
 		D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */; };
@@ -38,6 +40,7 @@
 		D3E5458A14E8C48700434A5A /* Icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = D3E5458914E8C48700434A5A /* Icon72.png */; };
 		D3E5458C14E8C48B00434A5A /* Icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = D3E5458B14E8C48B00434A5A /* Icon114.png */; };
 		D3E5458E14E8C6DA00434A5A /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D3E5458D14E8C6DA00434A5A /* Default-Landscape~ipad.png */; };
+		D3E5459A14E8F2E800434A5A /* MultiGrabDemo.html in Resources */ = {isa = PBXBuildFile; fileRef = D3E5459914E8F2E800434A5A /* MultiGrabDemo.html */; };
 		D3FB395B148F353600E0BA9E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395A148F353600E0BA9E /* UIKit.framework */; };
 		D3FB395D148F353600E0BA9E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395C148F353600E0BA9E /* Foundation.framework */; };
 		D3FB395F148F353600E0BA9E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395E148F353600E0BA9E /* CoreGraphics.framework */; };
@@ -72,6 +75,8 @@
 		D311931414E265C000B659B3 /* BreakableChainsDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BreakableChainsDemo.m; sourceTree = "<group>"; };
 		D311931614E2699F00B659B3 /* CraneDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CraneDemo.m; sourceTree = "<group>"; };
 		D311931814E271DD00B659B3 /* TODO */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
+		D321D1D014E8F8C400DE2A53 /* DeformableBitmapDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeformableBitmapDemo.m; sourceTree = "<group>"; };
+		D321D1D314E8F9C600DE2A53 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		D325DB3B1491970D00F1B411 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D3582DEF1490899400AB0C37 /* Accelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accelerometer.h; sourceTree = "<group>"; };
 		D3582DF01490899400AB0C37 /* Accelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accelerometer.m; sourceTree = "<group>"; };
@@ -129,6 +134,7 @@
 		D3E5458914E8C48700434A5A /* Icon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon72.png; path = ../Icon72.png; sourceTree = "<group>"; };
 		D3E5458B14E8C48B00434A5A /* Icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon114.png; path = ../Icon114.png; sourceTree = "<group>"; };
 		D3E5458D14E8C6DA00434A5A /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		D3E5459914E8F2E800434A5A /* MultiGrabDemo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = MultiGrabDemo.html; sourceTree = "<group>"; };
 		D3FB3956148F353600E0BA9E /* ChipmunkShowcase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChipmunkShowcase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3FB395A148F353600E0BA9E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D3FB395C148F353600E0BA9E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -158,6 +164,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D321D1D414E8F9C600DE2A53 /* ImageIO.framework in Frameworks */,
 				D325DB3C1491970D00F1B411 /* QuartzCore.framework in Frameworks */,
 				D3FB395B148F353600E0BA9E /* UIKit.framework in Frameworks */,
 				D3FB395D148F353600E0BA9E /* Foundation.framework in Frameworks */,
@@ -214,6 +221,7 @@
 		D3C10FD41490ADD500F00AAE /* Demos */ = {
 			isa = PBXGroup;
 			children = (
+				D321D1D014E8F8C400DE2A53 /* DeformableBitmapDemo.m */,
 				D311931614E2699F00B659B3 /* CraneDemo.m */,
 				D311931414E265C000B659B3 /* BreakableChainsDemo.m */,
 				D311931214E25F7700B659B3 /* TheoJansenDemo.m */,
@@ -294,9 +302,18 @@
 			path = constraints;
 			sourceTree = "<group>";
 		};
+		D3E5459814E8F2E800434A5A /* HTML */ = {
+			isa = PBXGroup;
+			children = (
+				D3E5459914E8F2E800434A5A /* MultiGrabDemo.html */,
+			);
+			path = HTML;
+			sourceTree = SOURCE_ROOT;
+		};
 		D3FB394B148F353600E0BA9E = {
 			isa = PBXGroup;
 			children = (
+				D321D1D314E8F9C600DE2A53 /* ImageIO.framework */,
 				D3E5458D14E8C6DA00434A5A /* Default-Landscape~ipad.png */,
 				D311931814E271DD00B659B3 /* TODO */,
 				D3FB3964148F353600E0BA9E /* Showcase */,
@@ -348,6 +365,7 @@
 			isa = PBXGroup;
 			children = (
 				D30A7AAC14E8BC5B00C50129 /* Icons */,
+				D3E5459814E8F2E800434A5A /* HTML */,
 				D3E5458B14E8C48B00434A5A /* Icon114.png */,
 				D3E5458914E8C48700434A5A /* Icon72.png */,
 				D3E5458614E8C48300434A5A /* Icon57.png */,
@@ -432,6 +450,7 @@
 				D3E5458A14E8C48700434A5A /* Icon72.png in Resources */,
 				D3E5458C14E8C48B00434A5A /* Icon114.png in Resources */,
 				D3E5458E14E8C6DA00434A5A /* Default-Landscape~ipad.png in Resources */,
+				D3E5459A14E8F2E800434A5A /* MultiGrabDemo.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,6 +479,7 @@
 				D311931314E25F7800B659B3 /* TheoJansenDemo.m in Sources */,
 				D311931514E265C000B659B3 /* BreakableChainsDemo.m in Sources */,
 				D311931714E2699F00B659B3 /* CraneDemo.m in Sources */,
+				D321D1D114E8F8C400DE2A53 /* DeformableBitmapDemo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
