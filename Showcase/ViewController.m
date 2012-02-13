@@ -404,15 +404,21 @@ enum DemoReveal {
 	// TODO add down swipe for an info pane?
 
 	[self setupGL];
-	
-	_statsTimer = [NSTimer scheduledTimerWithTimeInterval:STAT_DELAY target:self selector:@selector(updateStats:) userInfo:[NSDate date] repeats:FALSE];
 }
 
 -(void)viewDidUnload
 {    
 	[super viewDidUnload];
 	[self tearDownGL];
-	
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+	_statsTimer = [NSTimer scheduledTimerWithTimeInterval:STAT_DELAY target:self selector:@selector(updateStats:) userInfo:[NSDate date] repeats:FALSE];
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
 	[_statsTimer invalidate];
 	_statsTimer = nil;
 }
