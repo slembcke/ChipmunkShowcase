@@ -172,7 +172,7 @@ t_shape(ChipmunkShape *shape, cpFloat extrapolate)
 			cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
 			
 			for(int i=0; i<arb->numContacts; i++){
-				[renderer drawDot:arb->contacts[i].p radius:2.0 color:(Color){1,0,0,1}];
+				[renderer drawDot:arb->contacts[i].p radius:3.0 color:(Color){1,0,0,1}];
 			}
 		}
 	}

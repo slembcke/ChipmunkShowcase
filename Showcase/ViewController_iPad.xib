@@ -98,7 +98,6 @@
 								<string key="NSFrame">{{67, 713}, {66, 35}}</string>
 								<reference key="NSSuperview" ref="59699970"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
@@ -256,7 +255,7 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 							<object class="IBUISwitch" id="161962746">
 								<reference key="NSNextResponder" ref="59699970"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{82, 254}, {94, 27}}</string>
+								<string key="NSFrame">{{7, 254}, {94, 27}}</string>
 								<reference key="NSSuperview" ref="59699970"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="603183040"/>
