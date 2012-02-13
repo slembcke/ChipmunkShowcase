@@ -160,20 +160,22 @@ t_shape(ChipmunkShape *shape, cpFloat extrapolate)
 	}
 }
 
--(void)render:(PolyRenderer *)renderer;
+-(void)render:(PolyRenderer *)renderer showContacts:(BOOL)showContacts;
 {
 	for(ChipmunkShape *shape in _space.shapes){
 		if(!shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, _accumulator)];
 	}
 	
-	// This is using the private API to efficiently render the collision points.
-	// Don't do this in a real game!
-	cpArray *arbiters = _space.space->arbiters;
-	for(int i=0; i<arbiters->num; i++){
-		cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
-		
-		for(int i=0; i<arb->numContacts; i++){
-			[renderer drawDot:arb->contacts[i].p radius:2.0 color:(Color){1,0,0,1}];
+	if(showContacts){
+		// This is using the private API to efficiently render the collision points.
+		// Don't do this in a real game!
+		cpArray *arbiters = _space.space->arbiters;
+		for(int i=0; i<arbiters->num; i++){
+			cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
+			
+			for(int i=0; i<arb->numContacts; i++){
+				[renderer drawDot:arb->contacts[i].p radius:2.0 color:(Color){1,0,0,1}];
+			}
 		}
 	}
 }

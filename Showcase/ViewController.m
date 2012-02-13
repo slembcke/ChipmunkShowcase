@@ -14,7 +14,7 @@
 #define MAX_TIMESCALE 1.0
 
 #define MIN_TIMESTEP (1.0/240.0)
-#define MAX_TIMESTEP (1.0/15.0)
+#define MAX_TIMESTEP (1.0/30.0)
 
 #define MAX_ITERATIONS 30
 
@@ -89,6 +89,8 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 	
 	IBOutlet UISlider *_iterationsSlider;
 	IBOutlet UILabel *_iterationsLabel;
+	
+	IBOutlet UISwitch *_drawContacts;
 	
 	NSTimer *_statsTimer;
 	IBOutlet UITextView *_statsView;
@@ -190,9 +192,9 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 
 -(IBAction)timeStep:(UISlider *)slider
 {
-	cpFloat value = LogSliderToValue(MIN_TIMESTEP, MAX_TIMESTEP, slider.value);
+	cpFloat value = LogSliderToValue(MIN_TIMESTEP, MAX_TIMESTEP, 1.0 - slider.value);
 	_demo.timeStep = value;
-	_timeStepLabel.text = [NSString stringWithFormat:@"Time Step: 1:%.2f", 1.0/value];
+	_timeStepLabel.text = [NSString stringWithFormat:@"Time Step: %.2f Hz", 1.0/value];
 }
 
 -(IBAction)iterations:(UISlider *)slider
@@ -308,7 +310,7 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 	
 	// Set sliders to their default values
 	_timeScaleSlider.value = ValueToLogSlider(MIN_TIMESCALE, MAX_TIMESCALE, 1.0);
-	_timeStepSlider.value = ValueToLogSlider(MIN_TIMESTEP, MAX_TIMESTEP, _demo.timeStep);
+	_timeStepSlider.value = 1.0 - ValueToLogSlider(MIN_TIMESTEP, MAX_TIMESTEP, _demo.timeStep);
 	_iterationsSlider.value = _demo.space.iterations;
 	[self timeScale:_timeScaleSlider];
 	[self timeStep:_timeStepSlider];
@@ -395,7 +397,7 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 	
 	[_staticRenderer renderStatic];
 	
-	[_demo render:_renderer];
+	[_demo render:_renderer showContacts:_drawContacts.on];
 	[_renderer render];
 	
 	_renderTicks++;
