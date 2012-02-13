@@ -18,6 +18,9 @@
 
 #define MAX_ITERATIONS 30
 
+#define STAT_DELAY 1.0
+
+
 static cpFloat
 LogSliderToValue(cpFloat min, cpFloat max, cpFloat value)
 {
@@ -86,6 +89,10 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 	
 	IBOutlet UISlider *_iterationsSlider;
 	IBOutlet UILabel *_iterationsLabel;
+	
+	NSTimer *_statsTimer;
+	IBOutlet UITextView *_statsView;
+	int _physicsTicks, _renderTicks;
 }
 
 @property(nonatomic, readonly) ShowcaseGLView *glView;
@@ -204,9 +211,44 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 	[self timeStep:_timeStepSlider];
 	[self iterations:_iterationsSlider];
 	
+	_physicsTicks = 0;
+	_renderTicks = 0;
+	
 	self.glView.touchesDelegate = _demo;
 	
 	[self setupGL];
+}
+
+-(void)updateStats:(NSTimer *)timer
+{
+	cpSpace *space = _demo.space.space;
+	
+	// Dig out these numbers using the private API to avoid generating full lists.
+	NSUInteger bodies = space->bodies->num;
+	NSUInteger activeShapes = cpSpatialIndexCount(space->activeShapes);
+	NSUInteger staticShapes = activeShapes + cpSpatialIndexCount(space->staticShapes);
+	NSUInteger constraints = space->constraints->num;
+	NSUInteger contacts = space->arbiters->num;
+	
+	float duration = -[(NSDate *)[timer userInfo] timeIntervalSinceNow];
+	float physics = (_demo.ticks - _physicsTicks)/duration;
+	float render = _renderTicks/duration;
+	
+	_statsView.text = [NSString stringWithFormat:
+		@"Bodies: %d\n"
+		@"Shapes: %d (%d)\n"
+		@"Constraints: %d\n"
+		@"Contacts: %d\n"
+		@"Physics: %.1f Hz\n"
+		@"Render: %.1f Hz\n",
+		bodies, activeShapes, staticShapes, constraints, contacts, physics, render
+	];
+	
+	_physicsTicks = _demo.ticks;
+	_renderTicks = 0;
+	
+	[_statsTimer invalidate];
+	_statsTimer = [NSTimer scheduledTimerWithTimeInterval:STAT_DELAY target:self selector:@selector(updateStats:) userInfo:[NSDate date] repeats:FALSE];
 }
 
 //MARK: Load/Unload
@@ -314,12 +356,17 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 	// TODO add down swipe for an info pane?
 
 	[self setupGL];
+	
+	_statsTimer = [NSTimer scheduledTimerWithTimeInterval:STAT_DELAY target:self selector:@selector(updateStats:) userInfo:[NSDate date] repeats:FALSE];
 }
 
 -(void)viewDidUnload
 {    
 	[super viewDidUnload];
 	[self tearDownGL];
+	
+	[_statsTimer invalidate];
+	_statsTimer = nil;
 }
 
 -(void)dealloc
@@ -351,6 +398,7 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 	[_demo render:_renderer];
 	[_renderer render];
 	
+	_renderTicks++;
 	PRINT_GL_ERRORS();
 }
 

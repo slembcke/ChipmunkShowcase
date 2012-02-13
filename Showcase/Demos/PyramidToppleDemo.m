@@ -8,7 +8,7 @@
 	return @"Pyramid Topple";
 }
 
-#define WIDTH 4.0f
+#define WIDTH 5.0f
 #define HEIGHT 30.0f
 
 -(void)addDomino:(cpVect)pos flipped:(bool)flipped
@@ -26,7 +26,7 @@
 
 -(void)setup
 {
-	self.space.iterations = 30;
+	self.space.iterations = 20;
 	self.space.gravity = cpv(0, -300.0);
 	self.space.sleepTimeThreshold = 0.5f;
 	self.space.collisionSlop = 0.5f;
@@ -38,7 +38,7 @@
 	shape.layers = NOT_GRABABLE_MASK;
 	
 	// Add the dominoes.
-	int n = 10;
+	int n = 11;
 	for(int i=0; i<n; i++){
 		for(int j=0; j<(n - i); j++){
 			cpVect offset = cpv((j - (n - 1 - i)*0.5f)*1.5f*HEIGHT, (i + 0.5f)*(HEIGHT + 2*WIDTH) - WIDTH - 240);
@@ -73,7 +73,7 @@
 
 -(NSTimeInterval)preferredTimeStep;
 {
-	return 1.0/180.0;
+	return 1.0/120.0;
 }
 
 @end

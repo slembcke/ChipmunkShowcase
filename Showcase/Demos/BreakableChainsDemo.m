@@ -85,7 +85,7 @@ BreakableJointPostSolve(cpConstraint *joint, cpSpace *space)
 
 -(NSTimeInterval)preferredTimeStep;
 {
-	return 1.0/180.0;
+	return 1.0/120.0;
 }
 
 -(void)tick:(cpFloat)dt;

@@ -13,6 +13,7 @@
 
 @property(nonatomic, assign) Transform touchTransform;
 
+@property(nonatomic, readonly) NSUInteger ticks;
 @property(nonatomic, readonly) NSTimeInterval accumulator;
 @property(nonatomic, assign) cpFloat timeScale;
 
