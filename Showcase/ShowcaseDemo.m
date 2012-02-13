@@ -124,23 +124,16 @@
 	_ticks++;
 }
 
-#define MAX_FRAMESKIP 5
-
--(void)update:(NSTimeInterval)dt frameskip:(NSUInteger)frameskip;
+-(void)update:(NSTimeInterval)dt
 {
 	NSTimeInterval fixed_dt = _timeStep;
 	
-	_accumulator += MIN(dt, fixed_dt*frameskip)*self.timeScale;
+	_accumulator += dt*self.timeScale;
 	while(_accumulator > fixed_dt){
 		[self tick:fixed_dt];
 		_accumulator -= fixed_dt;
 		_fixedTime += fixed_dt;
 	}
-}
-
--(void)update:(NSTimeInterval)dt
-{
-	[self update:dt frameskip:MAX_FRAMESKIP];
 }
 
 //MARK: Rendering

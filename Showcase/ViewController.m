@@ -431,9 +431,11 @@ enum DemoReveal {
 
 //MARK: GLKView and GLKViewController delegate methods
 
+#define MAX_DT (1.0/15.0)
+
 -(void)glkViewControllerUpdate:(GLKViewController *)controller
 {
-	[_demo update:_glkViewController.timeSinceLastUpdate];
+	[_demo update:MIN(_glkViewController.timeSinceLastUpdate, MAX_DT)];
 }
 
 -(void)glkView:(GLKView *)view drawInRect:(CGRect)rect

@@ -72,7 +72,8 @@ NSArray *DEMO_CLASS_NAMES = nil;
 	self.window.backgroundColor = [UIColor whiteColor];
 	
 	self.demoList = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 300.0, self.window.bounds.size.width) style:UITableViewStylePlain];
-	self.demoList.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1.0];
+	self.demoList.backgroundColor = [UIColor colorWithWhite:0.25 alpha:1.0];
+	self.demoList.indicatorStyle = UIScrollViewIndicatorStyleWhite;
 	self.demoList.rowHeight = 96.0;
 	self.demoList.delegate = self;
 	self.demoList.dataSource = self;
@@ -142,6 +143,7 @@ NSArray *DEMO_CLASS_NAMES = nil;
 	ShowcaseDemo *obj = [NSClassFromString(name) alloc]; // sort of a hack, but whatever.
 	
 	cell.textLabel.text = obj.name;
+	cell.textLabel.textColor = [UIColor whiteColor];
 	cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", name]];
 	
 	return cell;
