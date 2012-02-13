@@ -28,13 +28,8 @@
 	
 	[_sampler setBorderValue:1.0];
 	
-//	cpFloat x = 320.0;
-//	cpFloat y = 240.0;
-	
 	// The output rectangle should be inset slightly so that we sample pixel centers, not edges.
 	// This along with the tileOffset below will make sure the pixels line up with the geometry perfectly.
-//	sampler.outputRect = cpBBNew(0.5*PIXEL_SIZE, 0.5*PIXEL_SIZE, width - 0.5*PIXEL_SIZE, height - 0.5*PIXEL_SIZE);
-//	_sampler.outputRect = cpBBNew(0.5*PIXEL_SIZE - x, 0.5*PIXEL_SIZE - y, width - 0.5*PIXEL_SIZE - x, height - 0.5*PIXEL_SIZE - y);
 	CGFloat hw = width/2.0 - 0.5*PIXEL_SIZE;
 	CGFloat hh = height/2.0 - 0.5*PIXEL_SIZE;
 	_sampler.outputRect = cpBBNew(-hw, -hh, hw, hh);
@@ -48,7 +43,6 @@
 	_tiles.segmentLayers = NOT_GRABABLE_MASK;
 	
 	// Set the CGContext's transform to match it's Chipmunk coords.
-//	CGContextConcatCTM(sampler.context, CGAffineTransformMake(1.0/PIXEL_SIZE, 0.0, 0.0, 1.0/PIXEL_SIZE, 0.0, 0.0));
 	CGContextConcatCTM(_sampler.context, CGAffineTransformMake(1.0/PIXEL_SIZE, 0.0, 0.0, 1.0/PIXEL_SIZE, width/2.0/PIXEL_SIZE, height/2.0/PIXEL_SIZE));
 	
 	// Clear it to white.

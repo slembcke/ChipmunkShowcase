@@ -184,7 +184,7 @@ enum DemoReveal {
 			self.glView.frame = self.view.bounds;
 		} completion:^(BOOL finished){
 			if(finished){
-				[[reveals objectAtIndex:revealToHide] setHidden:FALSE];
+				[[reveals objectAtIndex:revealToHide] setHidden:TRUE];
 				[self.glView setUserInteractionEnabled:TRUE];
 //				_glkViewController.paused = FALSE;
 			}
