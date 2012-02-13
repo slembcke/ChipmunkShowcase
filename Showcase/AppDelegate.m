@@ -11,17 +11,19 @@
 @implementation AppDelegate
 
 @synthesize window = _window;
-
 @synthesize viewController = _viewController;
+
+@synthesize demoList = _demoList;
+
 -(void)setViewController:(ViewController *)viewController
 {
-	CATransition *transition = [CATransition animation];
-	transition.duration = 0.25;
-	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-	transition.type = kCATransitionReveal;
-	transition.subtype = kCATransitionFromBottom;
-	
-	[self.window.layer addAnimation:transition forKey:nil];
+//	CATransition *transition = [CATransition animation];
+//	transition.duration = 0.25;
+//	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+//	transition.type = kCATransitionReveal;
+//	transition.subtype = kCATransitionFromBottom;
+//	
+//	[self.window.layer addAnimation:transition forKey:nil];
 	self.window.rootViewController = viewController;
 }
 
@@ -34,11 +36,11 @@
 	self.viewController = [[ViewController alloc] initWithDemoClassName:currentDemo];
 }
 
-NSArray *DEMO_CLASSES = nil;
+NSArray *DEMO_CLASS_NAMES = nil;
 
 +(void)initialize
 {
-	DEMO_CLASSES = [NSArray arrayWithObjects:
+	DEMO_CLASS_NAMES = [NSArray arrayWithObjects:
 		@"PyramidStackDemo",
 		@"PyramidToppleDemo",
 		@"CraneDemo",
@@ -56,8 +58,8 @@ NSArray *DEMO_CLASSES = nil;
 
 -(void)nextDemo;
 {
-	NSUInteger index = [DEMO_CLASSES indexOfObject:self.currentDemo];
-	self.currentDemo = [DEMO_CLASSES objectAtIndex:(index + 1)%[DEMO_CLASSES count]];
+	NSUInteger index = [DEMO_CLASS_NAMES indexOfObject:self.currentDemo];
+	self.currentDemo = [DEMO_CLASS_NAMES objectAtIndex:(index + 1)%[DEMO_CLASS_NAMES count]];
 }
 
 //MARK: Appdelegate Methods
@@ -69,7 +71,13 @@ NSArray *DEMO_CLASSES = nil;
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.backgroundColor = [UIColor whiteColor];
 	
-	self.currentDemo = [DEMO_CLASSES objectAtIndex:0];
+	self.demoList = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 300.0, self.window.bounds.size.width) style:UITableViewStylePlain];
+	self.demoList.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1.0];
+	self.demoList.rowHeight = 96.0;
+	self.demoList.delegate = self;
+	self.demoList.dataSource = self;
+	
+	self.currentDemo = [DEMO_CLASS_NAMES objectAtIndex:0];
 	
 	[ChipmunkSpace initialize];
 	
@@ -114,6 +122,35 @@ NSArray *DEMO_CLASSES = nil;
 	 Save data if appropriate.
 	 See also applicationDidEnterBackground:.
 	 */
+}
+
+//MARK: Demo list table view delegate stuff
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	return [DEMO_CLASS_NAMES count];
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	NSString *identifier = @"identifier";
+	
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier]
+		?: [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+	
+	NSString *name = [DEMO_CLASS_NAMES objectAtIndex:indexPath.row];
+	ShowcaseDemo *obj = [NSClassFromString(name) alloc]; // sort of a hack, but whatever.
+	
+	cell.textLabel.text = obj.name;
+	cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", name]];
+	
+	return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	[tableView deselectRowAtIndexPath:indexPath animated:FALSE];
+	self.currentDemo = [DEMO_CLASS_NAMES objectAtIndex:indexPath.row];
 }
 
 @end

@@ -8,7 +8,7 @@
 #import "PolyRenderer.h"
 
 #define SLIDE_ANIMATION_DURATION 0.25
-#define TITLE_ANIMATION_DURATION 0.15
+#define TITLE_ANIMATION_DURATION 0.25
 
 #define MIN_TIMESCALE (1.0/64.0)
 #define MAX_TIMESCALE 1.0
@@ -68,6 +68,15 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 @end
 
 
+// Could use a better name for this.
+// It's the state of the swiping stuff.
+enum DemoReveal {
+	DEMO_REVEAL_RIGHT,
+	DEMO_REVEAL_LEFT,
+	DEMO_REVEAL_NONE,
+};
+
+
 @interface ViewController(){
 	ShowcaseDemo *_demo;
 	
@@ -80,6 +89,7 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 	IBOutlet UILabel *_demoLabel;
 	
 	IBOutlet UIView *_tray;
+	UIView *_demoList;
 	
 	IBOutlet UISlider *_timeScaleSlider;
 	IBOutlet UILabel *_timeScaleLabel;
@@ -99,7 +109,7 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 
 @property(nonatomic, readonly) ShowcaseGLView *glView;
 
-@property(nonatomic, assign) BOOL isTrayOpen;
+@property(nonatomic, assign) enum DemoReveal demoReveal;
 
 -(void)setupGL;
 
@@ -108,6 +118,8 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 
 
 @implementation ViewController
+
+@synthesize demoReveal = _demoReveal;
 
 -(ShowcaseGLView *)glView
 {
@@ -120,6 +132,7 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 	if((self = [super initWithNibName:nib_name bundle:nil])){
 //	if((self = [super init])){
 		_demo = [[NSClassFromString(demo) alloc] init];
+		_demoReveal = DEMO_REVEAL_NONE;
 	}
 	
 	return self;
@@ -127,11 +140,31 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 
 //MARK: Actions
 
-@synthesize isTrayOpen = _isTrayOpen;
--(void)setIsTrayOpen:(BOOL)isTrayOpen
+-(void)setDemoReveal:(enum DemoReveal)demoReveal
 {
-	if(isTrayOpen && !_isTrayOpen){
-		_tray.hidden = FALSE;
+	NSAssert(
+		_demoReveal == demoReveal || 
+		_demoReveal == DEMO_REVEAL_NONE ||
+		demoReveal == DEMO_REVEAL_NONE, 
+		@"Cannot transition between two distinct revealed states."
+	);
+	
+	NSArray *reveals = [NSArray arrayWithObjects:
+		_tray,
+		_demoList,
+		nil
+	];
+	
+	CGRect frame = self.view.bounds;
+	NSArray *offsets = [NSArray arrayWithObjects:
+		[NSValue valueWithCGPoint:CGPointMake(frame.origin.x - _tray.frame.size.width, 0.0)],
+		[NSValue valueWithCGPoint:CGPointMake(_demoList.frame.size.width, 0.0)],
+		nil
+	];
+	
+	if(_demoReveal == DEMO_REVEAL_NONE && _demoReveal != demoReveal){
+		[[reveals objectAtIndex:demoReveal] setHidden:FALSE];
+		
 		[self.glView setUserInteractionEnabled:FALSE];
 //		_glkViewController.paused = TRUE;
 		
@@ -139,43 +172,51 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 			[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 			
 			CGRect frame = self.view.bounds;
-			frame.origin.x -= _tray.frame.size.width;
+			frame.origin = [[offsets objectAtIndex:demoReveal] CGPointValue];
 			
 			self.glView.frame = frame;
 		}];
-	} else if(!isTrayOpen && _isTrayOpen){
+	} else if(demoReveal == DEMO_REVEAL_NONE && _demoReveal != demoReveal){
+		enum DemoReveal revealToHide = _demoReveal;
+		
 		[UIView animateWithDuration:SLIDE_ANIMATION_DURATION animations:^{
 			[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
 			self.glView.frame = self.view.bounds;
 		} completion:^(BOOL finished){
 			if(finished){
-				_tray.hidden = TRUE;
+				[[reveals objectAtIndex:revealToHide] setHidden:FALSE];
 				[self.glView setUserInteractionEnabled:TRUE];
 //				_glkViewController.paused = FALSE;
 			}
 		}];
 	}
 	
-	_isTrayOpen = isTrayOpen;
+	_demoReveal = demoReveal;
 }
 
 -(void)swipeLeft;
 {
-	self.isTrayOpen = TRUE;
+	if(self.demoReveal == DEMO_REVEAL_NONE){
+		self.demoReveal = DEMO_REVEAL_RIGHT;
+	} else if(self.demoReveal == DEMO_REVEAL_LEFT){
+		self.demoReveal = DEMO_REVEAL_NONE;
+	}
 }
 
 -(void)swipeRight;
 {
-	if(self.isTrayOpen){
-		self.isTrayOpen = FALSE;
-	} else {
-		[CATransaction begin]; {
-			[self.view addSubview:[[UIImageView alloc] initWithImage:self.glView.snapshot]];
-			[self.glView removeFromSuperview];
-		}; [CATransaction commit];
-		
-		[(AppDelegate *)[UIApplication sharedApplication].delegate nextDemo];
+	if(self.demoReveal == DEMO_REVEAL_NONE){
+		self.demoReveal = DEMO_REVEAL_LEFT;
+	} else if(self.demoReveal == DEMO_REVEAL_RIGHT){
+		self.demoReveal = DEMO_REVEAL_NONE;
 	}
+	
+//		[CATransaction begin]; {
+//			[self.view addSubview:[[UIImageView alloc] initWithImage:self.glView.snapshot]];
+//			[self.glView removeFromSuperview];
+//		}; [CATransaction commit];
+//		
+//		[(AppDelegate *)[UIApplication sharedApplication].delegate nextDemo];
 }
 
 -(IBAction)framerate:(UISwitch *)toggle;
@@ -301,7 +342,7 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 {
 	[super viewDidLoad];
 	
-	if(_demo.name){
+	if(_demo.name && _demo.showName){
 		_demoLabel.text = _demo.name;
 		[NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(fadeLabel) userInfo:nil repeats:NO];		
 	} else {
@@ -331,6 +372,11 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 	self.glView.layer.shadowRadius = 15.0;
 	self.glView.layer.masksToBounds = NO;
 	self.glView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.glView.bounds].CGPath;
+	
+	AppDelegate *appDelegate = (id)[UIApplication sharedApplication].delegate;
+	_demoList = appDelegate.demoList;
+	_demoList.hidden = TRUE;
+	[self.view insertSubview:_demoList belowSubview:self.glView];
 	
 	// Got weird threading crashes when these were added in a nib.
 	{

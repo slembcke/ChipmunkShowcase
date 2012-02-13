@@ -7,6 +7,7 @@
 @interface ShowcaseDemo : NSObject
 
 @property(nonatomic, readonly) NSString *name;
+@property(nonatomic, readonly) BOOL showName;
 
 @property(nonatomic, strong) ChipmunkSpace *space;
 @property(nonatomic, readonly) ChipmunkBody *staticBody;

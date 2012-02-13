@@ -76,6 +76,11 @@
 
 @dynamic name;
 
+-(BOOL)showName
+{
+	return TRUE;
+}
+
 @synthesize touchTransform = _touchTransform;
 
 @synthesize space = _space;

@@ -8,7 +8,12 @@
 
 -(NSString *)name
 {
-	return nil;
+	return @"Logo Smash";
+}
+
+-(BOOL)showName
+{
+	return FALSE;
 }
 
 static const int image_width = 96;

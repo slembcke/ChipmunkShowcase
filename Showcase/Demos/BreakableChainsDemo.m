@@ -5,7 +5,7 @@
 
 -(NSString *)name
 {
-	return @"BreakableChains";
+	return @"Breakable Chains";
 }
 
 #define CHAIN_COUNT 8
