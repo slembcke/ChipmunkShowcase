@@ -13,7 +13,7 @@
 	return @"Deformable Bitmap";
 }
 
-#define PIXEL_SIZE 4
+#define PIXEL_SIZE 8
 #define TILE_SIZE 128
 
 -(void)setup
