@@ -1,0 +1,49 @@
+<pre style="text-align:left;color:#000000; background-color:#ffffff; border:solid black 1px; padding:0.5em 1em 0.5em 1em; overflow:auto;font-size:small; font-family:monospace; "><span style="color:#683821;">#import &quot;ShowcaseDemo.h&quot;
+</span>
+<strong><span style="color:#881350;">@interface</span></strong> MultiGrabDemo : ShowcaseDemo <strong><span style="color:#881350;">@end</span></strong>
+<strong><span style="color:#881350;">@implementation</span></strong> MultiGrabDemo
+
+-(<span style="color:#400080;">NSString</span> *)<span style="color:#6c0540;">name</span>
+{
+  <strong><span style="color:#881350;">return</span></strong> <span style="color:#760f15;">@&quot;Multi-touch Physics&quot;</span>;
+}
+
+-(<strong><span style="color:#881350;">void</span></strong>)<span style="color:#6c0540;">setup</span>
+{
+  <em><span style="color:#400080;">CGRect</span></em> bounds = <em><span style="color:#400080;">CGRectMake</span></em>(-<span style="color:#0000ff;">320</span>, -<span style="color:#0000ff;">240</span>, <span style="color:#0000ff;">640</span>, <span style="color:#0000ff;">480</span>);
+  [<strong><span style="color:#881350;">self</span></strong>.space <span style="color:#6c0540;">addBounds:</span>bounds <span style="color:#6c0540;">thickness:</span><span style="color:#0000ff;">10.0</span> <span style="color:#6c0540;">elasticity:</span><span style="color:#0000ff;">1.0</span> <span style="color:#6c0540;">friction:</span><span style="color:#0000ff;">1.0</span> <span style="color:#6c0540;">layers:</span>NOT_GRABABLE_MASK <span style="color:#6c0540;">group:</span><strong><span style="color:#881350;">nil</span></strong> <span style="color:#6c0540;">collisionType:</span><strong><span style="color:#881350;">nil</span></strong>];
+  
+  {
+    cpFloat mass = <span style="color:#0000ff;">10.0</span>;
+    cpFloat width = <span style="color:#0000ff;">400.0</span>;
+    cpFloat height = <span style="color:#0000ff;">150.0</span>;
+    
+    ChipmunkBody *body = [<strong><span style="color:#881350;">self</span></strong>.space <span style="color:#6c0540;">add:</span>[ChipmunkBody <span style="color:#6c0540;">bodyWithMass:</span>mass <span style="color:#6c0540;">andMoment:</span><span style="color:#003369;">cpMomentForBox</span>(mass, width, height)]];
+    body.pos = <span style="color:#003369;">cpv</span>(<span style="color:#0000ff;">0</span>, <span style="color:#0000ff;">100</span>);
+    
+    ChipmunkShape *shape = [<strong><span style="color:#881350;">self</span></strong>.space <span style="color:#6c0540;">add:</span>[ChipmunkPolyShape <span style="color:#6c0540;">boxWithBody:</span>body <span style="color:#6c0540;">width:</span>width <span style="color:#6c0540;">height:</span>height]];
+    shape.elasticity = <span style="color:#0000ff;">0.3</span>;
+    shape.friction = <span style="color:#0000ff;">0.7</span>;
+  }
+  
+  {
+    cpFloat mass = <span style="color:#0000ff;">5.0</span>;
+    cpFloat radius = <span style="color:#0000ff;">75.0</span>;
+    
+    ChipmunkBody *body = [<strong><span style="color:#881350;">self</span></strong>.space <span style="color:#6c0540;">add:</span>[ChipmunkBody <span style="color:#6c0540;">bodyWithMass:</span>mass <span style="color:#6c0540;">andMoment:</span><span style="color:#003369;">cpMomentForCircle</span>(mass, <span style="color:#0000ff;">0.0</span>, radius, cpvzero)]];
+    body.pos = <span style="color:#003369;">cpv</span>(<span style="color:#0000ff;">0</span>, -<span style="color:#0000ff;">100</span>);
+    
+    ChipmunkShape *shape = [<strong><span style="color:#881350;">self</span></strong>.space <span style="color:#6c0540;">add:</span>[ChipmunkCircleShape <span style="color:#6c0540;">circleWithBody:</span>body <span style="color:#6c0540;">radius:</span>radius <span style="color:#6c0540;">offset:</span>cpvzero]];
+    shape.elasticity = <span style="color:#0000ff;">0.3</span>;
+    shape.friction = <span style="color:#0000ff;">0.7</span>;
+  }
+}
+
+-(<strong><span style="color:#881350;">void</span></strong>)<span style="color:#6c0540;">tick:</span>(cpFloat)dt;
+{
+  <strong><span style="color:#881350;">self</span></strong>.space.gravity = <span style="color:#003369;">cpvmult</span>([Accelerometer <span style="color:#6c0540;">getAcceleration</span>], <span style="color:#0000ff;">300.0</span>);
+  [<strong><span style="color:#881350;">super</span></strong> <span style="color:#6c0540;">tick:</span>dt];
+}
+
+<strong><span style="color:#881350;">@end</span></strong>
+</pre>
