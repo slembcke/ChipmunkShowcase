@@ -22,6 +22,7 @@ typedef struct Triangle {Vertex a, b, c;} Triangle;
 
 -(void)drawPoly:(PolyInstance *)poly withTransform:(Transform)transform;
 -(void)drawDot:(cpVect)pos radius:(cpFloat)radius color:(Color)color;
+-(void)drawSegmentFrom:(cpVect)a to:(cpVect)b radius:(cpFloat)radius color:(Color)color;
 
 -(void)render;
 

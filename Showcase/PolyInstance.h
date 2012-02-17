@@ -7,6 +7,8 @@
 @property(nonatomic, readonly) NSUInteger vertexCount;
 @property(nonatomic, readonly) Vertex *vertexes;
 
--(id)initWithShape:(ChipmunkShape *)shape width:(cpFloat)width FillColor:(Color)fill lineColor:(Color)line;
+-(id)initWithPolyShape:(ChipmunkPolyShape *)poly width:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line;
+-(id)initWithSegmentShape:(ChipmunkSegmentShape *)seg width:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line;
+-(id)initWithCircleShape:(ChipmunkCircleShape *)circle width:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line;
 
 @end

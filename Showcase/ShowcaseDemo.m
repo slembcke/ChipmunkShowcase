@@ -6,6 +6,120 @@
 #import "ChipmunkHastySpace.h"
 #import "PolyRenderer.h"
 
+@interface ChipmunkShape(DemoRenderer)
+
+-(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line;
+
+@end
+
+
+@implementation ChipmunkCircleShape(DemoRenderer)
+
+-(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line
+{
+	return [[PolyInstance alloc] initWithCircleShape:self width:width fillColor:fill lineColor:line];
+}
+
+@end
+
+
+@implementation ChipmunkSegmentShape(DemoRenderer)
+
+-(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line
+{
+	return [[PolyInstance alloc] initWithSegmentShape:self width:width fillColor:fill lineColor:line];
+}
+
+@end
+
+
+@implementation ChipmunkPolyShape(DemoRenderer)
+
+-(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line
+{
+	return [[PolyInstance alloc] initWithPolyShape:self width:width fillColor:fill lineColor:line];
+}
+
+@end
+
+
+#define CONSTRAINT_DOT_RADIUS 3.0
+#define CONSTRAINT_LINE_RADIUS 1.0
+
+Color CONSTRAINT_COLOR = (Color){0.0, 0.5, 0.0, 1.0};
+
+@interface ChipmunkConstraint(DemoRenderer)
+
+-(void)drawWithRenderer:(PolyRenderer *)renderer;
+
+@end
+
+
+@implementation ChipmunkConstraint(DemoRenderer)
+
+-(void)drawWithRenderer:(PolyRenderer *)renderer {}
+
+@end
+
+
+@implementation ChipmunkPinJoint(DemoRenderer)
+
+-(void)drawWithRenderer:(PolyRenderer *)renderer
+{
+	cpVect a = [self.bodyA local2world:self.anchr1];
+	cpVect b = [self.bodyB local2world:self.anchr2];
+	
+	[renderer drawDot:a radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
+	[renderer drawDot:b radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
+	[renderer drawSegmentFrom:a to:b radius:CONSTRAINT_LINE_RADIUS color:CONSTRAINT_COLOR];
+}
+
+@end
+
+
+@implementation ChipmunkSlideJoint(DemoRenderer)
+
+-(void)drawWithRenderer:(PolyRenderer *)renderer
+{
+	cpVect a = [self.bodyA local2world:self.anchr1];
+	cpVect b = [self.bodyB local2world:self.anchr2];
+	
+	[renderer drawDot:a radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
+	[renderer drawDot:b radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
+	[renderer drawSegmentFrom:a to:b radius:CONSTRAINT_LINE_RADIUS color:CONSTRAINT_COLOR];
+}
+
+@end
+
+
+@implementation ChipmunkPivotJoint(DemoRenderer)
+
+-(void)drawWithRenderer:(PolyRenderer *)renderer
+{
+	cpVect a = [self.bodyA local2world:self.anchr1];
+	cpVect b = [self.bodyB local2world:self.anchr2];
+	
+	[renderer drawDot:a radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
+	[renderer drawDot:b radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
+}
+
+@end
+
+
+@implementation ChipmunkGrooveJoint(DemoRenderer)
+
+-(void)drawWithRenderer:(PolyRenderer *)renderer
+{
+	// Hmm apparently I never made the groove joint properties...
+	cpVect a = [self.bodyA local2world:cpGrooveJointGetGrooveA(self.constraint)];
+	cpVect b = [self.bodyA local2world:cpGrooveJointGetGrooveB(self.constraint)];
+	cpVect c = [self.bodyB local2world:cpGrooveJointGetAnchr2(self.constraint)];
+	
+	[renderer drawSegmentFrom:a to:b radius:CONSTRAINT_LINE_RADIUS color:CONSTRAINT_COLOR];
+	[renderer drawDot:c radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
+}
+
+@end
 
 // Space subclass that creates/tracks polys for the rendering
 @interface DemoSpace : ChipmunkHastySpace {
@@ -35,7 +149,8 @@
 		Color fill = {};
 		[[UIColor colorWithHue:frand() saturation:1.0 brightness:0.8 alpha:1.0] getRed:&fill.r green:&fill.g blue:&fill.b alpha:&fill.a];
 		
-		PolyInstance *poly = [[PolyInstance alloc] initWithShape:shape width:1.0 FillColor:fill lineColor:line];
+//		PolyInstance *poly = [[PolyInstance alloc] initWithShape:shape width:1.0 FillColor:fill lineColor:line];
+		PolyInstance *poly = [shape polyInstanceWithWidth:1.0 fillColor:fill lineColor:line];
 		if(poly){
 			shape.data = poly;
 			[_polys setObject:poly forKey:[NSValue valueWithPointer:(__bridge void *)obj]];
@@ -163,6 +278,10 @@ t_shape(ChipmunkShape *shape, cpFloat extrapolate)
 	for(ChipmunkShape *shape in _space.shapes){
 		//if(!shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, _accumulator)];
 		[renderer drawPoly:shape.data withTransform:t_shape(shape, _accumulator)];
+	}
+	
+	for(ChipmunkConstraint *constraint in _space.constraints){
+		[constraint drawWithRenderer:renderer];
 	}
 	
 	if(showContacts){

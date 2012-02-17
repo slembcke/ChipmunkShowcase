@@ -14,7 +14,7 @@
 
 @synthesize vertexCount = _vertexCount, vertexes = _vertexes;
 
--(id)initWithPolyShape:(ChipmunkPolyShape *)poly width:(cpFloat)width FillColor:(Color)fill lineColor:(Color)line;
+-(id)initWithPolyShape:(ChipmunkPolyShape *)poly width:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line;
 {
 	if((self = [super init])){
 		NSUInteger vert_count = poly.count;
@@ -99,7 +99,7 @@
 	return self;
 }
 
--(id)initWithSegmentShape:(ChipmunkSegmentShape *)seg width:(cpFloat)width FillColor:(Color)fill lineColor:(Color)line;
+-(id)initWithSegmentShape:(ChipmunkSegmentShape *)seg width:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line;
 {
 	if((self = [super init])){
 		NSUInteger triangleCount = 6;
@@ -137,7 +137,7 @@
 	return self;
 }
 
--(id)initWithCircleShape:(ChipmunkCircleShape *)circle width:(cpFloat)width FillColor:(Color)fill lineColor:(Color)line;
+-(id)initWithCircleShape:(ChipmunkCircleShape *)circle width:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line;
 {
 	if((self = [super init])){
 		cpVect pos = circle.offset;
@@ -175,22 +175,6 @@
 	}
 	
 	return self;
-}
-
--(id)initWithShape:(ChipmunkShape *)shape width:(cpFloat)width FillColor:(Color)fill lineColor:(Color)line;
-{
-	cpAssertSoft(fill.a > 0.0 || line.a > 0.0, "Creating a poly with a clear fill and line color.");
-	
-	if([shape isKindOfClass:[ChipmunkPolyShape class]]){
-		return [self initWithPolyShape:(id)shape width:width FillColor:fill lineColor:line];
-	}	else if([shape isKindOfClass:[ChipmunkSegmentShape class]]){
-		return [self initWithSegmentShape:(id)shape width:width FillColor:fill lineColor:line];
-	}	else if([shape isKindOfClass:[ChipmunkCircleShape class]]){
-		return [self initWithCircleShape:(id)shape width:width FillColor:fill lineColor:line];
-	} else {
-		NSLog(@"Could not make Poly for this object.");
-		return nil;
-	}
 }
 
 -(void)dealloc

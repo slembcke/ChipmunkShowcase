@@ -319,7 +319,7 @@ enum {
 
 -(void)drawDot:(cpVect)pos radius:(cpFloat)radius color:(Color)color;
 {
-	NSUInteger vertex_count = 6;
+	NSUInteger vertex_count = 2*3;
 	[self ensureCapacity:vertex_count];
 	
 	Vertex a = {{pos.x - radius, pos.y - radius}, {-1.0, -1.0}, color};
@@ -330,6 +330,36 @@ enum {
 	Triangle *triangles = (Triangle *)(_buffer + _bufferCount);
 	triangles[0] = (Triangle){a, b, c};
 	triangles[1] = (Triangle){a, c, d};
+	
+	_bufferCount += vertex_count;
+}
+
+-(void)drawSegmentFrom:(cpVect)a to:(cpVect)b radius:(cpFloat)radius color:(Color)color;
+{
+	NSUInteger vertex_count = 6*3;
+	[self ensureCapacity:vertex_count];
+	
+	cpVect n = cpvnormalize(cpvperp(cpvsub(b, a)));
+	cpVect t = cpvperp(n);
+	
+	cpVect nw = cpvmult(n, radius);
+	cpVect tw = cpvmult(t, radius);
+	cpVect v0 = cpvsub(b, cpvadd(nw, tw));
+	cpVect v1 = cpvadd(b, cpvsub(nw, tw));
+	cpVect v2 = cpvsub(b, nw);
+	cpVect v3 = cpvadd(b, nw);
+	cpVect v4 = cpvsub(a, nw);
+	cpVect v5 = cpvadd(a, nw);
+	cpVect v6 = cpvsub(a, cpvsub(nw, tw));
+	cpVect v7 = cpvadd(a, cpvadd(nw, tw));
+	
+	Triangle *triangles = (Triangle *)(_buffer + _bufferCount);
+	triangles[0] = (Triangle){{v0, cpvneg(cpvadd(n, t)), color}, {v1, cpvsub(n, t), color}, {v2, cpvneg(n), color},};
+	triangles[1] = (Triangle){{v3, n, color}, {v1, cpvsub(n, t), color}, {v2, cpvneg(n), color},};
+	triangles[2] = (Triangle){{v3, n, color}, {v4, cpvneg(n), color}, {v2, cpvneg(n), color},};
+	triangles[3] = (Triangle){{v3, n, color}, {v4, cpvneg(n), color}, {v5, n, color},};
+	triangles[4] = (Triangle){{v6, cpvsub(t, n), color}, {v4, cpvneg(n), color}, {v5, n, color},};
+	triangles[5] = (Triangle){{v6, cpvsub(t, n), color}, {v7, cpvadd(n, t), color}, {v5, n, color},};
 	
 	_bufferCount += vertex_count;
 }
