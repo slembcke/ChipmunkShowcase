@@ -369,6 +369,7 @@ enum DemoReveal {
 	_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 	NSAssert(_context, @"Failed to create ES context");
 	
+	_glkViewController.preferredFramesPerSecond = 60.0;
 	[self.view insertSubview:self.glView belowSubview:_demoLabel];
 //	[self.view addSubview:self.glView];
 	self.glView.context = _context;
@@ -450,7 +451,9 @@ enum DemoReveal {
 
 -(void)glkViewControllerUpdate:(GLKViewController *)controller
 {
-	[_demo update:MIN(_glkViewController.timeSinceLastUpdate, MAX_DT)];
+	NSTimeInterval dt = MIN(_glkViewController.timeSinceLastUpdate, MAX_DT);
+//	NSTimeInterval dt = 1.0/_glkViewController.preferredFramesPerSecond;
+	[_demo update:dt];
 }
 
 -(void)glkView:(GLKView *)view drawInRect:(CGRect)rect

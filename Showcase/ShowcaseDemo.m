@@ -6,18 +6,34 @@
 #import "ChipmunkHastySpace.h"
 #import "PolyRenderer.h"
 
-static inline Transform
-t_shape(ChipmunkShape *shape, cpFloat extrapolate)
+@implementation ChipmunkBody(DemoRenderer)
+
+-(Transform)extrapolatedTransform:(NSTimeInterval)dt
 {
-	cpBody *body = shape.body.body;
-	cpVect pos = cpvadd(body->p, cpvmult(body->v, extrapolate));;
-	cpVect rot = cpvrotate(body->rot, cpvforangle(body->w*extrapolate));
+	cpBody *body = self.body;
+	cpVect pos = cpvadd(body->p, cpvmult(body->v, dt));;
+	cpVect rot = cpvforangle(body->a + body->w*dt);
 	
 	return (Transform){
 		rot.x, -rot.y, pos.x,
 		rot.y,  rot.x, pos.y,
 	};
 }
+
+@end
+
+#define SHAPE_OUTLINE_WIDTH 1.0
+#define SHAPE_OUTLINE_COLOR ((Color){0.0, 0.0, 0.0, 1.0})
+
+
+@interface ChipmunkShape()
+
+-(Color)color;
+-(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
+
+@end
+
+@implementation ChipmunkShape(DemoRenderer)
 
 static Color
 ColorFromHash(cpHashValue hash, float alpha)
@@ -49,23 +65,6 @@ ColorFromHash(cpHashValue hash, float alpha)
 	};
 }
 
-
-#define SHAPE_OUTLINE_WIDTH 1.0
-#define SHAPE_OUTLINE_COLOR ((Color){0.0, 0.0, 0.0, 1.0})
-
-
-@interface ChipmunkShape(DemoRenderer)
-
--(Color)color;
--(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
-
-@end
-
-@implementation ChipmunkShape(DemoRenderer)
-
--(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
-{}
-
 -(Color)color
 {
 	// This method uses some private API to detect some states you normally shouldn't care about.
@@ -91,6 +90,7 @@ ColorFromHash(cpHashValue hash, float alpha)
 
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
+	// todo, need to handle rotation somehow?
 	cpVect pos = [self.body local2world:self.offset];
 	cpFloat r1 = self.radius;
 	cpFloat r2 = r1 - SHAPE_OUTLINE_WIDTH;
@@ -106,9 +106,10 @@ ColorFromHash(cpHashValue hash, float alpha)
 
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
-	ChipmunkBody *body = self.body;
-	cpVect a = [body local2world:self.a];
-	cpVect b = [body local2world:self.b];
+	Transform t = [self.body extrapolatedTransform:dt];
+	cpVect a = t_point(t, self.a);
+	cpVect b = t_point(t, self.b);
+	
 	cpFloat r1 = self.radius;
 	cpFloat r2 = r1 - SHAPE_OUTLINE_WIDTH;
 	
@@ -124,7 +125,17 @@ ColorFromHash(cpHashValue hash, float alpha)
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
 	cpPolyShape *poly = (cpPolyShape *)self.shape;
-	[renderer drawPolyWithVerts:poly->tVerts count:poly->numVerts width:1.0 fill:self.color line:SHAPE_OUTLINE_COLOR];
+	
+	cpVect *verts = poly->verts;
+	NSUInteger count = poly->numVerts;
+	
+	Transform t = [self.body extrapolatedTransform:dt];
+	cpVect tverts[count];
+	for(int i=0; i<count; i++){
+		tverts[i] = t_point(t, verts[i]);
+	}
+	
+	[renderer drawPolyWithVerts:tverts count:count width:1.0 fill:self.color line:SHAPE_OUTLINE_COLOR];
 }
 
 @end
@@ -134,23 +145,16 @@ ColorFromHash(cpHashValue hash, float alpha)
 #define CONSTRAINT_LINE_RADIUS 1.0
 #define CONSTRAINT_COLOR ((Color){0.0, 0.5, 0.0, 1.0})
 
-@interface ChipmunkConstraint(DemoRenderer)
+@interface ChipmunkConstraint()
 
--(void)drawWithRenderer:(PolyRenderer *)renderer;
-
-@end
-
-
-@implementation ChipmunkConstraint(DemoRenderer)
-
--(void)drawWithRenderer:(PolyRenderer *)renderer {}
+-(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 
 @end
 
 
 @implementation ChipmunkPinJoint(DemoRenderer)
 
--(void)drawWithRenderer:(PolyRenderer *)renderer
+-(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
 	cpVect a = [self.bodyA local2world:self.anchr1];
 	cpVect b = [self.bodyB local2world:self.anchr2];
@@ -165,10 +169,10 @@ ColorFromHash(cpHashValue hash, float alpha)
 
 @implementation ChipmunkSlideJoint(DemoRenderer)
 
--(void)drawWithRenderer:(PolyRenderer *)renderer
+-(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
-	cpVect a = [self.bodyA local2world:self.anchr1];
-	cpVect b = [self.bodyB local2world:self.anchr2];
+	cpVect a = t_point([self.bodyA extrapolatedTransform:dt], self.anchr1);
+	cpVect b = t_point([self.bodyB extrapolatedTransform:dt], self.anchr2);
 	
 	[renderer drawDot:a radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
 	[renderer drawDot:b radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
@@ -180,10 +184,10 @@ ColorFromHash(cpHashValue hash, float alpha)
 
 @implementation ChipmunkPivotJoint(DemoRenderer)
 
--(void)drawWithRenderer:(PolyRenderer *)renderer
+-(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
-	cpVect a = [self.bodyA local2world:self.anchr1];
-	cpVect b = [self.bodyB local2world:self.anchr2];
+	cpVect a = t_point([self.bodyA extrapolatedTransform:dt], self.anchr1);
+	cpVect b = t_point([self.bodyB extrapolatedTransform:dt], self.anchr2);
 	
 	[renderer drawDot:a radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
 	[renderer drawDot:b radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
@@ -194,12 +198,12 @@ ColorFromHash(cpHashValue hash, float alpha)
 
 @implementation ChipmunkGrooveJoint(DemoRenderer)
 
--(void)drawWithRenderer:(PolyRenderer *)renderer
+-(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
 	// Hmm apparently I never made the groove joint properties...
-	cpVect a = [self.bodyA local2world:cpGrooveJointGetGrooveA(self.constraint)];
-	cpVect b = [self.bodyA local2world:cpGrooveJointGetGrooveB(self.constraint)];
-	cpVect c = [self.bodyB local2world:cpGrooveJointGetAnchr2(self.constraint)];
+	cpVect a = t_point([self.bodyA extrapolatedTransform:dt], cpGrooveJointGetGrooveA(self.constraint));
+	cpVect b = t_point([self.bodyA extrapolatedTransform:dt], cpGrooveJointGetGrooveB(self.constraint));
+	cpVect c = t_point([self.bodyB extrapolatedTransform:dt], cpGrooveJointGetAnchr2(self.constraint));
 	
 	[renderer drawSegmentFrom:a to:b radius:CONSTRAINT_LINE_RADIUS color:CONSTRAINT_COLOR];
 	[renderer drawDot:c radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
@@ -295,7 +299,7 @@ ColorFromHash(cpHashValue hash, float alpha)
 	}
 	
 	for(ChipmunkConstraint *constraint in _space.constraints){
-		[constraint drawWithRenderer:renderer];
+		[constraint drawWithRenderer:renderer dt:_accumulator];
 	}
 	
 	if(showContacts){
@@ -344,6 +348,5 @@ ColorFromHash(cpHashValue hash, float alpha)
 {
 	[self touchesEnded:touches withEvent:event];
 }
-
 
 @end
