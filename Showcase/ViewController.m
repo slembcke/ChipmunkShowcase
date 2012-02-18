@@ -34,7 +34,7 @@ ValueToLogSlider(cpFloat min, cpFloat max, cpFloat value)
 }
 
 
-@interface ShowcaseGLView : GLKView
+@interface ShowcaseGLView : GLView
 
 @property(nonatomic, assign) id touchesDelegate;
 
@@ -83,7 +83,7 @@ enum DemoReveal {
 	EAGLContext *_context;
 	PolyRenderer *_renderer;
 	
-	IBOutlet GLKViewController *_glkViewController;
+	IBOutlet GLViewController *_glViewController;
 	
 	IBOutlet UILabel *_demoLabel;
 	
@@ -122,7 +122,7 @@ enum DemoReveal {
 
 -(ShowcaseGLView *)glView
 {
-	return (ShowcaseGLView *)[_glkViewController view];
+	return (ShowcaseGLView *)[_glViewController view];
 }
 
 -(id)initWithDemoClassName:(NSString *)demo
@@ -165,7 +165,7 @@ enum DemoReveal {
 		[[reveals objectAtIndex:demoReveal] setHidden:FALSE];
 		
 		[self.glView setUserInteractionEnabled:FALSE];
-//		_glkViewController.paused = TRUE;
+//		_glViewController.paused = TRUE;
 		
 		[UIView animateWithDuration:SLIDE_ANIMATION_DURATION animations:^{
 			[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -185,7 +185,7 @@ enum DemoReveal {
 			if(finished){
 				[[reveals objectAtIndex:revealToHide] setHidden:TRUE];
 				[self.glView setUserInteractionEnabled:TRUE];
-//				_glkViewController.paused = FALSE;
+//				_glViewController.paused = FALSE;
 			}
 		}];
 	}
@@ -220,7 +220,7 @@ enum DemoReveal {
 
 -(void)swipeUp
 {
-//	_glkViewController.paused = TRUE;
+//	_glViewController.paused = TRUE;
 //	
 //	UIWebView *webView = [[UIWebView alloc] init];
 //	[webView loadHTMLString:[NSString stringWithContentsOfFile:@"MultiGrabDemo.html" usedEncoding:nil error:nil] baseURL:nil];
@@ -229,14 +229,14 @@ enum DemoReveal {
 //	webViewController.view = webView;
 //	
 //	[self presentViewController:webViewController animated:TRUE completion:^{
-//		_glkViewController.paused = FALSE;
+//		_glViewController.paused = FALSE;
 //	}];
 }
 
--(IBAction)framerate:(UISwitch *)toggle;
-{
-	_glkViewController.preferredFramesPerSecond = (toggle.on ? 30 : 60);
-}
+//-(IBAction)framerate:(UISwitch *)toggle;
+//{
+//	_glViewController.preferredFramesPerSecond = (toggle.on ? 30 : 60);
+//}
 
 -(IBAction)timeScale:(UISlider *)slider
 {
@@ -369,7 +369,7 @@ enum DemoReveal {
 	_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 	NSAssert(_context, @"Failed to create ES context");
 	
-	_glkViewController.preferredFramesPerSecond = 60.0;
+//	_glViewController.preferredFramesPerSecond = 60.0;
 	[self.view insertSubview:self.glView belowSubview:_demoLabel];
 //	[self.view addSubview:self.glView];
 	self.glView.context = _context;
@@ -445,18 +445,18 @@ enum DemoReveal {
 	return interfaceOrientation == UIInterfaceOrientationLandscapeRight;
 }
 
-//MARK: GLKView and GLKViewController delegate methods
+//MARK: GLView and GLViewController delegate methods
 
 #define MAX_DT (1.0/15.0)
 
--(void)glkViewControllerUpdate:(GLKViewController *)controller
+-(void)glViewControllerUpdate:(GLViewController *)controller
 {
-//	NSTimeInterval dt = MIN(_glkViewController.timeSinceLastUpdate, MAX_DT);
-	NSTimeInterval dt = 1.0/_glkViewController.preferredFramesPerSecond;
+//	NSTimeInterval dt = MIN(_glViewController.timeSinceLastUpdate, MAX_DT);
+	NSTimeInterval dt = 1.0/_glViewController.preferredFramesPerSecond;
 	[_demo update:dt];
 }
 
--(void)glkView:(GLKView *)view drawInRect:(CGRect)rect
+-(void)glView:(GLView *)view drawInRect:(CGRect)rect
 {
 	NSAssert([EAGLContext currentContext] == _context, @"Wrong context set?");
 	glClear(GL_COLOR_BUFFER_BIT);

@@ -1,7 +1,9 @@
 #import <UIKit/UIKit.h>
-#import <GLKit/GLKit.h>
 
-@interface ViewController : UIViewController <GLKViewControllerDelegate, GLKViewDelegate>
+#import "GLView.h"
+#import "GLViewController.h"
+
+@interface ViewController : UIViewController <GLViewControllerDelegate, GLViewDelegate>
 
 -(id)initWithDemoClassName:(NSString *)demo;
 
