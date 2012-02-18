@@ -364,6 +364,74 @@ enum {
 	_bufferCount += vertex_count;
 }
 
+-(void)drawPolyWithVerts:(cpVect *)verts count:(NSUInteger)count width:(cpFloat)width fill:(Color)fill line:(Color)line;
+{
+	struct ExtrudeVerts {cpVect offset, n;};
+	struct ExtrudeVerts extrude[count];
+	bzero(extrude, sizeof(struct ExtrudeVerts)*count);
+	
+	for(int i=0; i<count; i++){
+		cpVect v0 = verts[(i-1+count)%count];
+		cpVect v1 = verts[i];
+		cpVect v2 = verts[(i+1)%count];
+		
+		cpVect n1 = cpvnormalize(cpvperp(cpvsub(v1, v0)));
+		cpVect n2 = cpvnormalize(cpvperp(cpvsub(v2, v1)));
+		
+		cpVect offset = cpvmult(cpvadd(n1, n2), 1.0/(cpvdot(n1, n2) + 1.0));
+		extrude[i] = (struct ExtrudeVerts){offset, n2};
+	}
+	
+	BOOL outline = TRUE;//(line.a > 0.0 && width > 0.0);
+	
+	NSUInteger triangle_count = 3*count - 2;
+	NSUInteger vertex_count = 3*triangle_count;
+	[self ensureCapacity:vertex_count];
+	
+	Triangle *triangles = (Triangle *)(_buffer + _bufferCount);
+	Triangle *cursor = triangles;
+	
+	cpFloat inset = (outline == 0.0 ? 0.5 : 0.0);
+	for(int i=0; i<count-2; i++){
+		cpVect v0 = cpvsub(verts[0  ], cpvmult(extrude[0  ].offset, inset));
+		cpVect v1 = cpvsub(verts[i+1], cpvmult(extrude[i+1].offset, inset));
+		cpVect v2 = cpvsub(verts[i+2], cpvmult(extrude[i+2].offset, inset));
+		
+		*cursor++ = (Triangle){{v0, cpvzero, fill}, {v1, cpvzero, fill}, {v2, cpvzero, fill},};
+	}
+	
+	for(int i=0; i<count; i++){
+		int j = (i+1)%count;
+		cpVect v0 = verts[i];
+		cpVect v1 = verts[j];
+		
+		cpVect n0 = extrude[i].n;
+		
+		cpVect offset0 = extrude[i].offset;
+		cpVect offset1 = extrude[j].offset;
+		
+		if(outline){
+			cpVect inner0 = cpvsub(v0, cpvmult(offset0, width));
+			cpVect inner1 = cpvsub(v1, cpvmult(offset1, width));
+			cpVect outer0 = cpvadd(v0, cpvmult(offset0, width));
+			cpVect outer1 = cpvadd(v1, cpvmult(offset1, width));
+			
+			*cursor++ = (Triangle){{inner0, cpvneg(n0), line}, {inner1, cpvneg(n0), line}, {outer1, n0, line}};
+			*cursor++ = (Triangle){{inner0, cpvneg(n0), line}, {outer0, n0, line}, {outer1, n0, line}};
+		} else {
+			cpVect inner0 = cpvsub(v0, cpvmult(offset0, 0.5));
+			cpVect inner1 = cpvsub(v1, cpvmult(offset1, 0.5));
+			cpVect outer0 = cpvadd(v0, cpvmult(offset0, 0.5));
+			cpVect outer1 = cpvadd(v1, cpvmult(offset1, 0.5));
+			
+			*cursor++ = (Triangle){{inner0, cpvzero, fill}, {inner1, cpvzero, fill}, {outer1, n0, fill}};
+			*cursor++ = (Triangle){{inner0, cpvzero, fill}, {outer0, n0, fill}, {outer1, n0, fill}};
+		}
+	}
+	
+	_bufferCount += vertex_count;
+}
+
 //MARK: Rendering
 
 -(void)render

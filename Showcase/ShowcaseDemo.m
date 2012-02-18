@@ -19,12 +19,70 @@ t_shape(ChipmunkShape *shape, cpFloat extrapolate)
 	};
 }
 
+static Color
+ColorFromHash(cpHashValue hash, float alpha)
+{
+	unsigned long val = (unsigned long)hash;
+	
+	// scramble the bits up using Robert Jenkins' 32 bit integer hash function
+	val = (val+0x7ed55d16) + (val<<12);
+	val = (val^0xc761c23c) ^ (val>>19);
+	val = (val+0x165667b1) + (val<<5);
+	val = (val+0xd3a2646c) ^ (val<<9);
+	val = (val+0xfd7046c5) + (val<<3);
+	val = (val^0xb55a4f09) ^ (val>>16);
+	
+	GLfloat r = (val>>0) & 0xFF;
+	GLfloat g = (val>>8) & 0xFF;
+	GLfloat b = (val>>16) & 0xFF;
+	
+	GLfloat max = MAX(MAX(r, g), b);
+	
+	// saturate and scale the colors
+	const GLfloat mult = 1.0;
+	const GLfloat add = 0.0;
+	
+	return (Color){
+		(r*mult)/max + add,
+		(g*mult)/max + add,
+		(b*mult)/max + add,
+		alpha
+	};
+}
+
 Color ColorBlack = {0.0, 0.0, 0.0, 1.0};
+
 
 @interface ChipmunkShape(DemoRenderer)
 
 -(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line;
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
+
+-(Color)color;
+
+@end
+
+@implementation ChipmunkShape(DemoRenderer)
+
+-(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line
+{
+	return nil;
+}
+
+-(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
+{
+}
+
+-(Color)color
+{
+	ChipmunkBody *body = self.body;
+	
+	if(body.isSleeping){
+		return (Color){0.5, 0.5, 0.5, 1.0};
+	} else {
+		return ColorFromHash(self.shape->hashid, 1.0);
+	}
+}
 
 @end
 
@@ -33,7 +91,7 @@ Color ColorBlack = {0.0, 0.0, 0.0, 1.0};
 
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
-	[renderer drawPoly:self.data withTransform:t_shape(self, dt)];
+//	[renderer drawPoly:self.data withTransform:t_shape(self, dt)];
 }
 
 -(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line
@@ -48,7 +106,10 @@ Color ColorBlack = {0.0, 0.0, 0.0, 1.0};
 
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
-	[renderer drawSegmentFrom:self.a to:self.b radius:1.0 color:ColorBlack];
+	ChipmunkBody *body = self.body;
+	cpVect a = [body local2world:self.a];
+	cpVect b = [body local2world:self.b];
+	[renderer drawSegmentFrom:a to:b radius:1.0 color:ColorBlack];
 }
 
 -(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line
@@ -63,7 +124,8 @@ Color ColorBlack = {0.0, 0.0, 0.0, 1.0};
 
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
-	[renderer drawPoly:self.data withTransform:t_shape(self, dt)];
+	cpPolyShape *poly = (cpPolyShape *)self.shape;
+	[renderer drawPolyWithVerts:poly->tVerts count:poly->numVerts width:1.0 fill:self.color line:ColorBlack];
 }
 
 -(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line
