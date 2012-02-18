@@ -6,14 +6,35 @@
 #import "ChipmunkHastySpace.h"
 #import "PolyRenderer.h"
 
+static inline Transform
+t_shape(ChipmunkShape *shape, cpFloat extrapolate)
+{
+	cpBody *body = shape.body.body;
+	cpVect pos = cpvadd(body->p, cpvmult(body->v, extrapolate));;
+	cpVect rot = cpvrotate(body->rot, cpvforangle(body->w*extrapolate));
+	
+	return (Transform){
+		rot.x, -rot.y, pos.x,
+		rot.y,  rot.x, pos.y,
+	};
+}
+
+Color ColorBlack = {0.0, 0.0, 0.0, 1.0};
+
 @interface ChipmunkShape(DemoRenderer)
 
 -(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line;
+-(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 
 @end
 
 
 @implementation ChipmunkCircleShape(DemoRenderer)
+
+-(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
+{
+	[renderer drawPoly:self.data withTransform:t_shape(self, dt)];
+}
 
 -(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line
 {
@@ -25,6 +46,11 @@
 
 @implementation ChipmunkSegmentShape(DemoRenderer)
 
+-(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
+{
+	[renderer drawSegmentFrom:self.a to:self.b radius:1.0 color:ColorBlack];
+}
+
 -(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line
 {
 	return [[PolyInstance alloc] initWithSegmentShape:self width:width fillColor:fill lineColor:line];
@@ -34,6 +60,11 @@
 
 
 @implementation ChipmunkPolyShape(DemoRenderer)
+
+-(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
+{
+	[renderer drawPoly:self.data withTransform:t_shape(self, dt)];
+}
 
 -(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line
 {
@@ -149,7 +180,6 @@ Color CONSTRAINT_COLOR = (Color){0.0, 0.5, 0.0, 1.0};
 		Color fill = {};
 		[[UIColor colorWithHue:frand() saturation:1.0 brightness:0.8 alpha:1.0] getRed:&fill.r green:&fill.g blue:&fill.b alpha:&fill.a];
 		
-//		PolyInstance *poly = [[PolyInstance alloc] initWithShape:shape width:1.0 FillColor:fill lineColor:line];
 		PolyInstance *poly = [shape polyInstanceWithWidth:1.0 fillColor:fill lineColor:line];
 		if(poly){
 			shape.data = poly;
@@ -253,19 +283,6 @@ Color CONSTRAINT_COLOR = (Color){0.0, 0.5, 0.0, 1.0};
 
 //MARK: Rendering
 
-static inline Transform
-t_shape(ChipmunkShape *shape, cpFloat extrapolate)
-{
-	cpBody *body = shape.body.body;
-	cpVect pos = cpvadd(body->p, cpvmult(body->v, extrapolate));;
-	cpVect rot = cpvrotate(body->rot, cpvforangle(body->w*extrapolate));
-	
-	return (Transform){
-		rot.x, -rot.y, pos.x,
-		rot.y,  rot.x, pos.y,
-	};
-}
-
 -(void)prepareStaticRenderer:(PolyRenderer *)renderer;
 {
 //	for(ChipmunkShape *shape in _space.shapes){
@@ -277,7 +294,8 @@ t_shape(ChipmunkShape *shape, cpFloat extrapolate)
 {
 	for(ChipmunkShape *shape in _space.shapes){
 		//if(!shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, _accumulator)];
-		[renderer drawPoly:shape.data withTransform:t_shape(shape, _accumulator)];
+		//[renderer drawPoly:shape.data withTransform:t_shape(shape, _accumulator)];
+		[shape drawWithRenderer:renderer dt:_accumulator];
 	}
 	
 	for(ChipmunkConstraint *constraint in _space.constraints){
