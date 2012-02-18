@@ -451,8 +451,8 @@ enum DemoReveal {
 
 -(void)glkViewControllerUpdate:(GLKViewController *)controller
 {
-	NSTimeInterval dt = MIN(_glkViewController.timeSinceLastUpdate, MAX_DT);
-//	NSTimeInterval dt = 1.0/_glkViewController.preferredFramesPerSecond;
+//	NSTimeInterval dt = MIN(_glkViewController.timeSinceLastUpdate, MAX_DT);
+	NSTimeInterval dt = 1.0/_glkViewController.preferredFramesPerSecond;
 	[_demo update:dt];
 }
 
