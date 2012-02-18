@@ -24,7 +24,6 @@
 -(void)update:(NSTimeInterval)dt;
 -(void)tick:(cpFloat)dt;
 
--(void)prepareStaticRenderer:(PolyRenderer *)renderer;
 -(void)render:(PolyRenderer *)renderer showContacts:(BOOL)showContacts;
 
 //Mark: Input

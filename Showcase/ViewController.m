@@ -81,7 +81,6 @@ enum DemoReveal {
 	ShowcaseDemo *_demo;
 	
 	EAGLContext *_context;
-	PolyRenderer *_staticRenderer;
 	PolyRenderer *_renderer;
 	
 	IBOutlet GLKViewController *_glkViewController;
@@ -325,11 +324,7 @@ enum DemoReveal {
 	Transform proj = t_mult(t_scale((viewSize.height/viewSize.width)*(4.0/3.0), 1.0), t_ortho(cpBBNew(-320, -240, 320, 240)));
 	_demo.touchTransform = t_mult(t_inverse(proj), t_ortho(cpBBNew(0, viewSize.height, viewSize.width, 0)));
 	
-	_staticRenderer = [[PolyRenderer alloc] initWithProjection:proj];
 	_renderer = [[PolyRenderer alloc] initWithProjection:proj];
-		
-	[_demo prepareStaticRenderer:_staticRenderer];
-	[_staticRenderer prepareStatic];
 }
 
 - (void)tearDownGL
@@ -337,7 +332,6 @@ enum DemoReveal {
 	NSLog(@"Tearing down GL");
 	[EAGLContext setCurrentContext:_context];
 	
-	_staticRenderer = nil;
 	_renderer = nil;
 
 	_context = nil;
@@ -463,8 +457,6 @@ enum DemoReveal {
 {
 	NSAssert([EAGLContext currentContext] == _context, @"Wrong context set?");
 	glClear(GL_COLOR_BUFFER_BIT);
-	
-	[_staticRenderer renderStatic];
 	
 	[_demo render:_renderer showContacts:_drawContacts.on];
 	[_renderer render];

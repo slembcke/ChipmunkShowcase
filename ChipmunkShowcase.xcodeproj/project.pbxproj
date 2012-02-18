@@ -54,7 +54,6 @@
 		D3FB3976148F353600E0BA9E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FB3975148F353600E0BA9E /* ViewController.m */; };
 		D3FB3979148F353600E0BA9E /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3FB3977148F353600E0BA9E /* ViewController_iPhone.xib */; };
 		D3FB39C31490083400E0BA9E /* PolyRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FB39C21490083400E0BA9E /* PolyRenderer.m */; };
-		D3FB39C6149008BC00E0BA9E /* PolyInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FB39C5149008BC00E0BA9E /* PolyInstance.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -155,8 +154,6 @@
 		D3FB39BD148F5DE300E0BA9E /* transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transform.h; sourceTree = "<group>"; };
 		D3FB39C11490083400E0BA9E /* PolyRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyRenderer.h; sourceTree = "<group>"; };
 		D3FB39C21490083400E0BA9E /* PolyRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolyRenderer.m; sourceTree = "<group>"; };
-		D3FB39C4149008BC00E0BA9E /* PolyInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolyInstance.h; sourceTree = "<group>"; };
-		D3FB39C5149008BC00E0BA9E /* PolyInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PolyInstance.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,8 +197,6 @@
 			children = (
 				D3FB39C11490083400E0BA9E /* PolyRenderer.h */,
 				D3FB39C21490083400E0BA9E /* PolyRenderer.m */,
-				D3FB39C4149008BC00E0BA9E /* PolyInstance.h */,
-				D3FB39C5149008BC00E0BA9E /* PolyInstance.m */,
 				D3FB3972148F353600E0BA9E /* AntialiasedShader.vsh */,
 				D3FB3970148F353600E0BA9E /* AntialiasedShader.fsh */,
 			);
@@ -466,7 +461,6 @@
 				D3FB396F148F353600E0BA9E /* AppDelegate.m in Sources */,
 				D3FB3976148F353600E0BA9E /* ViewController.m in Sources */,
 				D3FB39C31490083400E0BA9E /* PolyRenderer.m in Sources */,
-				D3FB39C6149008BC00E0BA9E /* PolyInstance.m in Sources */,
 				D3582DF11490899400AB0C37 /* Accelerometer.m in Sources */,
 				D3C10FBB1490944000F00AAE /* ShowcaseDemo.m in Sources */,
 				D3C10FD31490ADCE00F00AAE /* PlinkDemo.m in Sources */,

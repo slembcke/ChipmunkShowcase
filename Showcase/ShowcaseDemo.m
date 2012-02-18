@@ -37,66 +37,66 @@ ColorFromHash(cpHashValue hash, float alpha)
 	GLfloat b = (val>>16) & 0xFF;
 	
 	GLfloat max = MAX(MAX(r, g), b);
+	GLfloat min = MIN(MIN(r, g), b);
+	GLfloat coef = 1.0/(max - min);
 	
-	// saturate and scale the colors
-	const GLfloat mult = 1.0;
-	const GLfloat add = 0.0;
-	
+	// Saturate and scale the color
 	return (Color){
-		(r*mult)/max + add,
-		(g*mult)/max + add,
-		(b*mult)/max + add,
+		(r - min)*coef,
+		(g - min)*coef,
+		(b - min)*coef,
 		alpha
 	};
 }
 
-Color ColorBlack = {0.0, 0.0, 0.0, 1.0};
+
+#define SHAPE_OUTLINE_WIDTH 1.0
+#define SHAPE_OUTLINE_COLOR ((Color){0.0, 0.0, 0.0, 1.0})
 
 
 @interface ChipmunkShape(DemoRenderer)
 
--(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line;
--(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
-
 -(Color)color;
+-(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 
 @end
 
 @implementation ChipmunkShape(DemoRenderer)
 
--(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line
-{
-	return nil;
-}
-
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
-{
-}
+{}
 
 -(Color)color
 {
-	ChipmunkBody *body = self.body;
-	
-	if(body.isSleeping){
-		return (Color){0.5, 0.5, 0.5, 1.0};
+	// This method uses some private API to detect some states you normally shouldn't care about.
+	if(self.sensor){
+		return LAColor(1, 0);
 	} else {
-		return ColorFromHash(self.shape->hashid, 1.0);
+		ChipmunkBody *body = self.body;
+		
+		if(body.isSleeping){
+			return LAColor(0.2, 1);
+		} else if(body.body->node.idleTime > self.shape->space->sleepTimeThreshold) {
+			return LAColor(0.66, 1);
+		} else {
+			return ColorFromHash(self.shape->hashid, 1.0);
+		}
 	}
 }
 
 @end
 
-
+// TODO add optional line and fill modes?
 @implementation ChipmunkCircleShape(DemoRenderer)
 
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
-//	[renderer drawPoly:self.data withTransform:t_shape(self, dt)];
-}
-
--(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line
-{
-	return [[PolyInstance alloc] initWithCircleShape:self width:width fillColor:fill lineColor:line];
+	cpVect pos = [self.body local2world:self.offset];
+	cpFloat r1 = self.radius;
+	cpFloat r2 = r1 - SHAPE_OUTLINE_WIDTH;
+	
+	[renderer drawDot:pos radius:r1 color:SHAPE_OUTLINE_COLOR];
+	if(r2 > 0.0) [renderer drawDot:pos radius:r2 color:self.color];
 }
 
 @end
@@ -109,12 +109,11 @@ Color ColorBlack = {0.0, 0.0, 0.0, 1.0};
 	ChipmunkBody *body = self.body;
 	cpVect a = [body local2world:self.a];
 	cpVect b = [body local2world:self.b];
-	[renderer drawSegmentFrom:a to:b radius:1.0 color:ColorBlack];
-}
-
--(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line
-{
-	return [[PolyInstance alloc] initWithSegmentShape:self width:width fillColor:fill lineColor:line];
+	cpFloat r1 = self.radius;
+	cpFloat r2 = r1 - SHAPE_OUTLINE_WIDTH;
+	
+	[renderer drawSegmentFrom:a to:b radius:r1 color:SHAPE_OUTLINE_COLOR];
+	if(r2 > 0.0) [renderer drawSegmentFrom:a to:b radius:r2 color:self.color];
 }
 
 @end
@@ -125,12 +124,7 @@ Color ColorBlack = {0.0, 0.0, 0.0, 1.0};
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
 	cpPolyShape *poly = (cpPolyShape *)self.shape;
-	[renderer drawPolyWithVerts:poly->tVerts count:poly->numVerts width:1.0 fill:self.color line:ColorBlack];
-}
-
--(PolyInstance *)polyInstanceWithWidth:(cpFloat)width fillColor:(Color)fill lineColor:(Color)line
-{
-	return [[PolyInstance alloc] initWithPolyShape:self width:width fillColor:fill lineColor:line];
+	[renderer drawPolyWithVerts:poly->tVerts count:poly->numVerts width:1.0 fill:self.color line:SHAPE_OUTLINE_COLOR];
 }
 
 @end
@@ -138,8 +132,7 @@ Color ColorBlack = {0.0, 0.0, 0.0, 1.0};
 
 #define CONSTRAINT_DOT_RADIUS 3.0
 #define CONSTRAINT_LINE_RADIUS 1.0
-
-Color CONSTRAINT_COLOR = (Color){0.0, 0.5, 0.0, 1.0};
+#define CONSTRAINT_COLOR ((Color){0.0, 0.5, 0.0, 1.0})
 
 @interface ChipmunkConstraint(DemoRenderer)
 
@@ -214,58 +207,8 @@ Color CONSTRAINT_COLOR = (Color){0.0, 0.5, 0.0, 1.0};
 
 @end
 
-// Space subclass that creates/tracks polys for the rendering
-@interface DemoSpace : ChipmunkHastySpace {
-	NSMutableDictionary *_polys;
-}
-
-@end
-
-
-@implementation DemoSpace
-
--(id)init
-{
-	if((self = [super init])){
-		_polys = [NSMutableDictionary dictionary];
-	}
-	
-	return self;
-}
-
--(id)add:(NSObject<ChipmunkObject> *)obj;
-{
-	if([obj isKindOfClass:[ChipmunkShape class]]){
-		ChipmunkShape *shape = (id)obj;
-		
-		Color line = {0,0,0,1};
-		Color fill = {};
-		[[UIColor colorWithHue:frand() saturation:1.0 brightness:0.8 alpha:1.0] getRed:&fill.r green:&fill.g blue:&fill.b alpha:&fill.a];
-		
-		PolyInstance *poly = [shape polyInstanceWithWidth:1.0 fillColor:fill lineColor:line];
-		if(poly){
-			shape.data = poly;
-			[_polys setObject:poly forKey:[NSValue valueWithPointer:(__bridge void *)obj]];
-		}
-	}
-	
-	return [super add:obj];
-}
-
--(id)remove:(NSObject<ChipmunkObject> *)obj;
-{
-	if([obj isKindOfClass:[ChipmunkPolyShape class]]){
-		[_polys removeObjectForKey:[NSValue valueWithPointer:(__bridge void *)obj]];
-	}
-	
-	return [super remove:obj];
-}
-
-@end
-
-
 @interface ShowcaseDemo(){
-	DemoSpace *_space;
+	ChipmunkSpace *_space;
 	
 	ChipmunkMultiGrab *_multiGrab;
 	
@@ -308,7 +251,7 @@ Color CONSTRAINT_COLOR = (Color){0.0, 0.5, 0.0, 1.0};
 -(id)init
 {
 	if((self = [super init])){
-		_space = [[DemoSpace alloc] init];
+		_space = [[ChipmunkHastySpace alloc] init];
 		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:self.space withSmoothing:cpfpow(0.8, 60) withGrabForce:1e5];
 		_multiGrab.layers = GRABABLE_MASK_BIT;
 		
@@ -345,18 +288,9 @@ Color CONSTRAINT_COLOR = (Color){0.0, 0.5, 0.0, 1.0};
 
 //MARK: Rendering
 
--(void)prepareStaticRenderer:(PolyRenderer *)renderer;
-{
-//	for(ChipmunkShape *shape in _space.shapes){
-//		if(shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, 0.0)];
-//	}
-}
-
 -(void)render:(PolyRenderer *)renderer showContacts:(BOOL)showContacts;
 {
 	for(ChipmunkShape *shape in _space.shapes){
-		//if(!shape.body.isStatic) [renderer drawPoly:shape.data withTransform:t_shape(shape, _accumulator)];
-		//[renderer drawPoly:shape.data withTransform:t_shape(shape, _accumulator)];
 		[shape drawWithRenderer:renderer dt:_accumulator];
 	}
 	
