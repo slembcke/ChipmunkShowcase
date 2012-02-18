@@ -325,10 +325,10 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
-			<object class="IBUIViewController" id="234323448">
-				<object class="IBUIView" key="IBUIView" id="161153475">
+			<object class="IBUIViewController" id="500510817">
+				<object class="IBUIView" key="IBUIView" id="609987397">
 					<reference key="NSNextResponder"/>
-					<int key="NSvFlags">274</int>
+					<int key="NSvFlags">319</int>
 					<string key="NSFrameSize">{480, 320}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
@@ -345,6 +345,7 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 					<int key="IBUIInterfaceOrientation">3</int>
 					<int key="interfaceOrientation">3</int>
 				</object>
+				<bool key="IBUIWantsFullScreenLayout">YES</bool>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<bool key="IBUIHorizontal">YES</bool>
 			</object>
@@ -443,7 +444,7 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">_glViewController</string>
 						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="234323448"/>
+						<reference key="destination" ref="500510817"/>
 					</object>
 					<int key="connectionID">102</int>
 				</object>
@@ -486,15 +487,15 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">view</string>
-						<reference key="source" ref="234323448"/>
-						<reference key="destination" ref="161153475"/>
+						<reference key="source" ref="500510817"/>
+						<reference key="destination" ref="609987397"/>
 					</object>
 					<int key="connectionID">99</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
-						<reference key="source" ref="234323448"/>
+						<reference key="source" ref="500510817"/>
 						<reference key="destination" ref="841351856"/>
 					</object>
 					<int key="connectionID">101</int>
@@ -502,10 +503,10 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
-						<reference key="source" ref="161153475"/>
-						<reference key="destination" ref="234323448"/>
+						<reference key="source" ref="609987397"/>
+						<reference key="destination" ref="841351856"/>
 					</object>
-					<int key="connectionID">100</int>
+					<int key="connectionID">103</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -611,16 +612,16 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">97</int>
-						<reference key="object" ref="234323448"/>
+						<reference key="object" ref="500510817"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="161153475"/>
+							<reference ref="609987397"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">98</int>
-						<reference key="object" ref="161153475"/>
-						<reference key="parent" ref="234323448"/>
+						<reference key="object" ref="609987397"/>
+						<reference key="parent" ref="500510817"/>
 					</object>
 				</array>
 			</object>
@@ -651,7 +652,7 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">102</int>
+			<int key="maxID">103</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

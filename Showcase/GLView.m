@@ -24,6 +24,12 @@
 
 @synthesize drawableWidth = _drawableWidth, drawableHeight = _drawableHeight;
 
+-(void)runInRenderQueue:(void (^)(void))block
+{
+	block();
+//	dispatch_async(_renderQueue, block);
+}
+
 //MARK: Framebuffer
 
 - (BOOL)createFramebuffer
@@ -56,20 +62,20 @@
 
 - (void)layoutSubviews
 {
-	dispatch_async(_renderQueue, ^{
+	[self runInRenderQueue:^{
 		[EAGLContext setCurrentContext:_context];
 		[self destroyFramebuffer];
 		[self createFramebuffer];
 //		[self drawView];
-	});
+	}];
 }
 
 -(void)setContext:(EAGLContext *)context
 {
-	dispatch_async(_renderQueue, ^{
+	[self runInRenderQueue:^{
 		_context = context;
 		NSAssert(_context && [EAGLContext setCurrentContext:_context] && [self createFramebuffer], @"Failed to set up context.");
-	});
+	}];
 }
 
 //MARK: Memory methods
@@ -77,20 +83,6 @@
 + (Class) layerClass
 {
 	return [CAEAGLLayer class];
-}
-
--(void)awakeFromNib
-{
-		CAEAGLLayer *layer = (CAEAGLLayer*) self.layer;
-		
-		layer.opaque = YES;
-		layer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-			[NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking,
-			kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, // TODO 565 instead?
-			nil
-		];
-		
-		_renderQueue = dispatch_queue_create("net.chipmunk-physics.showcase-renderqueue", NULL);
 }
 
 - (id)initWithCoder:(NSCoder*)coder
@@ -113,11 +105,11 @@
 
 -(void)dealloc
 {
-	dispatch_async(_renderQueue, ^{
+	[self runInRenderQueue:^{
 		[EAGLContext setCurrentContext:_context];
 		[self destroyFramebuffer];
 		[EAGLContext setCurrentContext:nil];
-	});
+	}];
 	
 	dispatch_release(_renderQueue);
 }
@@ -130,15 +122,18 @@
 	if(_isRendering) return;
 	
 	_isRendering = TRUE;
-	dispatch_async(_renderQueue, ^{
+	[self runInRenderQueue:^{
 		[EAGLContext setCurrentContext:_context];
 		glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
-		glBindRenderbuffer(GL_RENDERBUFFER, _renderbuffer);
 		
 		[_delegate glView:self drawInRect:self.bounds];
 		
+		glBindRenderbuffer(GL_RENDERBUFFER, _renderbuffer);
+		[_context presentRenderbuffer:GL_RENDERBUFFER];
+		
+		for(GLenum err = glGetError(); err; err = glGetError()) NSLog(@"GLError(%s:%d) 0x%04X", __FILE__, __LINE__, err);
 		_isRendering = FALSE;
-	});
+	}];
 }
 
 @end

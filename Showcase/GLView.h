@@ -19,7 +19,7 @@
 // Reimplementing GLKit as I go using EAGLView.m as a reference.
 @interface GLView : UIView
 
-- (id)initWithFrame:(CGRect)frame context:(EAGLContext *)context;
+-(void)runInRenderQueue:(void (^)(void))block;
 
 @property (nonatomic, assign) IBOutlet id <GLViewDelegate> delegate;
 

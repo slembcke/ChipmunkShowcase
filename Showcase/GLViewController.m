@@ -6,9 +6,13 @@
 //  Copyright (c) 2012 Howling Moon Software. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "GLViewController.h"
 
-@implementation GLViewController
+@implementation GLViewController {
+	CADisplayLink *_displayLink;
+}
 
 @synthesize delegate = _delegate;
 
@@ -29,6 +33,9 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+	
+	_displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(update:)];
+	[_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
 }
 
 - (void)viewDidUnload
@@ -42,6 +49,17 @@
 {
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+-(void)update:(CADisplayLink *)sender;
+{
+	[_delegate glViewControllerUpdate:self];
+	[(GLView *)self.view display];
+}
+
+-(void)glView:(GLView *)view drawInRect:(CGRect)rect
+{
+	
 }
 
 @end

@@ -312,30 +312,34 @@ enum DemoReveal {
 
 -(void)setupGL
 {
-	[EAGLContext setCurrentContext:_context];
+	[self.glView runInRenderQueue:^{
+		[EAGLContext setCurrentContext:_context];
 
-	GLfloat clear = 1.0;
-	glClearColor(clear, clear, clear, 1.0);
+		GLfloat clear = 1.0;
+		glClearColor(clear, clear, clear, 1.0);
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-	
-	CGSize viewSize = self.glView.bounds.size;
-	Transform proj = t_mult(t_scale((viewSize.height/viewSize.width)*(4.0/3.0), 1.0), t_ortho(cpBBNew(-320, -240, 320, 240)));
-	_demo.touchTransform = t_mult(t_inverse(proj), t_ortho(cpBBNew(0, viewSize.height, viewSize.width, 0)));
-	
-	_renderer = [[PolyRenderer alloc] initWithProjection:proj];
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		
+		CGSize viewSize = self.glView.bounds.size;
+		Transform proj = t_mult(t_scale((viewSize.height/viewSize.width)*(4.0/3.0), 1.0), t_ortho(cpBBNew(-320, -240, 320, 240)));
+		_demo.touchTransform = t_mult(t_inverse(proj), t_ortho(cpBBNew(0, viewSize.height, viewSize.width, 0)));
+		
+		_renderer = [[PolyRenderer alloc] initWithProjection:proj];
+	}];
 }
 
 - (void)tearDownGL
 {
-	NSLog(@"Tearing down GL");
-	[EAGLContext setCurrentContext:_context];
-	
-	_renderer = nil;
+	[self.glView runInRenderQueue:^{
+		NSLog(@"Tearing down GL");
+		[EAGLContext setCurrentContext:_context];
+		
+		_renderer = nil;
 
-	_context = nil;
-	[EAGLContext setCurrentContext:nil];
+		_context = nil;
+		[EAGLContext setCurrentContext:nil];
+	}];
 }
 
 -(void)fadeLabel
@@ -458,7 +462,7 @@ enum DemoReveal {
 
 -(void)glView:(GLView *)view drawInRect:(CGRect)rect
 {
-	NSAssert([EAGLContext currentContext] == _context, @"Wrong context set?");
+	glClearColor(1.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 	
 	[_demo render:_renderer showContacts:_drawContacts.on];
