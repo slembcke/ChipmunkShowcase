@@ -21,6 +21,8 @@
 @property(nonatomic, readonly) NSTimeInterval preferredTimeStep;
 @property(nonatomic, assign) NSTimeInterval timeStep;
 
+-(float)numberForA4:(float)A4 A5:(float)A5;
+
 -(void)update:(NSTimeInterval)dt;
 -(void)tick:(cpFloat)dt;
 

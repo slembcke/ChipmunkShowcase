@@ -72,7 +72,9 @@ static int bouncy_terrain_count = sizeof(bouncy_terrain_verts)/sizeof(cpVect);
 		hexagon[i] = cpvmult(cpv(cos(angle), sin(angle)), radius);
 	}
 	
-	for(int i=0; i<600; i++){
+	NSUInteger count = [self numberForA4:400 A5:550];
+	
+	for(int i=0; i<count; i++){
 		cpFloat mass = radius*radius;
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForPoly(mass, 6, hexagon, cpvzero)]];
 		body.pos = cpvadd(cpvmult(frand_unit_circle(), 140.0f), cpvzero);

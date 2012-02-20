@@ -7,9 +7,9 @@ varying mediump vec2 frag_texcoord;
 
 void main()
 {
-#if GL_OES_standard_derivatives
+#if defined GL_OES_standard_derivatives
 	gl_FragColor = frag_color*smoothstep(0.0, length(fwidth(frag_texcoord)), 1.0 - length(frag_texcoord));
 #else
-	gl_FragColor = frag_color;//*texture2D(texture, frag_texcoord).a;
+	gl_FragColor = frag_color*step(0.0, 1.0 - length(frag_texcoord));//*texture2D(texture, frag_texcoord).a;
 #endif
 }

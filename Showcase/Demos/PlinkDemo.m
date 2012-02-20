@@ -1,7 +1,9 @@
 #import "ShowcaseDemo.h"
 
 @interface PlinkDemo : ShowcaseDemo @end
-@implementation PlinkDemo
+@implementation PlinkDemo {
+	NSUInteger _count;
+}
 
 -(NSString *)name
 {
@@ -30,6 +32,8 @@
 			shape.layers = NOT_GRABABLE_MASK;
 		}
 	}
+	
+	_count = [self numberForA4:300 A5:600];
 }
 
 -(void)tick:(cpFloat)dt;
@@ -38,7 +42,7 @@
 	self.space.gravity = cpv(0.0, -100);
 	
 	NSArray *bodies = self.space.bodies;
-	if([bodies count] < 500){
+	if([bodies count] < _count){
 		cpFloat size = 7.0;
 		
 		cpVect pentagon[5];

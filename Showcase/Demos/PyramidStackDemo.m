@@ -18,7 +18,9 @@
 	CGRect bounds = CGRectMake(-320, -240, 640, 480);
 	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
 	
-	for(int i=0; i<20; i++){
+	NSUInteger height = [self numberForA4:14 A5:20];
+	
+	for(int i=0; i<height; i++){
 		for(int j=0; j<=i; j++){
 			cpFloat size = 20.0;
 			cpFloat mass = 3.0;
@@ -50,7 +52,7 @@
 
 -(NSTimeInterval)preferredTimeStep
 {
-	return 1.0/120.0;
+	return 1.0/60.0;
 }
 
 @end

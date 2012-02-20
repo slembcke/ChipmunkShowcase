@@ -26,7 +26,7 @@
 
 -(void)setup
 {
-	self.space.iterations = 20;
+	self.space.iterations = [self numberForA4:15 A5:20];
 	self.space.gravity = cpv(0, -300.0);
 	self.space.sleepTimeThreshold = 0.5f;
 	self.space.collisionSlop = 0.5f;
@@ -37,11 +37,12 @@
 	shape.friction = 1.0;
 	shape.layers = NOT_GRABABLE_MASK;
 	
+	int rows = [self numberForA4:10 A5:11];
+	
 	// Add the dominoes.
-	int n = 11;
-	for(int i=0; i<n; i++){
-		for(int j=0; j<(n - i); j++){
-			cpVect offset = cpv((j - (n - 1 - i)*0.5f)*1.5f*HEIGHT, (i + 0.5f)*(HEIGHT + 2*WIDTH) - WIDTH - 240);
+	for(int i=0; i<rows; i++){
+		for(int j=0; j<(rows - i); j++){
+			cpVect offset = cpv((j - (rows - 1 - i)*0.5f)*1.5f*HEIGHT, (i + 0.5f)*(HEIGHT + 2*WIDTH) - WIDTH - 240);
 			[self addDomino:offset flipped:FALSE];
 			[self addDomino:cpvadd(offset, cpv(0, (HEIGHT + WIDTH)/2.0f)) flipped:TRUE];
 			
@@ -49,7 +50,7 @@
 				[self addDomino:cpvadd(offset, cpv(0.5f*(WIDTH - HEIGHT), HEIGHT + WIDTH)) flipped:FALSE];
 			}
 			
-			if(j != n - i - 1){
+			if(j != rows - i - 1){
 				[self addDomino:cpvadd(offset, cpv(HEIGHT*0.75f, (HEIGHT + 3*WIDTH)/2.0f)) flipped:TRUE];
 			} else {
 				[self addDomino:cpvadd(offset, cpv(0.5f*(HEIGHT - WIDTH), HEIGHT + WIDTH)) flipped:FALSE];
@@ -58,8 +59,8 @@
 	}
 	
 	{
-		cpFloat radius = 5.0f;
-		cpFloat mass = 1.0f;
+		cpFloat radius = 10.0f;
+		cpFloat mass = 5.0f;
 		
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForCircle(mass, 0.0, radius, cpvzero)]];
 		body.pos = cpv(520, -180);

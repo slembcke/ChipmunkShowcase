@@ -45,7 +45,6 @@
 		D3FB395B148F353600E0BA9E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395A148F353600E0BA9E /* UIKit.framework */; };
 		D3FB395D148F353600E0BA9E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395C148F353600E0BA9E /* Foundation.framework */; };
 		D3FB395F148F353600E0BA9E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395E148F353600E0BA9E /* CoreGraphics.framework */; };
-		D3FB3961148F353600E0BA9E /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB3960148F353600E0BA9E /* GLKit.framework */; };
 		D3FB3963148F353600E0BA9E /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB3962148F353600E0BA9E /* OpenGLES.framework */; };
 		D3FB3969148F353600E0BA9E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3FB3967148F353600E0BA9E /* InfoPlist.strings */; };
 		D3FB396B148F353600E0BA9E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FB396A148F353600E0BA9E /* main.m */; };
@@ -141,7 +140,6 @@
 		D3FB395A148F353600E0BA9E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D3FB395C148F353600E0BA9E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D3FB395E148F353600E0BA9E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		D3FB3960148F353600E0BA9E /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		D3FB3962148F353600E0BA9E /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		D3FB3966148F353600E0BA9E /* ChipmunkShowcase-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ChipmunkShowcase-Info.plist"; sourceTree = "<group>"; };
 		D3FB3968148F353600E0BA9E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -169,7 +167,6 @@
 				D3FB395B148F353600E0BA9E /* UIKit.framework in Frameworks */,
 				D3FB395D148F353600E0BA9E /* Foundation.framework in Frameworks */,
 				D3FB395F148F353600E0BA9E /* CoreGraphics.framework in Frameworks */,
-				D3FB3961148F353600E0BA9E /* GLKit.framework in Frameworks */,
 				D3FB3963148F353600E0BA9E /* OpenGLES.framework in Frameworks */,
 				D3D9E9C014966CC9000E439D /* libChipmunkPro-iPhone.a in Frameworks */,
 			);
@@ -336,7 +333,6 @@
 				D3FB395A148F353600E0BA9E /* UIKit.framework */,
 				D3FB395C148F353600E0BA9E /* Foundation.framework */,
 				D3FB395E148F353600E0BA9E /* CoreGraphics.framework */,
-				D3FB3960148F353600E0BA9E /* GLKit.framework */,
 				D3FB3962148F353600E0BA9E /* OpenGLES.framework */,
 			);
 			name = Frameworks;
@@ -511,6 +507,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Andrew Korth (8GA955ZK8F)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -525,7 +522,8 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				PROVISIONING_PROFILE = "140401CE-3759-4F13-B8A3-9DDA37969C03";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -537,6 +535,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Andrew Korth (8GA955ZK8F)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -544,8 +543,9 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "140401CE-3759-4F13-B8A3-9DDA37969C03";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

@@ -1,3 +1,5 @@
+#import <sys/sysctl.h>
+
 #define CP_ALLOW_PRIVATE_ACCESS
 
 #import "ShowcaseDemo.h"
@@ -91,7 +93,7 @@ ColorFromHash(cpHashValue hash, float alpha)
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
 	cpVect offset = self.offset;
-	cpFloat r1 = self.radius;
+	cpFloat r1 = MAX(self.radius, SHAPE_OUTLINE_WIDTH);
 	cpFloat r2 = r1 - SHAPE_OUTLINE_WIDTH;
 	
 	Transform t = [self.body extrapolatedTransform:dt];
@@ -114,7 +116,7 @@ ColorFromHash(cpHashValue hash, float alpha)
 	cpVect a = t_point(t, self.a);
 	cpVect b = t_point(t, self.b);
 	
-	cpFloat r1 = self.radius;
+	cpFloat r1 = MAX(self.radius, SHAPE_OUTLINE_WIDTH);
 	cpFloat r2 = r1 - SHAPE_OUTLINE_WIDTH;
 	
 	[renderer drawSegmentFrom:a to:b radius:r1 color:SHAPE_OUTLINE_COLOR];
@@ -259,6 +261,15 @@ ColorFromHash(cpHashValue hash, float alpha)
 -(ChipmunkBody *)staticBody
 {
 	return _space.staticBody;
+}
+
+-(float)numberForA4:(float)A4 A5:(float)A5;
+{
+	unsigned int cpu_count = 1;
+	size_t size = sizeof(cpu_count);
+	sysctlbyname("hw.ncpu", &cpu_count, &size, NULL, 0);
+	
+	return (cpu_count > 1 ? A5 : A4);
 }
 
 -(void)setup {}
