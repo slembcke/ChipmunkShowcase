@@ -75,10 +75,12 @@ ColorFromHash(cpHashValue hash, float alpha)
 	} else {
 		ChipmunkBody *body = self.body;
 		
-		if(body.isSleeping){
-			return LAColor(0.2, 1);
+		if(body.isStatic){
+			return LAColor(0.0, 1.0);
+		} else if(body.isSleeping){
+			return LAColor(0.2, 1.0);
 		} else if(body.body->node.idleTime > self.shape->space->sleepTimeThreshold) {
-			return LAColor(0.66, 1);
+			return LAColor(0.66, 1.0);
 		} else {
 			return ColorFromHash(self.shape->hashid, 1.0);
 		}

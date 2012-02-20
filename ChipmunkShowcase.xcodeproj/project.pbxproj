@@ -7,16 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D30A7AB714E8BC5B00C50129 /* BouncyTerrainDemo.png in Resources */ = {isa = PBXBuildFile; fileRef = D30A7AAD14E8BC5B00C50129 /* BouncyTerrainDemo.png */; };
-		D30A7AB814E8BC5B00C50129 /* BreakableChainsDemo.png in Resources */ = {isa = PBXBuildFile; fileRef = D30A7AAE14E8BC5B00C50129 /* BreakableChainsDemo.png */; };
-		D30A7AB914E8BC5B00C50129 /* CraneDemo.png in Resources */ = {isa = PBXBuildFile; fileRef = D30A7AAF14E8BC5B00C50129 /* CraneDemo.png */; };
-		D30A7ABA14E8BC5B00C50129 /* LogoSmashDemo.png in Resources */ = {isa = PBXBuildFile; fileRef = D30A7AB014E8BC5B00C50129 /* LogoSmashDemo.png */; };
-		D30A7ABB14E8BC5B00C50129 /* MultiGrabDemo.png in Resources */ = {isa = PBXBuildFile; fileRef = D30A7AB114E8BC5B00C50129 /* MultiGrabDemo.png */; };
-		D30A7ABC14E8BC5B00C50129 /* PlanetDemo.png in Resources */ = {isa = PBXBuildFile; fileRef = D30A7AB214E8BC5B00C50129 /* PlanetDemo.png */; };
-		D30A7ABD14E8BC5B00C50129 /* PlinkDemo.png in Resources */ = {isa = PBXBuildFile; fileRef = D30A7AB314E8BC5B00C50129 /* PlinkDemo.png */; };
-		D30A7ABE14E8BC5B00C50129 /* PyramidStackDemo.png in Resources */ = {isa = PBXBuildFile; fileRef = D30A7AB414E8BC5B00C50129 /* PyramidStackDemo.png */; };
-		D30A7ABF14E8BC5B00C50129 /* PyramidToppleDemo.png in Resources */ = {isa = PBXBuildFile; fileRef = D30A7AB514E8BC5B00C50129 /* PyramidToppleDemo.png */; };
-		D30A7AC014E8BC5B00C50129 /* TumbleDemo.png in Resources */ = {isa = PBXBuildFile; fileRef = D30A7AB614E8BC5B00C50129 /* TumbleDemo.png */; };
 		D311930A14E23C2600B659B3 /* PlanetDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311930914E23C2600B659B3 /* PlanetDemo.m */; };
 		D311930F14E258A400B659B3 /* PyramidStackDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311930E14E258A400B659B3 /* PyramidStackDemo.m */; };
 		D311931114E258B200B659B3 /* PyramidToppleDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931014E258B200B659B3 /* PyramidToppleDemo.m */; };
@@ -42,6 +32,18 @@
 		D3E5458E14E8C6DA00434A5A /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D3E5458D14E8C6DA00434A5A /* Default-Landscape~ipad.png */; };
 		D3E5459A14E8F2E800434A5A /* MultiGrabDemo.html in Resources */ = {isa = PBXBuildFile; fileRef = D3E5459914E8F2E800434A5A /* MultiGrabDemo.html */; };
 		D3EB7A1614F040CE00C1AD84 /* GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = D3EB7A1514F040CE00C1AD84 /* GLView.m */; };
+		D3EB7A4E14F2383B00C1AD84 /* BouncyTerrainDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A4214F2383B00C1AD84 /* BouncyTerrainDemo.psd */; };
+		D3EB7A4F14F2383B00C1AD84 /* BreakableChainsDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A4314F2383B00C1AD84 /* BreakableChainsDemo.psd */; };
+		D3EB7A5014F2383B00C1AD84 /* CraneDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A4414F2383B00C1AD84 /* CraneDemo.psd */; };
+		D3EB7A5214F2383B00C1AD84 /* LogoSmashDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A4614F2383B00C1AD84 /* LogoSmashDemo.psd */; };
+		D3EB7A5314F2383B00C1AD84 /* MultiGrabDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A4714F2383B00C1AD84 /* MultiGrabDemo.psd */; };
+		D3EB7A5414F2383B00C1AD84 /* PlanetDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A4814F2383B00C1AD84 /* PlanetDemo.psd */; };
+		D3EB7A5514F2383B00C1AD84 /* PlinkDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A4914F2383B00C1AD84 /* PlinkDemo.psd */; };
+		D3EB7A5614F2383B00C1AD84 /* PyramidStackDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A4A14F2383B00C1AD84 /* PyramidStackDemo.psd */; };
+		D3EB7A5714F2383B00C1AD84 /* PyramidToppleDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A4B14F2383B00C1AD84 /* PyramidToppleDemo.psd */; };
+		D3EB7A5814F2383B00C1AD84 /* TheoJansenDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A4C14F2383B00C1AD84 /* TheoJansenDemo.psd */; };
+		D3EB7A5914F2383B00C1AD84 /* TumbleDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A4D14F2383B00C1AD84 /* TumbleDemo.psd */; };
+		D3EB7A5B14F23B3D00C1AD84 /* DeformableBitmapDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A5A14F23B3D00C1AD84 /* DeformableBitmapDemo.psd */; };
 		D3FB395B148F353600E0BA9E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395A148F353600E0BA9E /* UIKit.framework */; };
 		D3FB395D148F353600E0BA9E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395C148F353600E0BA9E /* Foundation.framework */; };
 		D3FB395F148F353600E0BA9E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395E148F353600E0BA9E /* CoreGraphics.framework */; };
@@ -56,17 +58,22 @@
 		D3FB39C31490083400E0BA9E /* PolyRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FB39C21490083400E0BA9E /* PolyRenderer.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXBuildRule section */
+		D3EB7A3C14F2353000C1AD84 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.psd";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILES_DIR)/$(INPUT_FILE_BASE)@2x.png",
+				"$(DERIVED_FILES_DIR)/$(INPUT_FILE_BASE).png",
+			);
+			script = "\"$PROJECT_DIR/Support/imageconvert\" 1.0 \"$INPUT_FILE_PATH\" \"$DERIVED_FILES_DIR/$INPUT_FILE_BASE@2x.png\"\n\"$PROJECT_DIR/Support/imageconvert\" 0.5 \"$INPUT_FILE_PATH\" \"$DERIVED_FILES_DIR/$INPUT_FILE_BASE.png\"\n\n#\"$PROJECT_DIR/Support/optipng\" \"$BUILD_DIR/$INPUT_FILE_BASE\"\n";
+		};
+/* End PBXBuildRule section */
+
 /* Begin PBXFileReference section */
-		D30A7AAD14E8BC5B00C50129 /* BouncyTerrainDemo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BouncyTerrainDemo.png; sourceTree = "<group>"; };
-		D30A7AAE14E8BC5B00C50129 /* BreakableChainsDemo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BreakableChainsDemo.png; sourceTree = "<group>"; };
-		D30A7AAF14E8BC5B00C50129 /* CraneDemo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CraneDemo.png; sourceTree = "<group>"; };
-		D30A7AB014E8BC5B00C50129 /* LogoSmashDemo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LogoSmashDemo.png; sourceTree = "<group>"; };
-		D30A7AB114E8BC5B00C50129 /* MultiGrabDemo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MultiGrabDemo.png; sourceTree = "<group>"; };
-		D30A7AB214E8BC5B00C50129 /* PlanetDemo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlanetDemo.png; sourceTree = "<group>"; };
-		D30A7AB314E8BC5B00C50129 /* PlinkDemo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlinkDemo.png; sourceTree = "<group>"; };
-		D30A7AB414E8BC5B00C50129 /* PyramidStackDemo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PyramidStackDemo.png; sourceTree = "<group>"; };
-		D30A7AB514E8BC5B00C50129 /* PyramidToppleDemo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PyramidToppleDemo.png; sourceTree = "<group>"; };
-		D30A7AB614E8BC5B00C50129 /* TumbleDemo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TumbleDemo.png; sourceTree = "<group>"; };
 		D311930914E23C2600B659B3 /* PlanetDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanetDemo.m; sourceTree = "<group>"; };
 		D311930E14E258A400B659B3 /* PyramidStackDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PyramidStackDemo.m; sourceTree = "<group>"; };
 		D311931014E258B200B659B3 /* PyramidToppleDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PyramidToppleDemo.m; sourceTree = "<group>"; };
@@ -136,6 +143,18 @@
 		D3E5459914E8F2E800434A5A /* MultiGrabDemo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = MultiGrabDemo.html; sourceTree = "<group>"; };
 		D3EB7A1414F040CE00C1AD84 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLView.h; sourceTree = "<group>"; };
 		D3EB7A1514F040CE00C1AD84 /* GLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLView.m; sourceTree = "<group>"; };
+		D3EB7A4214F2383B00C1AD84 /* BouncyTerrainDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = BouncyTerrainDemo.psd; sourceTree = "<group>"; };
+		D3EB7A4314F2383B00C1AD84 /* BreakableChainsDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = BreakableChainsDemo.psd; sourceTree = "<group>"; };
+		D3EB7A4414F2383B00C1AD84 /* CraneDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = CraneDemo.psd; sourceTree = "<group>"; };
+		D3EB7A4614F2383B00C1AD84 /* LogoSmashDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = LogoSmashDemo.psd; sourceTree = "<group>"; };
+		D3EB7A4714F2383B00C1AD84 /* MultiGrabDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = MultiGrabDemo.psd; sourceTree = "<group>"; };
+		D3EB7A4814F2383B00C1AD84 /* PlanetDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = PlanetDemo.psd; sourceTree = "<group>"; };
+		D3EB7A4914F2383B00C1AD84 /* PlinkDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = PlinkDemo.psd; sourceTree = "<group>"; };
+		D3EB7A4A14F2383B00C1AD84 /* PyramidStackDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = PyramidStackDemo.psd; sourceTree = "<group>"; };
+		D3EB7A4B14F2383B00C1AD84 /* PyramidToppleDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = PyramidToppleDemo.psd; sourceTree = "<group>"; };
+		D3EB7A4C14F2383B00C1AD84 /* TheoJansenDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = TheoJansenDemo.psd; sourceTree = "<group>"; };
+		D3EB7A4D14F2383B00C1AD84 /* TumbleDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = TumbleDemo.psd; sourceTree = "<group>"; };
+		D3EB7A5A14F23B3D00C1AD84 /* DeformableBitmapDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = DeformableBitmapDemo.psd; sourceTree = "<group>"; };
 		D3FB3956148F353600E0BA9E /* ChipmunkShowcase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChipmunkShowcase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3FB395A148F353600E0BA9E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D3FB395C148F353600E0BA9E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -178,16 +197,18 @@
 		D30A7AAC14E8BC5B00C50129 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
-				D30A7AAD14E8BC5B00C50129 /* BouncyTerrainDemo.png */,
-				D30A7AAE14E8BC5B00C50129 /* BreakableChainsDemo.png */,
-				D30A7AAF14E8BC5B00C50129 /* CraneDemo.png */,
-				D30A7AB014E8BC5B00C50129 /* LogoSmashDemo.png */,
-				D30A7AB114E8BC5B00C50129 /* MultiGrabDemo.png */,
-				D30A7AB214E8BC5B00C50129 /* PlanetDemo.png */,
-				D30A7AB314E8BC5B00C50129 /* PlinkDemo.png */,
-				D30A7AB414E8BC5B00C50129 /* PyramidStackDemo.png */,
-				D30A7AB514E8BC5B00C50129 /* PyramidToppleDemo.png */,
-				D30A7AB614E8BC5B00C50129 /* TumbleDemo.png */,
+				D3EB7A4214F2383B00C1AD84 /* BouncyTerrainDemo.psd */,
+				D3EB7A4314F2383B00C1AD84 /* BreakableChainsDemo.psd */,
+				D3EB7A5A14F23B3D00C1AD84 /* DeformableBitmapDemo.psd */,
+				D3EB7A4414F2383B00C1AD84 /* CraneDemo.psd */,
+				D3EB7A4614F2383B00C1AD84 /* LogoSmashDemo.psd */,
+				D3EB7A4714F2383B00C1AD84 /* MultiGrabDemo.psd */,
+				D3EB7A4814F2383B00C1AD84 /* PlanetDemo.psd */,
+				D3EB7A4914F2383B00C1AD84 /* PlinkDemo.psd */,
+				D3EB7A4A14F2383B00C1AD84 /* PyramidStackDemo.psd */,
+				D3EB7A4B14F2383B00C1AD84 /* PyramidToppleDemo.psd */,
+				D3EB7A4C14F2383B00C1AD84 /* TheoJansenDemo.psd */,
+				D3EB7A4D14F2383B00C1AD84 /* TumbleDemo.psd */,
 			);
 			path = Icons;
 			sourceTree = SOURCE_ROOT;
@@ -388,6 +409,7 @@
 				D3FB3954148F353600E0BA9E /* Resources */,
 			);
 			buildRules = (
+				D3EB7A3C14F2353000C1AD84 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -432,21 +454,23 @@
 				D3FB3979148F353600E0BA9E /* ViewController_iPhone.xib in Resources */,
 				D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */,
 				D359FB281495E103001147A9 /* LogoSmashDemo.m in Resources */,
-				D30A7AB714E8BC5B00C50129 /* BouncyTerrainDemo.png in Resources */,
-				D30A7AB814E8BC5B00C50129 /* BreakableChainsDemo.png in Resources */,
-				D30A7AB914E8BC5B00C50129 /* CraneDemo.png in Resources */,
-				D30A7ABA14E8BC5B00C50129 /* LogoSmashDemo.png in Resources */,
-				D30A7ABB14E8BC5B00C50129 /* MultiGrabDemo.png in Resources */,
-				D30A7ABC14E8BC5B00C50129 /* PlanetDemo.png in Resources */,
-				D30A7ABD14E8BC5B00C50129 /* PlinkDemo.png in Resources */,
-				D30A7ABE14E8BC5B00C50129 /* PyramidStackDemo.png in Resources */,
-				D30A7ABF14E8BC5B00C50129 /* PyramidToppleDemo.png in Resources */,
-				D30A7AC014E8BC5B00C50129 /* TumbleDemo.png in Resources */,
 				D3E5458714E8C48300434A5A /* Icon57.png in Resources */,
 				D3E5458A14E8C48700434A5A /* Icon72.png in Resources */,
 				D3E5458C14E8C48B00434A5A /* Icon114.png in Resources */,
 				D3E5458E14E8C6DA00434A5A /* Default-Landscape~ipad.png in Resources */,
 				D3E5459A14E8F2E800434A5A /* MultiGrabDemo.html in Resources */,
+				D3EB7A4E14F2383B00C1AD84 /* BouncyTerrainDemo.psd in Resources */,
+				D3EB7A4F14F2383B00C1AD84 /* BreakableChainsDemo.psd in Resources */,
+				D3EB7A5014F2383B00C1AD84 /* CraneDemo.psd in Resources */,
+				D3EB7A5214F2383B00C1AD84 /* LogoSmashDemo.psd in Resources */,
+				D3EB7A5314F2383B00C1AD84 /* MultiGrabDemo.psd in Resources */,
+				D3EB7A5414F2383B00C1AD84 /* PlanetDemo.psd in Resources */,
+				D3EB7A5514F2383B00C1AD84 /* PlinkDemo.psd in Resources */,
+				D3EB7A5614F2383B00C1AD84 /* PyramidStackDemo.psd in Resources */,
+				D3EB7A5714F2383B00C1AD84 /* PyramidToppleDemo.psd in Resources */,
+				D3EB7A5814F2383B00C1AD84 /* TheoJansenDemo.psd in Resources */,
+				D3EB7A5914F2383B00C1AD84 /* TumbleDemo.psd in Resources */,
+				D3EB7A5B14F23B3D00C1AD84 /* DeformableBitmapDemo.psd in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
