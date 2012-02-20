@@ -216,17 +216,13 @@ enum DemoReveal {
 
 -(void)swipeUp
 {
-//	_glViewController.paused = TRUE;
-//	
 //	UIWebView *webView = [[UIWebView alloc] init];
 //	[webView loadHTMLString:[NSString stringWithContentsOfFile:@"MultiGrabDemo.html" usedEncoding:nil error:nil] baseURL:nil];
 //	
 //	UIViewController *webViewController = [[UIViewController alloc] init];
 //	webViewController.view = webView;
 //	
-//	[self presentViewController:webViewController animated:TRUE completion:^{
-//		_glViewController.paused = FALSE;
-//	}];
+//	[self presentViewController:webViewController animated:TRUE completion:^{}];
 }
 
 //-(IBAction)framerate:(UISwitch *)toggle;

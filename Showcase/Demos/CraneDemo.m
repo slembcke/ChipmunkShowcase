@@ -23,15 +23,6 @@
 static NSString *HOOK_SENSOR = @"HOOK_SENSOR";
 static NSString *CRATE = @"CRATE";
 
-//static void
-//AttachHook(cpSpace *space, cpBody *hook, cpBody *crate)
-//{
-//	hookJoint = cpSpaceAddConstraint(space, cpPivotJointNew(hook, crate, cpBodyGetPos(hook)));
-//}
-
-
-//static cpBool
-//HookCrate(cpArbiter *arb, cpSpace *space, void *data)
 -(bool)hookCrate:(cpArbiter *)arb space:(ChipmunkSpace *)space
 {
 	if(_hookJoint == nil){
@@ -46,7 +37,6 @@ static NSString *CRATE = @"CRATE";
 		[space addPostStepBlock:^{
 			_hookJoint = [space add:[ChipmunkPivotJoint pivotJointWithBodyA:hook bodyB:crate pivot:hook.pos]];
 		} key:hook];
-//		cpSpaceAddPostStepCallback(space, (cpPostStepFunc)AttachHook, hook, crate);
 	}
 	
 	return cpTrue; // return value is ignored for sensor callbacks anyway
