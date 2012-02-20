@@ -68,13 +68,11 @@ ColorFromHash(cpHashValue hash, float alpha)
 {
 	// This method uses some private API to detect some states you normally shouldn't care about.
 	if(self.sensor){
-		return LAColor(1, 0);
+		return LAColor(0.0, 0.0);
 	} else {
 		ChipmunkBody *body = self.body;
 		
-		if(body.isStatic){
-			return LAColor(0.0, 1.0);
-		} else if(body.isSleeping){
+		if(body.isStatic || body.isSleeping){
 			return LAColor(0.5, 1.0);
 		} else if(body.body->node.idleTime > self.shape->space->sleepTimeThreshold) {
 			return LAColor(0.33, 1.0);
@@ -215,6 +213,49 @@ ColorFromHash(cpHashValue hash, float alpha)
 	
 	[renderer drawSegmentFrom:a to:b radius:CONSTRAINT_LINE_RADIUS color:CONSTRAINT_COLOR];
 	[renderer drawDot:c radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
+}
+
+@end
+
+
+@implementation ChipmunkDampedSpring(DemoRenderer)
+
+static const cpVect SPRING_VERTS[] = {
+	{0.00f, 0.0f},
+	{0.20f, 0.0f},
+	{0.25f, 3.0f},
+	{0.30f,-6.0f},
+	{0.35f, 6.0f},
+	{0.40f,-6.0f},
+	{0.45f, 6.0f},
+	{0.50f,-6.0f},
+	{0.55f, 6.0f},
+	{0.60f,-6.0f},
+	{0.65f, 6.0f},
+	{0.70f,-3.0f},
+	{0.75f, 6.0f},
+	{0.80f, 0.0f},
+	{1.00f, 0.0f},
+};
+static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
+
+-(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
+{
+	cpVect a = t_point([self.bodyA extrapolatedTransform:dt], self.anchr1);
+	cpVect b = t_point([self.bodyB extrapolatedTransform:dt], self.anchr2);
+	Transform t = t_mult(t_boneScale(a, b), t_scale(1.0, 1.0/cpvdist(a, b)));
+	
+	cpVect verts[SPRING_COUNT];
+	for(int i=0; i<SPRING_COUNT; i++){
+		verts[i] = t_point(t, SPRING_VERTS[i]);
+	}
+	
+	for(int i=1; i<SPRING_COUNT; i++){
+		[renderer drawSegmentFrom:verts[i-1] to:verts[i] radius:CONSTRAINT_LINE_RADIUS color:CONSTRAINT_COLOR];
+	}
+	
+	[renderer drawDot:a radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
+	[renderer drawDot:b radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
 }
 
 @end

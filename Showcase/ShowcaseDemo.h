@@ -62,4 +62,4 @@ frand_unit_circle()
 
 #define CONSTRAINT_DOT_RADIUS 3.0
 #define CONSTRAINT_LINE_RADIUS 1.0
-#define CONSTRAINT_COLOR ((Color){0.0, 0.5, 0.0, 1.0})
+#define CONSTRAINT_COLOR ((Color){0.0, 0.75, 0.0, 1.0})
