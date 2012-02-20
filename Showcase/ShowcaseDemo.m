@@ -24,9 +24,6 @@
 
 @end
 
-#define SHAPE_OUTLINE_WIDTH 1.0
-#define SHAPE_OUTLINE_COLOR ((Color){0.0, 0.0, 0.0, 1.0})
-
 
 @interface ChipmunkShape()
 
@@ -56,7 +53,7 @@ ColorFromHash(cpHashValue hash, float alpha)
 	
 	GLfloat max = MAX(MAX(r, g), b);
 	GLfloat min = MIN(MIN(r, g), b);
-	GLfloat coef = 1.0/(max - min);
+	GLfloat coef = 0.75/(max - min);
 	
 	// Saturate and scale the color
 	return (Color){
@@ -78,9 +75,9 @@ ColorFromHash(cpHashValue hash, float alpha)
 		if(body.isStatic){
 			return LAColor(0.0, 1.0);
 		} else if(body.isSleeping){
-			return LAColor(0.2, 1.0);
+			return LAColor(0.5, 1.0);
 		} else if(body.body->node.idleTime > self.shape->space->sleepTimeThreshold) {
-			return LAColor(0.66, 1.0);
+			return LAColor(0.33, 1.0);
 		} else {
 			return ColorFromHash(self.shape->hashid, 1.0);
 		}
@@ -148,10 +145,6 @@ ColorFromHash(cpHashValue hash, float alpha)
 
 @end
 
-
-#define CONSTRAINT_DOT_RADIUS 3.0
-#define CONSTRAINT_LINE_RADIUS 1.0
-#define CONSTRAINT_COLOR ((Color){0.0, 0.5, 0.0, 1.0})
 
 @interface ChipmunkConstraint()
 
@@ -334,7 +327,7 @@ ColorFromHash(cpHashValue hash, float alpha)
 			cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
 			
 			for(int i=0; i<arb->numContacts; i++){
-				[renderer drawDot:arb->contacts[i].p radius:2.5 color:(Color){1,0,0,1}];
+				[renderer drawDot:arb->contacts[i].p radius:2.5 color:CONTACT_COLOR];
 			}
 		}
 	}

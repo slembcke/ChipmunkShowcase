@@ -85,7 +85,7 @@ static void
 RenderDot(cpBody *body, struct RenderContext *context)
 {
 	cpVect pos = cpvadd(body->p, cpvmult(body->v, context->accumulator));
-	[context->renderer drawDot:pos radius:4.0 color:(Color){0,0,0,1}];
+	[context->renderer drawDot:pos radius:4.0 color:SHAPE_OUTLINE_COLOR];
 }
 
 -(void)render:(PolyRenderer *)renderer showContacts:(BOOL)showContacts;
@@ -100,7 +100,7 @@ RenderDot(cpBody *body, struct RenderContext *context)
 			cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
 			
 			for(int i=0; i<arb->numContacts; i++){
-				[renderer drawDot:arb->contacts[i].p radius:2.0 color:(Color){1,0,0,1}];
+				[renderer drawDot:arb->contacts[i].p radius:2.0 color:CONTACT_COLOR];
 			}
 		}
 	}

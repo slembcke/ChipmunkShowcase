@@ -23,6 +23,8 @@
 
 @property(nonatomic, readonly) BOOL isRendering;
 
+-(void)clear;
+
 -(void)sync;
 -(void)runInRenderQueue:(void (^)(void))block sync:(BOOL)sync;
 -(void)display:(void (^)(void))block sync:(BOOL)sync;

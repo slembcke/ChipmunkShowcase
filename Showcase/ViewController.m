@@ -355,6 +355,8 @@ enum DemoReveal {
 	[self timeStep:_timeStepSlider];
 	[self iterations:_iterationsSlider];
 	
+	_drawContacts.on = FALSE;
+	
 	EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 	NSAssert(context, @"Failed to create ES context");
 	
@@ -459,11 +461,7 @@ enum DemoReveal {
 		[_demo render:_renderer showContacts:_drawContacts.on];
 		
 		[_glView display:^{
-			// TODO
-//			glDiscardFramebufferEXT(<#GLenum target#>, <#GLsizei numAttachments#>, <#const GLenum *attachments#>)
-			glClearColor(1.0, 1.0, 1.0, 1.0);
-			glClear(GL_COLOR_BUFFER_BIT);
-			
+			[_glView clear];
 			[_renderer render];
 		} sync:needs_sync];
 		

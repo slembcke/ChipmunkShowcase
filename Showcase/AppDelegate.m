@@ -17,13 +17,13 @@
 
 -(void)setViewController:(ViewController *)viewController
 {
-//	CATransition *transition = [CATransition animation];
-//	transition.duration = 0.25;
-//	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-//	transition.type = kCATransitionReveal;
-//	transition.subtype = kCATransitionFromBottom;
-//	
-//	[self.window.layer addAnimation:transition forKey:nil];
+	CATransition *transition = [CATransition animation];
+	transition.duration = 0.25;
+	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+	transition.type = kCATransitionMoveIn;
+	transition.subtype = kCATransitionFromBottom;
+	
+	[self.window.layer addAnimation:transition forKey:nil];
 	
 	self.window.rootViewController = _viewController = viewController;
 }

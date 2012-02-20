@@ -55,3 +55,11 @@ frand_unit_circle()
 }
 
 
+#define SHAPE_OUTLINE_WIDTH 1.0
+#define SHAPE_OUTLINE_COLOR ((Color){200.0/255.0, 210.0/255.0, 230.0/255.0, 1.0})
+
+#define CONTACT_COLOR ((Color){1.0, 0.0, 0.0, 1.0})
+
+#define CONSTRAINT_DOT_RADIUS 3.0
+#define CONSTRAINT_LINE_RADIUS 1.0
+#define CONSTRAINT_COLOR ((Color){0.0, 0.5, 0.0, 1.0})
