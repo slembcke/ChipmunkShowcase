@@ -25,16 +25,21 @@
 
 @synthesize drawableWidth = _drawableWidth, drawableHeight = _drawableHeight;
 
--(void)runInRenderQueue:(void (^)(void))block
+-(void)sync
 {
-	dispatch_async(_renderQueue, ^{
+	dispatch_sync(_renderQueue, ^{});
+}
+
+-(void)runInRenderQueue:(void (^)(void))block sync:(BOOL)sync;
+{
+	(sync ? dispatch_sync : dispatch_async)(_renderQueue, ^{
 		[EAGLContext setCurrentContext:_context];
 		
 		block();
 		
 		GLenum err = 0;
-		for(err = glGetError(); err; err = glGetError()) NSLog(@"GLError0x%04X", err);
-		NSAssert(err == GL_NO_ERROR, @"GL Errors!");
+		for(err = glGetError(); err; err = glGetError()) NSLog(@"GLError: 0x%04X", err);
+		NSAssert(err == GL_NO_ERROR, @"Aborting due to GL Errors.");
 		
 		[EAGLContext setCurrentContext:nil];
 	});
@@ -78,8 +83,7 @@
 	[self runInRenderQueue:^{
 		[self destroyFramebuffer];
 		[self createFramebuffer];
-//		[self drawView];
-	}];
+	} sync:TRUE];
 }
 
 -(void)setContext:(EAGLContext *)context
@@ -87,7 +91,7 @@
 	[self runInRenderQueue:^{
 		_context = context;
 		NSAssert(_context && [EAGLContext setCurrentContext:_context] && [self createFramebuffer], @"Failed to set up context.");
-	}];
+	} sync:TRUE];
 }
 
 //MARK: Memory methods
@@ -121,30 +125,30 @@
 {
 	[self runInRenderQueue:^{
 		[self destroyFramebuffer];
-	}];
+	} sync:TRUE];
 	
 	dispatch_release(_renderQueue);
 }
 
 //MARK: Render methods
 
--(void)display:(void (^)(void))block;
+-(void)display:(void (^)(void))block sync:(BOOL)sync;
 {
-	// Only queue one frame to render at a time.
-	if(_isRendering) return;
-	
-	_isRendering = TRUE;
-	[self runInRenderQueue:^{
-		glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
+	// Only queue one frame to render at a time unless synced.
+	if(sync || !_isRendering){
+		_isRendering = TRUE;
 		
-		block();
-		
-		glBindRenderbuffer(GL_RENDERBUFFER, _renderbuffer);
-		[_context presentRenderbuffer:GL_RENDERBUFFER];
-		
-		for(GLenum err = glGetError(); err; err = glGetError()) NSLog(@"GLError(%s:%d) 0x%04X", __FILE__, __LINE__, err);
-		_isRendering = FALSE;
-	}];
+		[self runInRenderQueue:^{
+			glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
+			
+			block();
+			
+			glBindRenderbuffer(GL_RENDERBUFFER, _renderbuffer);
+			[_context presentRenderbuffer:GL_RENDERBUFFER];
+						
+			_isRendering = FALSE;
+		} sync:sync];
+	}
 }
 
 @end

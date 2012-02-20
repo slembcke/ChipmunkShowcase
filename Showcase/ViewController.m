@@ -83,6 +83,7 @@ enum DemoReveal {
 	
 	IBOutlet ShowcaseGLView *_glView;
 	CADisplayLink *_displayLink;
+	NSTimeInterval _lastTime, _lastFrameTime;
 	
 	IBOutlet UILabel *_demoLabel;
 	
@@ -319,7 +320,7 @@ enum DemoReveal {
 		_demo.touchTransform = t_mult(t_inverse(proj), t_ortho(cpBBNew(0, viewSize.height, viewSize.width, 0)));
 		
 		_renderer = [[PolyRenderer alloc] initWithProjection:proj];
-	}];
+	} sync:TRUE];
 }
 
 - (void)tearDownGL
@@ -327,7 +328,7 @@ enum DemoReveal {
 	[self.glView runInRenderQueue:^{
 		NSLog(@"Tearing down GL");
 		_renderer = nil;
-	}];
+	} sync:TRUE];
 }
 
 -(void)fadeLabel
@@ -447,31 +448,34 @@ enum DemoReveal {
 	);
 }
 
-//MARK: GLView and GLViewController delegate methods
-
 #define MAX_DT (1.0/15.0)
 
 -(void)tick:(CADisplayLink *)displayLink
 {
-//	NSTimeInterval dt = MIN(_glViewController.timeSinceLastUpdate, MAX_DT);
-	NSTimeInterval dt = _displayLink.frameInterval*_displayLink.duration;
+	NSTimeInterval time = _displayLink.timestamp;
+	
+	NSTimeInterval dt = MIN(time - _lastTime, MAX_DT);
 	[_demo update:dt];
 	
-	// TODO need to sync the threads better somehow.
-	// dispatch_sync() if too many frames skipped?
-	if(!_glView.isRendering){
+	BOOL needs_sync = (time - _lastFrameTime > MAX_DT);
+	if(!_glView.isRendering || needs_sync){
+		if(needs_sync) [_glView sync];
+		[_demo render:_renderer showContacts:_drawContacts.on];
+		
 		[_glView display:^{
+			// TODO
+//			glDiscardFramebufferEXT(<#GLenum target#>, <#GLsizei numAttachments#>, <#const GLenum *attachments#>)
 			glClearColor(1.0, 1.0, 1.0, 1.0);
 			glClear(GL_COLOR_BUFFER_BIT);
 			
-			[_demo render:_renderer showContacts:_drawContacts.on];
 			[_renderer render];
-			PRINT_GL_ERRORS();
-			_renderTicks++;
-		}];
-	} else {
-		//NSLog(@"Dropped a frame");
+		} sync:needs_sync];
+		
+		_renderTicks++;
+		_lastFrameTime = time;
 	}
+	
+	_lastTime = time;
 }
 
 @end

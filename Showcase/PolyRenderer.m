@@ -31,6 +31,7 @@ enum {
 	GLuint _vao;
 	GLuint _vbo;
 	
+	NSUInteger _vboCapacity;
 	NSUInteger _bufferCapacity, _bufferCount;
 	Vertex *_buffer;
 	
@@ -46,6 +47,8 @@ enum {
 
 -(void)setProjection:(Transform)projection
 {
+	NSAssert([EAGLContext currentContext], @"No GL context set!");
+	
 	_projection = projection;
 	
 	glUseProgram(_program);
@@ -117,94 +120,98 @@ enum {
 
 - (BOOL)validateProgram:(GLuint)prog
 {
-    GLint logLength, status;
-    
-    glValidateProgram(prog);
-    glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
-    if (logLength > 0) {
-        GLchar *log = (GLchar *)malloc(logLength);
-        glGetProgramInfoLog(prog, logLength, &logLength, log);
-        NSLog(@"Program validate log:\n%s", log);
-        free(log);
-    }
-    
-    glGetProgramiv(prog, GL_VALIDATE_STATUS, &status);
-    if (status == 0) {
-        return NO;
-    }
-    
-    return YES;
+	NSAssert([EAGLContext currentContext], @"No GL context set!");
+	
+	GLint logLength, status;
+	
+	glValidateProgram(prog);
+	glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
+	if (logLength > 0) {
+			GLchar *log = (GLchar *)malloc(logLength);
+			glGetProgramInfoLog(prog, logLength, &logLength, log);
+			NSLog(@"Program validate log:\n%s", log);
+			free(log);
+	}
+	
+	glGetProgramiv(prog, GL_VALIDATE_STATUS, &status);
+	if (status == 0) {
+			return NO;
+	}
+	
+	return YES;
 }
 
 - (BOOL)loadShaders
 {
-    GLuint vertShader, fragShader;
-    NSString *vertShaderPathname, *fragShaderPathname;
-    
-    // Create shader program.
-    _program = glCreateProgram();
-    
-    // Create and compile vertex shader.
-    vertShaderPathname = [[NSBundle mainBundle] pathForResource:@"AntialiasedShader.vsh" ofType:nil];
-    if (![self compileShader:&vertShader type:GL_VERTEX_SHADER file:vertShaderPathname]) {
-        NSLog(@"Failed to compile vertex shader");
-        return NO;
-    }
-    
-    // Create and compile fragment shader.
-    fragShaderPathname = [[NSBundle mainBundle] pathForResource:@"AntialiasedShader.fsh" ofType:nil];
-    if (![self compileShader:&fragShader type:GL_FRAGMENT_SHADER file:fragShaderPathname]) {
-        NSLog(@"Failed to compile fragment shader");
-        return NO;
-    }
-    
-    // Attach vertex shader to program.
-    glAttachShader(_program, vertShader);
-    
-    // Attach fragment shader to program.
-    glAttachShader(_program, fragShader);
-    
-    // Bind attribute locations.
-    // This needs to be done prior to linking.
-    glBindAttribLocation(_program, ATTRIB_VERTEX, "position");
-    glBindAttribLocation(_program, ATTRIB_TEXCOORD, "texcoord");
-    glBindAttribLocation(_program, ATTRIB_COLOR, "color");
-    
-    // Link program.
-    if (![self linkProgram:_program]) {
-        NSLog(@"Failed to link program: %d", _program);
-        
-        if (vertShader) {
-            glDeleteShader(vertShader);
-            vertShader = 0;
-        }
-        if (fragShader) {
-            glDeleteShader(fragShader);
-            fragShader = 0;
-        }
-        if (_program) {
-            glDeleteProgram(_program);
-            _program = 0;
-        }
-        
-        return NO;
-    }
-    
-    // Get uniform locations.
-    uniforms[UNIFORM_PROJECTION_MATRIX] = glGetUniformLocation(_program, "projection");
+	NSAssert([EAGLContext currentContext], @"No GL context set!");
+	
+	GLuint vertShader, fragShader;
+	NSString *vertShaderPathname, *fragShaderPathname;
+	
+	// Create shader program.
+	_program = glCreateProgram();
+	
+	// Create and compile vertex shader.
+	vertShaderPathname = [[NSBundle mainBundle] pathForResource:@"AntialiasedShader.vsh" ofType:nil];
+	if (![self compileShader:&vertShader type:GL_VERTEX_SHADER file:vertShaderPathname]) {
+			NSLog(@"Failed to compile vertex shader");
+			return NO;
+	}
+	
+	// Create and compile fragment shader.
+	fragShaderPathname = [[NSBundle mainBundle] pathForResource:@"AntialiasedShader.fsh" ofType:nil];
+	if (![self compileShader:&fragShader type:GL_FRAGMENT_SHADER file:fragShaderPathname]) {
+			NSLog(@"Failed to compile fragment shader");
+			return NO;
+	}
+	
+	// Attach vertex shader to program.
+	glAttachShader(_program, vertShader);
+	
+	// Attach fragment shader to program.
+	glAttachShader(_program, fragShader);
+	
+	// Bind attribute locations.
+	// This needs to be done prior to linking.
+	glBindAttribLocation(_program, ATTRIB_VERTEX, "position");
+	glBindAttribLocation(_program, ATTRIB_TEXCOORD, "texcoord");
+	glBindAttribLocation(_program, ATTRIB_COLOR, "color");
+	
+	// Link program.
+	if (![self linkProgram:_program]) {
+			NSLog(@"Failed to link program: %d", _program);
+			
+			if (vertShader) {
+					glDeleteShader(vertShader);
+					vertShader = 0;
+			}
+			if (fragShader) {
+					glDeleteShader(fragShader);
+					fragShader = 0;
+			}
+			if (_program) {
+					glDeleteProgram(_program);
+					_program = 0;
+			}
+			
+			return NO;
+	}
+	
+	// Get uniform locations.
+	uniforms[UNIFORM_PROJECTION_MATRIX] = glGetUniformLocation(_program, "projection");
 //    uniforms[UNIFORM_TEXTURE] = glGetUniformLocation(_program, "texture");
-    
-    // Release vertex and fragment shaders.
-    if (vertShader) {
-        glDetachShader(_program, vertShader);
-        glDeleteShader(vertShader);
-    }
-    if (fragShader) {
-        glDetachShader(_program, fragShader);
-        glDeleteShader(fragShader);
-    }
-    
-    return YES;
+	
+	// Release vertex and fragment shaders.
+	if (vertShader) {
+			glDetachShader(_program, vertShader);
+			glDeleteShader(vertShader);
+	}
+	if (fragShader) {
+			glDetachShader(_program, fragShader);
+			glDeleteShader(fragShader);
+	}
+	
+	return YES;
 }
 
 //MARK: Memory
@@ -215,10 +222,6 @@ enum {
 		_bufferCapacity += MAX(_bufferCapacity, count);
 		_buffer = realloc(_buffer, _bufferCapacity*sizeof(Vertex));
 		
-		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*_bufferCapacity, NULL, GL_STREAM_DRAW);
-		
-		PRINT_GL_ERRORS();
 //		NSLog(@"Resized vertex buffer to %d", _bufferCapacity);
 	}
 }
@@ -226,6 +229,7 @@ enum {
 -(id)initWithProjection:(Transform)projection;
 {
 	if((self = [super init])){
+		NSAssert([EAGLContext currentContext], @"No GL context set!");
     [self loadShaders];
 		
 		glUseProgram(_program);
@@ -281,6 +285,8 @@ enum {
 
 -(void)dealloc
 {
+	NSAssert([EAGLContext currentContext], @"No GL context set!");
+	
 	free(_buffer); _buffer = 0;
 	
 	glDeleteProgram(_program); _program = 0;
@@ -436,11 +442,16 @@ enum {
 
 -(void)render
 {
-	PRINT_GL_ERRORS();
+	NSAssert([EAGLContext currentContext], @"No GL context set!");
+	
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	PRINT_GL_ERRORS();
+	
+	if(_bufferCapacity != _vboCapacity){
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*_bufferCapacity, NULL, GL_STREAM_DRAW);
+		_vboCapacity = _bufferCapacity;
+	}
+	
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex)*_bufferCount, _buffer);
-	PRINT_GL_ERRORS();
 		
 //	glActiveTexture(GL_TEXTURE0);
 //	glBindTexture(GL_TEXTURE_2D, _texture);
@@ -448,28 +459,8 @@ enum {
 	glUseProgram(_program);
 	glBindVertexArrayOES(_vao);
 	glDrawArrays(GL_TRIANGLES, 0, _bufferCount);
-	PRINT_GL_ERRORS();
 	
 	_bufferCount = 0;
-	PRINT_GL_ERRORS();
-}
-
-// TODO make a second VBO on a renderer instead of separate ones?
--(void)prepareStatic;
-{
-	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*_bufferCount, _buffer, GL_STATIC_DRAW);
-	PRINT_GL_ERRORS();
-}
-
--(void)renderStatic;
-{
-//	glActiveTexture(GL_TEXTURE0);
-//	glBindTexture(GL_TEXTURE_2D, _texture);
-	
-	glUseProgram(_program);
-	glBindVertexArrayOES(_vao);
-	glDrawArrays(GL_TRIANGLES, 0, _bufferCount);
 	PRINT_GL_ERRORS();
 }
 
