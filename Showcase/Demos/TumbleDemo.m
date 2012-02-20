@@ -56,8 +56,8 @@
 	shape.layers = NOT_GRABABLE_MASK;
 	
 	// Add the bricks.
-	for(int i=0; i<10; i++){
-		for(int j=0; j<10; j++){
+	for(int i=0; i < 10; i++){
+		for(int j=0; j < 10; j++){
 			cpFloat width = 20;
 			cpFloat height = 20;
 			

@@ -40,7 +40,7 @@
 	int rows = [self numberForA4:10 A5:11];
 	
 	// Add the dominoes.
-	for(int i=0; i<rows; i++){
+	for(int i=0; i < rows; i++){
 		for(int j=0; j<(rows - i); j++){
 			cpVect offset = cpv((j - (rows - 1 - i)*0.5f)*1.5f*HEIGHT, (i + 0.5f)*(HEIGHT + 2*WIDTH) - WIDTH - 240);
 			[self addDomino:offset flipped:FALSE];

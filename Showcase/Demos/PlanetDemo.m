@@ -69,7 +69,7 @@ rand_pos()
 	_planetBody.angVel = -4.0f;
 	
 	NSUInteger count = [self numberForA4:250 A5:400];
-	for(int i=0; i<count; i++) [self addBox];
+	for(int i=0; i < count; i++) [self addBox];
 	
 	ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:_planetBody radius:70.0f offset:cpvzero]];
 	shape.elasticity = 1.0f;

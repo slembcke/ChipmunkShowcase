@@ -82,7 +82,7 @@ static NSString *GROUP = @"group";
 	cpFloat side = 30.0f;
 	
 	int num_legs = 2;
-	for(int i=0; i<num_legs; i++){
+	for(int i=0; i < num_legs; i++){
 		[self makeLeg:side offset: offset chassis:chassis crank:crank anchor:cpvmult(cpvforangle((cpFloat)(2*i+0)/(cpFloat)num_legs*M_PI), crank_radius)];
 		[self makeLeg:side offset:-offset chassis:chassis crank:crank anchor:cpvmult(cpvforangle((cpFloat)(2*i+1)/(cpFloat)num_legs*M_PI), crank_radius)];
 	}

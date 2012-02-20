@@ -55,8 +55,8 @@ get_pixel(int x, int y)
 	
 	cpSpaceUseSpatialHash(self.space.space, 4.0, 10000);
 	
-	for(int y=0; y<image_height; y++){
-		for(int x=0; x<image_width; x++){
+	for(int y=0; y < image_height; y++){
+		for(int x=0; x < image_width; x++){
 			if(!get_pixel(x, y)) continue;
 			
 			[self addBall:cpv(4*(x - image_width/2 + 0.05*frand()), 4*(image_height/2 - y + 0.05*frand()))];
@@ -96,10 +96,10 @@ RenderDot(cpBody *body, struct RenderContext *context)
 		// This is using the private API to efficiently render the collision points.
 		// Don't do this in a real game!
 		cpArray *arbiters = self.space.space->arbiters;
-		for(int i=0; i<arbiters->num; i++){
+		for(int i=0; i < arbiters->num; i++){
 			cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
 			
-			for(int i=0; i<arb->numContacts; i++){
+			for(int i=0; i < arb->numContacts; i++){
 				[renderer drawDot:arb->contacts[i].p radius:2.0 color:CONTACT_COLOR];
 			}
 		}

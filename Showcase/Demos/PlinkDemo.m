@@ -22,9 +22,9 @@
 	};
 
 	// Create the static triangles.
-	for(int j=0; j<6; j++){
+	for(int j=0; j < 6; j++){
 		int columns = (j%2 == 0 ? 9 : 8);
-		for(int i=0; i<columns; i++){
+		for(int i=0; i < columns; i++){
 			cpFloat stagger = (j%2)*40;
 			cpVect offset = cpv(i*80 - 320 + stagger, j*70 - 240);
 			ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape polyWithBody:self.staticBody count:3 verts:verts offset:offset]];
@@ -46,7 +46,7 @@
 		cpFloat size = 7.0;
 		
 		cpVect pentagon[5];
-		for(int i=0; i<5; i++){
+		for(int i=0; i < 5; i++){
 			cpFloat angle = -2*M_PI*i/5.0;
 			pentagon[i] = cpv(size*cos(angle), size*sin(angle));
 		}

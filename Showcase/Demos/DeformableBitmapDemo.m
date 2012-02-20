@@ -53,7 +53,7 @@
 	CGContextSetGrayFillColor(_sampler.context, 0.0, 1.0);
 	CGContextFillRect(_sampler.context, CGRectMake(-160.0, -20.0, 320.0, 240.0));
 	
-	for(int i=0; i<150; i++){
+	for(int i=0; i < 150; i++){
 		cpFloat radius = 10.0f;
 		cpFloat mass = 1.0;
 		

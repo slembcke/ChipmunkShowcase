@@ -20,7 +20,7 @@
 	
 	NSUInteger height = [self numberForA4:14 A5:20];
 	
-	for(int i=0; i<height; i++){
+	for(int i=0; i < height; i++){
 		for(int j=0; j<=i; j++){
 			cpFloat size = 20.0;
 			cpFloat mass = 3.0;

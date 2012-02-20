@@ -43,10 +43,10 @@ BreakableJointPostSolve(cpConstraint *joint, cpSpace *space)
 	cpFloat spacing = width*0.3;
 	
 	// Add lots of boxes.
-	for(int i=0; i<CHAIN_COUNT; i++){
+	for(int i=0; i < CHAIN_COUNT; i++){
 		ChipmunkBody *prev = nil;
 		
-		for(int j=0; j<LINK_COUNT; j++){
+		for(int j=0; j < LINK_COUNT; j++){
 			cpVect pos = cpv(40*(i - (CHAIN_COUNT - 1)/2.0), 240 - (j + 0.5)*height - (j + 1)*spacing);
 			
 			ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForBox(mass, width, height)]];
