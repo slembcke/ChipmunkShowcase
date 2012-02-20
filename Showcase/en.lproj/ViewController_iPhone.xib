@@ -284,9 +284,8 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="776453768"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MQA</bytes>
-							<reference key="NSCustomColorSpace" ref="524721671"/>
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4yMDM5MjE1Njg2IDAuMjQzMTM3MjU0OSAwLjI4MjM1Mjk0MTIAA</bytes>
 						</object>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
