@@ -441,7 +441,10 @@ enum DemoReveal {
 
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return interfaceOrientation == UIInterfaceOrientationLandscapeRight;
+	return (
+		interfaceOrientation == UIInterfaceOrientationLandscapeRight ||
+		interfaceOrientation == UIInterfaceOrientationLandscapeLeft
+	);
 }
 
 //MARK: GLView and GLViewController delegate methods
@@ -454,8 +457,9 @@ enum DemoReveal {
 	NSTimeInterval dt = _displayLink.frameInterval*_displayLink.duration;
 	[_demo update:dt];
 	
+	// TODO need to sync the threads better somehow.
+	// dispatch_sync() if too many frames skipped?
 	if(!_glView.isRendering){
-		
 		[_glView display:^{
 			glClearColor(1.0, 1.0, 1.0, 1.0);
 			glClear(GL_COLOR_BUFFER_BIT);
@@ -463,9 +467,10 @@ enum DemoReveal {
 			[_demo render:_renderer showContacts:_drawContacts.on];
 			[_renderer render];
 			PRINT_GL_ERRORS();
+			_renderTicks++;
 		}];
-		
-		_renderTicks++;
+	} else {
+		//NSLog(@"Dropped a frame");
 	}
 }
 

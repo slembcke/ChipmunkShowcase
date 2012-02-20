@@ -41,7 +41,6 @@
 		D3E5458C14E8C48B00434A5A /* Icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = D3E5458B14E8C48B00434A5A /* Icon114.png */; };
 		D3E5458E14E8C6DA00434A5A /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D3E5458D14E8C6DA00434A5A /* Default-Landscape~ipad.png */; };
 		D3E5459A14E8F2E800434A5A /* MultiGrabDemo.html in Resources */ = {isa = PBXBuildFile; fileRef = D3E5459914E8F2E800434A5A /* MultiGrabDemo.html */; };
-		D3EB7A1114F03F7800C1AD84 /* GLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3EB7A1014F03F7800C1AD84 /* GLViewController.m */; };
 		D3EB7A1614F040CE00C1AD84 /* GLView.m in Sources */ = {isa = PBXBuildFile; fileRef = D3EB7A1514F040CE00C1AD84 /* GLView.m */; };
 		D3FB395B148F353600E0BA9E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395A148F353600E0BA9E /* UIKit.framework */; };
 		D3FB395D148F353600E0BA9E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395C148F353600E0BA9E /* Foundation.framework */; };
@@ -136,8 +135,6 @@
 		D3E5458B14E8C48B00434A5A /* Icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon114.png; path = ../Icon114.png; sourceTree = "<group>"; };
 		D3E5458D14E8C6DA00434A5A /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		D3E5459914E8F2E800434A5A /* MultiGrabDemo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = MultiGrabDemo.html; sourceTree = "<group>"; };
-		D3EB7A0F14F03F7800C1AD84 /* GLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLViewController.h; sourceTree = "<group>"; };
-		D3EB7A1014F03F7800C1AD84 /* GLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLViewController.m; sourceTree = "<group>"; };
 		D3EB7A1414F040CE00C1AD84 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLView.h; sourceTree = "<group>"; };
 		D3EB7A1514F040CE00C1AD84 /* GLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLView.m; sourceTree = "<group>"; };
 		D3FB3956148F353600E0BA9E /* ChipmunkShowcase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChipmunkShowcase.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -314,8 +311,6 @@
 		D3EB7A1314F0405C00C1AD84 /* ThreadedGLView */ = {
 			isa = PBXGroup;
 			children = (
-				D3EB7A0F14F03F7800C1AD84 /* GLViewController.h */,
-				D3EB7A1014F03F7800C1AD84 /* GLViewController.m */,
 				D3EB7A1414F040CE00C1AD84 /* GLView.h */,
 				D3EB7A1514F040CE00C1AD84 /* GLView.m */,
 			);
@@ -492,7 +487,6 @@
 				D311931514E265C000B659B3 /* BreakableChainsDemo.m in Sources */,
 				D311931714E2699F00B659B3 /* CraneDemo.m in Sources */,
 				D321D1D114E8F8C400DE2A53 /* DeformableBitmapDemo.m in Sources */,
-				D3EB7A1114F03F7800C1AD84 /* GLViewController.m in Sources */,
 				D3EB7A1614F040CE00C1AD84 /* GLView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

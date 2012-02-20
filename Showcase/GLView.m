@@ -21,23 +21,23 @@
 
 @synthesize isRendering = _isRendering;
 
-@synthesize delegate = _delegate;
 @synthesize context = _context;
 
 @synthesize drawableWidth = _drawableWidth, drawableHeight = _drawableHeight;
 
 -(void)runInRenderQueue:(void (^)(void))block
 {
-	[EAGLContext setCurrentContext:_context];
-	
-	block();
-	
-	GLenum err = 0;
-	for(err = glGetError(); err; err = glGetError()) NSLog(@"GLError0x%04X", err);
-	NSAssert(err == GL_NO_ERROR, @"GL Errors!");
-	
-	[EAGLContext setCurrentContext:nil];
-//	dispatch_async(_renderQueue, block);
+	dispatch_async(_renderQueue, ^{
+		[EAGLContext setCurrentContext:_context];
+		
+		block();
+		
+		GLenum err = 0;
+		for(err = glGetError(); err; err = glGetError()) NSLog(@"GLError0x%04X", err);
+		NSAssert(err == GL_NO_ERROR, @"GL Errors!");
+		
+		[EAGLContext setCurrentContext:nil];
+	});
 }
 
 //MARK: Framebuffer
@@ -108,6 +108,8 @@
 			kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, // TODO 565 instead?
 			nil
 		];
+		
+		layer.contentsScale = [UIScreen mainScreen].scale;
 		
 		_renderQueue = dispatch_queue_create("net.chipmunk-physics.showcase-renderqueue", NULL);
 	}

@@ -42,13 +42,13 @@ NSArray *DEMO_CLASS_NAMES = nil;
 +(void)initialize
 {
 	DEMO_CLASS_NAMES = [NSArray arrayWithObjects:
+		@"PyramidToppleDemo",
+		@"PlanetDemo",
 		@"BouncyTerrainDemo",
 		@"DeformableBitmapDemo",
 		@"TheoJansenDemo",
 		@"CraneDemo",
-		@"PlanetDemo",
 		@"PyramidStackDemo",
-		@"PyramidToppleDemo",
 		@"BreakableChainsDemo",
 		@"LogoSmashDemo",
 		@"PlinkDemo",
