@@ -440,10 +440,7 @@ enum DemoReveal {
 
 -(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return (
-		interfaceOrientation == UIInterfaceOrientationLandscapeRight ||
-		interfaceOrientation == UIInterfaceOrientationLandscapeLeft
-	);
+	return interfaceOrientation == UIInterfaceOrientationLandscapeRight;
 }
 
 #define MAX_DT (1.0/15.0)
