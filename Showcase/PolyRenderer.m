@@ -436,8 +436,11 @@ enum {
 
 -(void)render
 {
+	PRINT_GL_ERRORS();
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	PRINT_GL_ERRORS();
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex)*_bufferCount, _buffer);
+	PRINT_GL_ERRORS();
 		
 //	glActiveTexture(GL_TEXTURE0);
 //	glBindTexture(GL_TEXTURE_2D, _texture);
@@ -445,6 +448,7 @@ enum {
 	glUseProgram(_program);
 	glBindVertexArrayOES(_vao);
 	glDrawArrays(GL_TRIANGLES, 0, _bufferCount);
+	PRINT_GL_ERRORS();
 	
 	_bufferCount = 0;
 	PRINT_GL_ERRORS();

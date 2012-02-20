@@ -30,12 +30,19 @@
 }
 */
 
-- (void)viewDidLoad
+- (void)viewWillAppear:(BOOL)animated
 {
 	[super viewDidLoad];
 	
 	_displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(update:)];
+	_displayLink.frameInterval = 5;
 	[_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+	[_displayLink invalidate];
+	_displayLink = nil;
 }
 
 - (void)viewDidUnload
@@ -48,13 +55,18 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft);
+}
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+	NSLog(@"rotating");
 }
 
 -(void)update:(CADisplayLink *)sender;
 {
-	[_delegate glViewControllerUpdate:self];
-	[(GLView *)self.view display];
+//	[_delegate glViewControllerUpdate:self];
+//	[(GLView *)self.view display];
 }
 
 -(void)glView:(GLView *)view drawInRect:(CGRect)rect

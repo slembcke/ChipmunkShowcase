@@ -79,11 +79,10 @@ enum DemoReveal {
 
 @interface ViewController(){
 	ShowcaseDemo *_demo;
-	
-	EAGLContext *_context;
 	PolyRenderer *_renderer;
 	
-	IBOutlet GLViewController *_glViewController;
+	IBOutlet ShowcaseGLView *_glView;
+	CADisplayLink *_displayLink;
 	
 	IBOutlet UILabel *_demoLabel;
 	
@@ -119,11 +118,7 @@ enum DemoReveal {
 @implementation ViewController
 
 @synthesize demoReveal = _demoReveal;
-
--(ShowcaseGLView *)glView
-{
-	return (ShowcaseGLView *)[_glViewController view];
-}
+@synthesize glView = _glView;
 
 -(id)initWithDemoClassName:(NSString *)demo
 {
@@ -313,8 +308,6 @@ enum DemoReveal {
 -(void)setupGL
 {
 	[self.glView runInRenderQueue:^{
-		[EAGLContext setCurrentContext:_context];
-
 		GLfloat clear = 1.0;
 		glClearColor(clear, clear, clear, 1.0);
 
@@ -333,12 +326,7 @@ enum DemoReveal {
 {
 	[self.glView runInRenderQueue:^{
 		NSLog(@"Tearing down GL");
-		[EAGLContext setCurrentContext:_context];
-		
 		_renderer = nil;
-
-		_context = nil;
-		[EAGLContext setCurrentContext:nil];
 	}];
 }
 
@@ -370,13 +358,13 @@ enum DemoReveal {
 	[self timeStep:_timeStepSlider];
 	[self iterations:_iterationsSlider];
 	
-	_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-	NSAssert(_context, @"Failed to create ES context");
+	EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+	NSAssert(context, @"Failed to create ES context");
 	
 //	_glViewController.preferredFramesPerSecond = 60.0;
 	[self.view insertSubview:self.glView belowSubview:_demoLabel];
 //	[self.view addSubview:self.glView];
-	self.glView.context = _context;
+	self.glView.context = context;
 	self.glView.touchesDelegate = _demo;
 	
 	// Add a nice shadow.
@@ -429,12 +417,19 @@ enum DemoReveal {
 -(void)viewDidAppear:(BOOL)animated
 {
 	_statsTimer = [NSTimer scheduledTimerWithTimeInterval:STAT_DELAY target:self selector:@selector(updateStats:) userInfo:[NSDate date] repeats:FALSE];
+	
+	_displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(tick:)];
+	_displayLink.frameInterval = 1;
+	[_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
 	[_statsTimer invalidate];
 	_statsTimer = nil;
+	
+	[_displayLink invalidate];
+	_displayLink = nil;
 }
 
 -(void)dealloc
@@ -453,23 +448,25 @@ enum DemoReveal {
 
 #define MAX_DT (1.0/15.0)
 
--(void)glViewControllerUpdate:(GLViewController *)controller
+-(void)tick:(CADisplayLink *)displayLink
 {
 //	NSTimeInterval dt = MIN(_glViewController.timeSinceLastUpdate, MAX_DT);
-	NSTimeInterval dt = 1.0/_glViewController.preferredFramesPerSecond;
+	NSTimeInterval dt = _displayLink.frameInterval*_displayLink.duration;
 	[_demo update:dt];
-}
-
--(void)glView:(GLView *)view drawInRect:(CGRect)rect
-{
-	glClearColor(1.0, 0.0, 0.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT);
 	
-	[_demo render:_renderer showContacts:_drawContacts.on];
-	[_renderer render];
-	
-	_renderTicks++;
-	PRINT_GL_ERRORS();
+	if(!_glView.isRendering){
+		
+		[_glView display:^{
+			glClearColor(1.0, 1.0, 1.0, 1.0);
+			glClear(GL_COLOR_BUFFER_BIT);
+			
+			[_demo render:_renderer showContacts:_drawContacts.on];
+			[_renderer render];
+			PRINT_GL_ERRORS();
+		}];
+		
+		_renderTicks++;
+	}
 }
 
 @end

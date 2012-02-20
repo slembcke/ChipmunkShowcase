@@ -21,6 +21,8 @@
 
 -(void)runInRenderQueue:(void (^)(void))block;
 
+@property(nonatomic, readonly) BOOL isRendering;
+
 @property (nonatomic, assign) IBOutlet id <GLViewDelegate> delegate;
 
 @property (nonatomic, retain) EAGLContext *context;
@@ -39,7 +41,7 @@
 
 //@property (nonatomic) BOOL enableSetNeedsDisplay;
 
-- (void)display;
+-(void)display:(void (^)(void))block;
 
 @end
 

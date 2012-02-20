@@ -19,6 +19,8 @@
 	dispatch_queue_t _renderQueue;
 }
 
+@synthesize isRendering = _isRendering;
+
 @synthesize delegate = _delegate;
 @synthesize context = _context;
 
@@ -26,7 +28,15 @@
 
 -(void)runInRenderQueue:(void (^)(void))block
 {
+	[EAGLContext setCurrentContext:_context];
+	
 	block();
+	
+	GLenum err = 0;
+	for(err = glGetError(); err; err = glGetError()) NSLog(@"GLError0x%04X", err);
+	NSAssert(err == GL_NO_ERROR, @"GL Errors!");
+	
+	[EAGLContext setCurrentContext:nil];
 //	dispatch_async(_renderQueue, block);
 }
 
@@ -47,6 +57,9 @@
 	glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &_drawableHeight);
 	
 	NSAssert(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, @"Framebuffer creation failed 0x%x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
+	NSLog(@"New framebuffer: %dx%d", _drawableWidth, _drawableHeight);
+	
+	glViewport(0, 0, _drawableWidth, _drawableHeight);
 	
 	return YES;
 }
@@ -63,7 +76,6 @@
 - (void)layoutSubviews
 {
 	[self runInRenderQueue:^{
-		[EAGLContext setCurrentContext:_context];
 		[self destroyFramebuffer];
 		[self createFramebuffer];
 //		[self drawView];
@@ -106,9 +118,7 @@
 -(void)dealloc
 {
 	[self runInRenderQueue:^{
-		[EAGLContext setCurrentContext:_context];
 		[self destroyFramebuffer];
-		[EAGLContext setCurrentContext:nil];
 	}];
 	
 	dispatch_release(_renderQueue);
@@ -116,17 +126,16 @@
 
 //MARK: Render methods
 
--(void)display
+-(void)display:(void (^)(void))block;
 {
 	// Only queue one frame to render at a time.
 	if(_isRendering) return;
 	
 	_isRendering = TRUE;
 	[self runInRenderQueue:^{
-		[EAGLContext setCurrentContext:_context];
 		glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
 		
-		[_delegate glView:self drawInRect:self.bounds];
+		block();
 		
 		glBindRenderbuffer(GL_RENDERBUFFER, _renderbuffer);
 		[_context presentRenderbuffer:GL_RENDERBUFFER];
