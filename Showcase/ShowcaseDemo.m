@@ -278,7 +278,7 @@ ColorFromHash(cpHashValue hash, float alpha)
 {
 	if((self = [super init])){
 		_space = [[ChipmunkHastySpace alloc] init];
-		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:self.space withSmoothing:cpfpow(0.8, 60) withGrabForce:1e5];
+		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:self.space withSmoothing:cpfpow(0.3, 60) withGrabForce:1e5];
 		_multiGrab.layers = GRABABLE_MASK_BIT;
 		
 		_timeScale = 1.0;
