@@ -109,7 +109,7 @@
 		layer.opaque = YES;
 		layer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
 			[NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking,
-			kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, // TODO 565 instead?
+			kEAGLColorFormatRGB565, kEAGLDrawablePropertyColorFormat,
 			nil
 		];
 		

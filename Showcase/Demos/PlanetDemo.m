@@ -26,11 +26,11 @@ PlanetGravityVelocityFunc(cpBody *body, cpVect gravity, cpFloat damping, cpFloat
 }
 
 static cpVect
-rand_pos(cpFloat radius)
+rand_pos()
 {
 	cpVect v;
 	do {
-		v = cpv(frand()*(640 - 2*radius) - (320 - radius), frand()*(480 - 2*radius) - (240 - radius));
+		v = cpvmult(frand_unit_circle(), 500);
 	} while(cpvlength(v) < 85.0f);
 	
 	return v;
@@ -38,11 +38,10 @@ rand_pos(cpFloat radius)
 
 -(void)addBox
 {
-	const cpFloat size = 20.0f;
+	const cpFloat size = 15.0f;
 	const cpFloat mass = 1.0f;
 	
-	cpFloat radius = cpvlength(cpv(size, size));
-	cpVect pos = rand_pos(radius);
+	cpVect pos = rand_pos();
 	
 	ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForBox(mass, size, size)]];
 	body.body->velocity_func = PlanetGravityVelocityFunc;
@@ -51,7 +50,7 @@ rand_pos(cpFloat radius)
 	// Set the box's velocity to put it into a circular orbit from its
 	// starting position.
 	cpFloat r = cpvlength(pos);
-	cpFloat v = 0.7*cpfsqrt(gravityStrength/r)/r;
+	cpFloat v = 0.95*cpfsqrt(gravityStrength/r)/r;
 	body.vel = cpvmult(cpvperp(pos), v);
 	
 	// Set the box's angular velocity to match its orbital period and
@@ -67,9 +66,10 @@ rand_pos(cpFloat radius)
 -(void)setup
 {
 	_planetBody = [self.space add:[ChipmunkBody bodyWithMass:INFINITY andMoment:INFINITY]];
-	_planetBody.angVel = 3.0f;
+	_planetBody.angVel = -4.0f;
 	
-	for(int i=0; i<90; i++) [self addBox];
+	NSUInteger count = [self numberForA4:250 A5:400];
+	for(int i=0; i<count; i++) [self addBox];
 	
 	ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:_planetBody radius:70.0f offset:cpvzero]];
 	shape.elasticity = 1.0f;
