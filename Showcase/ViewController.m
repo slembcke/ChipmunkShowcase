@@ -1,9 +1,10 @@
+#import <QuartzCore/QuartzCore.h>
+
 #define CP_ALLOW_PRIVATE_ACCESS
 #import "ViewController.h"
 
-#import <QuartzCore/QuartzCore.h>
-
 #import "AppDelegate.h"
+#import "SourceViewController.h"
 #import "ShowcaseDemo.h"
 #import "PolyRenderer.h"
 
@@ -205,30 +206,13 @@ enum DemoReveal {
 	} else if(self.demoReveal == DEMO_REVEAL_RIGHT){
 		self.demoReveal = DEMO_REVEAL_NONE;
 	}
-	
-//		[CATransaction begin]; {
-//			[self.view addSubview:[[UIImageView alloc] initWithImage:self.glView.snapshot]];
-//			[self.glView removeFromSuperview];
-//		}; [CATransaction commit];
-//		
-//		[(AppDelegate *)[UIApplication sharedApplication].delegate nextDemo];
 }
 
 -(void)swipeUp
 {
-//	UIWebView *webView = [[UIWebView alloc] init];
-//	[webView loadHTMLString:[NSString stringWithContentsOfFile:@"MultiGrabDemo.html" usedEncoding:nil error:nil] baseURL:nil];
-//	
-//	UIViewController *webViewController = [[UIViewController alloc] init];
-//	webViewController.view = webView;
-//	
-//	[self presentViewController:webViewController animated:TRUE completion:^{}];
+	SourceViewController *controller = [[SourceViewController alloc] initWithDemoName:NSStringFromClass([_demo class])];
+	[self presentViewController:controller animated:TRUE completion:^{}];
 }
-
-//-(IBAction)framerate:(UISwitch *)toggle;
-//{
-//	_glViewController.preferredFramesPerSecond = (toggle.on ? 30 : 60);
-//}
 
 -(IBAction)timeScale:(UISlider *)slider
 {
