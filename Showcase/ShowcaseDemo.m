@@ -90,13 +90,17 @@ ColorFromHash(cpHashValue hash, float alpha)
 
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
-	// todo, need to handle rotation somehow?
-	cpVect pos = [self.body local2world:self.offset];
+	cpVect offset = self.offset;
 	cpFloat r1 = self.radius;
 	cpFloat r2 = r1 - SHAPE_OUTLINE_WIDTH;
 	
+	Transform t = [self.body extrapolatedTransform:dt];
+	cpVect pos = t_point(t, offset);
+	cpVect end = t_point(t, cpv(offset.x, offset.y + r2));
+	
 	[renderer drawDot:pos radius:r1 color:SHAPE_OUTLINE_COLOR];
 	if(r2 > 0.0) [renderer drawDot:pos radius:r2 color:self.color];
+	[renderer drawSegmentFrom:pos to:end radius:SHAPE_OUTLINE_WIDTH color:SHAPE_OUTLINE_COLOR];
 }
 
 @end
@@ -148,6 +152,13 @@ ColorFromHash(cpHashValue hash, float alpha)
 @interface ChipmunkConstraint()
 
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
+
+@end
+
+
+@implementation ChipmunkConstraint(DemoRenderer)
+
+-(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt {}
 
 @end
 

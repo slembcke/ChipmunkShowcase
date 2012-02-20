@@ -51,7 +51,7 @@ rand_pos(cpFloat radius)
 	// Set the box's velocity to put it into a circular orbit from its
 	// starting position.
 	cpFloat r = cpvlength(pos);
-	cpFloat v = cpfsqrt(gravityStrength/r)/r;
+	cpFloat v = 0.7*cpfsqrt(gravityStrength/r)/r;
 	body.vel = cpvmult(cpvperp(pos), v);
 	
 	// Set the box's angular velocity to match its orbital period and
@@ -66,8 +66,7 @@ rand_pos(cpFloat radius)
 
 -(void)setup
 {
-	// Create a rouge body to control the planet manually.
-	_planetBody = [ChipmunkBody bodyWithMass:INFINITY andMoment:INFINITY];
+	_planetBody = [self.space add:[ChipmunkBody bodyWithMass:INFINITY andMoment:INFINITY]];
 	_planetBody.angVel = 3.0f;
 	
 	for(int i=0; i<90; i++) [self addBox];

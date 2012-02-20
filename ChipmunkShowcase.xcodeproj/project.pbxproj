@@ -133,7 +133,7 @@
 		D3E5458614E8C48300434A5A /* Icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon57.png; path = ../Icon57.png; sourceTree = "<group>"; };
 		D3E5458914E8C48700434A5A /* Icon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon72.png; path = ../Icon72.png; sourceTree = "<group>"; };
 		D3E5458B14E8C48B00434A5A /* Icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon114.png; path = ../Icon114.png; sourceTree = "<group>"; };
-		D3E5458D14E8C6DA00434A5A /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		D3E5458D14E8C6DA00434A5A /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape~ipad.png"; path = "../Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		D3E5459914E8F2E800434A5A /* MultiGrabDemo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = MultiGrabDemo.html; sourceTree = "<group>"; };
 		D3EB7A1414F040CE00C1AD84 /* GLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLView.h; sourceTree = "<group>"; };
 		D3EB7A1514F040CE00C1AD84 /* GLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLView.m; sourceTree = "<group>"; };
@@ -308,20 +308,9 @@
 			path = HTML;
 			sourceTree = SOURCE_ROOT;
 		};
-		D3EB7A1314F0405C00C1AD84 /* ThreadedGLView */ = {
-			isa = PBXGroup;
-			children = (
-				D3EB7A1414F040CE00C1AD84 /* GLView.h */,
-				D3EB7A1514F040CE00C1AD84 /* GLView.m */,
-			);
-			name = ThreadedGLView;
-			sourceTree = "<group>";
-		};
 		D3FB394B148F353600E0BA9E = {
 			isa = PBXGroup;
 			children = (
-				D321D1D314E8F9C600DE2A53 /* ImageIO.framework */,
-				D3E5458D14E8C6DA00434A5A /* Default-Landscape~ipad.png */,
 				D311931814E271DD00B659B3 /* TODO */,
 				D3FB3964148F353600E0BA9E /* Showcase */,
 				D3FB3965148F353600E0BA9E /* Supporting Files */,
@@ -342,6 +331,7 @@
 		D3FB3959148F353600E0BA9E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D321D1D314E8F9C600DE2A53 /* ImageIO.framework */,
 				D325DB3B1491970D00F1B411 /* QuartzCore.framework */,
 				D3FB395A148F353600E0BA9E /* UIKit.framework */,
 				D3FB395C148F353600E0BA9E /* Foundation.framework */,
@@ -355,9 +345,10 @@
 		D3FB3964148F353600E0BA9E /* Showcase */ = {
 			isa = PBXGroup;
 			children = (
-				D3EB7A1314F0405C00C1AD84 /* ThreadedGLView */,
 				D3FB396D148F353600E0BA9E /* AppDelegate.h */,
 				D3FB396E148F353600E0BA9E /* AppDelegate.m */,
+				D3EB7A1414F040CE00C1AD84 /* GLView.h */,
+				D3EB7A1514F040CE00C1AD84 /* GLView.m */,
 				D3FB3974148F353600E0BA9E /* ViewController.h */,
 				D3FB3975148F353600E0BA9E /* ViewController.m */,
 				D3C10FB91490944000F00AAE /* ShowcaseDemo.h */,
@@ -377,6 +368,7 @@
 				D3E5458B14E8C48B00434A5A /* Icon114.png */,
 				D3E5458914E8C48700434A5A /* Icon72.png */,
 				D3E5458614E8C48300434A5A /* Icon57.png */,
+				D3E5458D14E8C6DA00434A5A /* Default-Landscape~ipad.png */,
 				D3FB3977148F353600E0BA9E /* ViewController_iPhone.xib */,
 				D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */,
 				D3FB3966148F353600E0BA9E /* ChipmunkShowcase-Info.plist */,
