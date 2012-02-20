@@ -23,7 +23,6 @@
 
 - (id)initWithDemoName:(NSString *)demoName;
 {
-//	NSString *nib_name = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? @"ViewController_iPhone" : @"ViewController_iPad");
 	if((self = [super initWithNibName:@"SourceViewController" bundle:nil])){
 		_demoName = demoName;
 	}
