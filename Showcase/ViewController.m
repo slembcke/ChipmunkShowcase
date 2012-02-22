@@ -162,7 +162,6 @@ enum DemoReveal {
 		[[reveals objectAtIndex:demoReveal] setHidden:FALSE];
 		
 		[self.glView setUserInteractionEnabled:FALSE];
-//		_glViewController.paused = TRUE;
 		
 		[UIView animateWithDuration:SLIDE_ANIMATION_DURATION animations:^{
 			[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -182,7 +181,6 @@ enum DemoReveal {
 			if(finished){
 				[[reveals objectAtIndex:revealToHide] setHidden:TRUE];
 				[self.glView setUserInteractionEnabled:TRUE];
-//				_glViewController.paused = FALSE;
 			}
 		}];
 	}

@@ -30,11 +30,7 @@ BreakableJointPostSolve(cpConstraint *joint, cpSpace *space)
 {
 	self.space.iterations = 30;
 	
-//	cpBody *body, *staticBody = cpSpaceGetStaticBody(space);
-//	cpShape *shape;
-	
-	CGRect bounds = CGRectMake(-320, -240, 640, 480);
-	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
+	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
 	
 	cpFloat mass = 1;
 	cpFloat width = 20;

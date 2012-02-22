@@ -54,8 +54,7 @@ static NSString *GROUP = @"group";
 {
 	self.space.iterations = 20;
 	
-	CGRect bounds = CGRectMake(-320, -240, 640, 480);
-	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
+	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
 	
 	cpFloat offset = 30.0f;
 	ChipmunkShape *shape;

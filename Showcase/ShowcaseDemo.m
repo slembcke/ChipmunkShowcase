@@ -308,14 +308,26 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 	return (cpu_count > 1 ? A5 : A4);
 }
 
+-(CGRect)demoBounds
+{
+	if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+		return CGRectMake(-320, -240, 640, 480);
+	} else {
+		return CGRectMake(-360, -240, 720, 480);;
+	}
+}
+
 -(void)setup {}
 
 -(id)init
 {
 	if((self = [super init])){
 		_space = [[ChipmunkHastySpace alloc] init];
-		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:self.space withSmoothing:cpfpow(0.3, 60) withGrabForce:1e5];
+		
+		cpFloat grabForce = 1e5;
+		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:self.space withSmoothing:cpfpow(0.3, 60) withGrabForce:grabForce];
 		_multiGrab.layers = GRABABLE_MASK_BIT;
+		_multiGrab.grabFriction = grabForce*0.1;
 		
 		_timeScale = 1.0;
 		_timeStep = self.preferredTimeStep;

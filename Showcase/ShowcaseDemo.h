@@ -21,7 +21,9 @@
 @property(nonatomic, readonly) NSTimeInterval preferredTimeStep;
 @property(nonatomic, assign) NSTimeInterval timeStep;
 
+// Tune for CPU and iPhone/iPad
 -(float)numberForA4:(float)A4 A5:(float)A5;
+-(CGRect)demoBounds;
 
 -(void)update:(NSTimeInterval)dt;
 -(void)tick:(cpFloat)dt;

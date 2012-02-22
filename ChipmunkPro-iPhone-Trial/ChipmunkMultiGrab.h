@@ -7,6 +7,7 @@
 	
 	cpFloat _smoothing;
 	cpFloat _force;
+	cpFloat _grabFriction;
 	
 	cpLayers _layers;
 	cpGroup _group;
@@ -17,6 +18,10 @@
 
 /// Group used for the point query when grabbing objects
 @property(nonatomic, assign) cpGroup group;
+
+/// Amount of friction applied by the touch.
+/// Should be less than the grabForce. Defaults to 0.
+@property(nonatomic, assign) cpFloat grabFriction;
 
 /**
 	@c space is the space to grab shapes in.

@@ -48,11 +48,7 @@ static NSString *CRATE = @"CRATE";
 	self.space.gravity = cpv(0, -100);
 	self.space.damping = 0.8;
 	
-//	cpBody *staticBody = cpSpaceGetStaticBody(space);
-//	cpShape *shape;
-	
-	CGRect bounds = CGRectMake(-320, -240, 640, 480);
-	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
+	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
 	
 	// Add a body for the dolly.
 	_dollyBody = [self.space add:[ChipmunkBody bodyWithMass:10 andMoment:INFINITY]];
@@ -72,7 +68,6 @@ static NSString *CRATE = @"CRATE";
 	// Max speed of the dolly servo
 	_dollyServo.maxBias = 100;
 	// You can also change the error bias to control how it slows down.
-	//cpConstraintSetErrorBias(dollyServo, 0.2);
 	
 	
 	// Add the crane hook.

@@ -23,17 +23,25 @@ NSString *SCISSOR_GROUP = @"SCISSOR_GROUP";
 	body.angle = angle;
 	
 	ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:2.0*SCALE + THICKNESS height:THICKNESS]];
+	shape.friction = 1.0;
 	shape.group = SCISSOR_GROUP;
 	
 	return body;
 }
 
+-(void)addGripperToBody:(ChipmunkBody *)body withBB:(cpBB)bb
+{
+	ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body bb:bb]];
+	shape.friction = 1.0;
+}
+
 -(void)setup
 {
+	self.space.gravity = cpv(0, -600);
 	self.space.damping = 0.4;
+	self.space.iterations = 20;
 	
-	CGRect bounds = CGRectMake(-320, -240, 640, 480);
-	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
+	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
 	
 	ChipmunkBody *scissor1 = [self addScissorAt:cpvzero angle:0.0];
 	ChipmunkBody *scissor2 = [self addScissorAt:cpvzero angle:M_PI_2];
@@ -46,11 +54,11 @@ NSString *SCISSOR_GROUP = @"SCISSOR_GROUP";
 	[self.space add:[ChipmunkCircleShape circleWithBody:scissor2 radius:handleSize offset:cpv(-SCALE, 0)]];
 	
 	// Add grippers
-	[self.space add:[ChipmunkPolyShape boxWithBody:scissor3 bb:cpBBNew(SCALE - THICKNESS/2.0, THICKNESS/2.0, SCALE + THICKNESS/2.0, SCALE/2.0)]];
-	[self.space add:[ChipmunkPolyShape boxWithBody:scissor4 bb:cpBBNew(SCALE - THICKNESS/2.0, -SCALE/2.0, SCALE + THICKNESS/2.0, -THICKNESS/2.0)]];
+	[self addGripperToBody:scissor3 withBB:cpBBNew(SCALE - THICKNESS/2.0,  THICKNESS/2.0, SCALE + THICKNESS/2.0,  SCALE/2.0)];
+	[self addGripperToBody:scissor4 withBB:cpBBNew(SCALE - THICKNESS/2.0, -SCALE/2.0, SCALE + THICKNESS/2.0, -THICKNESS/2.0)];
 	
-	[self.space add:[ChipmunkRotaryLimitJoint rotaryLimitJointWithBodyA:scissor1 bodyB:scissor2 min:1.1 max:0.9*M_PI]];
-	[self.space add:[ChipmunkRotaryLimitJoint rotaryLimitJointWithBodyA:scissor3 bodyB:scissor4 min:1.1 max:0.9*M_PI]];
+	[self.space add:[ChipmunkRotaryLimitJoint rotaryLimitJointWithBodyA:scissor1 bodyB:scissor2 min:M_PI/2.0 max:0.8*M_PI]];
+	[self.space add:[ChipmunkRotaryLimitJoint rotaryLimitJointWithBodyA:scissor3 bodyB:scissor4 min:M_PI/2.0 max:0.8*M_PI]];
 	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:scissor1 bodyB:scissor2 pivot:scissor1.pos]];
 	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:scissor3 bodyB:scissor4 pivot:scissor3.pos]];
 	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:scissor1 bodyB:scissor4 pivot:cpv(SCALE, 0)]];
@@ -69,7 +77,7 @@ NSString *SCISSOR_GROUP = @"SCISSOR_GROUP";
 	}
 }
 
--(NSTimeInterval)fixedDt;
+-(NSTimeInterval)preferredTimeStep
 {
 	return 1.0/120.0;
 }
