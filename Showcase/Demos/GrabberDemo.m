@@ -16,7 +16,7 @@ NSString *SCISSOR_GROUP = @"SCISSOR_GROUP";
 
 -(ChipmunkBody *)addScissorAt:(cpVect)pos angle:(cpFloat)angle
 {
-	cpFloat mass = 5.0;
+	cpFloat mass = 2.0;
 	cpFloat moment = cpMomentForBox(mass, 2.0*SCALE + THICKNESS, THICKNESS);
 	ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:moment]];
 	body.pos = pos;
@@ -66,7 +66,7 @@ NSString *SCISSOR_GROUP = @"SCISSOR_GROUP";
 	
 	{
 		cpFloat size = SCALE - THICKNESS;
-		cpFloat mass = 10.0f;
+		cpFloat mass = 4.0f;
 		
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForBox(mass, size, size)]];
 		body.pos = cpv(-200, 0);
