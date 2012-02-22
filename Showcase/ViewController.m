@@ -259,7 +259,12 @@ enum DemoReveal {
 	NSUInteger activeShapes = cpSpatialIndexCount(space->activeShapes);
 	NSUInteger staticShapes = activeShapes + cpSpatialIndexCount(space->staticShapes);
 	NSUInteger constraints = space->constraints->num;
-	NSUInteger contacts = space->arbiters->num;
+	
+	NSUInteger contacts = 0;
+	cpArray *arbiters = space->arbiters;
+	for(int i=0; i<arbiters->num; i++){
+		contacts += ((cpArbiter *)arbiters->arr[i])->numContacts;
+	}
 	
 	float duration = -[(NSDate *)[timer userInfo] timeIntervalSinceNow];
 	float physics = (_demo.ticks - _physicsTicks)/duration;
