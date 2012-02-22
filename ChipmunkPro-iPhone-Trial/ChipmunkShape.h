@@ -173,11 +173,17 @@
 /// Create an autoreleased box shape centered on the center of gravity.
 + (id)boxWithBody:(ChipmunkBody *)body width:(cpFloat)width height:(cpFloat)height;
 
+/// Create an autoreleased box shape with the given bounding box in body local coordinates.
++ (id)boxWithBody:(ChipmunkBody *)body bb:(cpBB)bb;
+
 /// Initialize a polygon shape from the given vertex and offset from the center of gravity.
 - (id)initWithBody:(ChipmunkBody *)body count:(int)count verts:(cpVect *)verts offset:(cpVect)offset;
 
 /// Initialize a box shape centered on the center of gravity.
 - (id)initBoxWithBody:(ChipmunkBody *)body width:(cpFloat)width height:(cpFloat)height;
+
+/// Initialize a box shape with the given bounding box in body local coordinates.
+- (id)initBoxWithBody:(ChipmunkBody *)body bb:(cpBB)bb;
 
 /// The number of vertexes in this polygon.
 @property (readonly) int count;

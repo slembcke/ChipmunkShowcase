@@ -42,7 +42,7 @@ struct cpSpace;
 */
 @property cpFloat sleepTimeThreshold;
 
-/*
+/**
 	Amount of encouraged penetration between colliding shapes..
 	Used to reduce oscillating contacts and keep the collision cache warm.
 	Defaults to 0.1. If you have poor simulation quality,
@@ -50,24 +50,25 @@ struct cpSpace;
 */
 @property cpFloat collisionSlop;
 
-/*
+/**
 	Determines how fast overlapping shapes are pushed apart.
 	Expressed as a fraction of the error remaining after each second.
 	Defaults to pow(1.0 - 0.1, 60.0) meaning that Chipmunk fixes 10% of overlap each frame at 60Hz.
 */
 @property cpFloat collisionBias;
 
-/*
+/**
 	Number of frames that contact information should persist.
 	Defaults to 3. There is probably never a reason to change this value.
 */
 @property cpTimestamp collisionPersistence;
 
-/*
-	Rebuild the contact graph during each step. Must be enabled to use the cpBodyEachArbiter() function.
-	Disabled by default for a small performance boost. Enabled implicitly when the sleeping feature is enabled.
+/**
+	@deprecated 6.0.4
+	Does nothing, and is a no-op. The contact graph is always enabled now.
 */
-@property bool enableContactGraph;
+@property bool enableContactGraph
+__attribute__((__deprecated__));
 
 /// Returns a pointer to the underlying cpSpace C struct
 @property (readonly) cpSpace *space;
