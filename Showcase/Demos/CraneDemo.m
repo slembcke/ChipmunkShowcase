@@ -31,12 +31,10 @@ static NSString *CRATE = @"CRATE";
 		// to the collision handler this function was defined for
 		CHIPMUNK_ARBITER_GET_BODIES(arb, hook, crate);
 		
-		// additions and removals can't be done in a normal callback.
-		// Schedule a post step callback to do it.
-		// Use the hook as the key and pass along the arbiter.
-		[space addPostStepBlock:^{
-			_hookJoint = [space add:[ChipmunkPivotJoint pivotJointWithBodyA:hook bodyB:crate pivot:hook.pos]];
-		} key:hook];
+		// Regular additions/removals can't be done in a collision callback.
+		// You can either create a post-step callback (different than a post-solve callback) to schedule the change
+		// or you can use the smartAdd/smartRemove methods which will create a callback if required.
+		[space smartAdd:[ChipmunkPivotJoint pivotJointWithBodyA:hook bodyB:crate pivot:hook.pos]];
 	}
 	
 	return cpTrue; // return value is ignored for sensor callbacks anyway

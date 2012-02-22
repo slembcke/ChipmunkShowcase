@@ -22,7 +22,7 @@ BreakableJointPostSolve(cpConstraint *joint, cpSpace *space)
 
 	// If the force is almost as big as the joint's max force, break it.
 	if(force > 0.9*maxForce){
-		[cpSpaceGetUserData(space) addPostStepRemoval:cpConstraintGetUserData(joint)];
+		[cpSpaceGetUserData(space) smartRemove:cpConstraintGetUserData(joint)];
 	}
 }
 
