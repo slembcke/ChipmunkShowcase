@@ -15,6 +15,7 @@
 		D311931714E2699F00B659B3 /* CraneDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931614E2699F00B659B3 /* CraneDemo.m */; };
 		D321D1D114E8F8C400DE2A53 /* DeformableBitmapDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D321D1D014E8F8C400DE2A53 /* DeformableBitmapDemo.m */; };
 		D321D1D414E8F9C600DE2A53 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D321D1D314E8F9C600DE2A53 /* ImageIO.framework */; };
+		D325955414F4AEAB00CFD00B /* AbsorbDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D325955314F4AEAB00CFD00B /* AbsorbDemo.psd */; };
 		D325DB3C1491970D00F1B411 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D325DB3B1491970D00F1B411 /* QuartzCore.framework */; };
 		D3582DF11490899400AB0C37 /* Accelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3582DF01490899400AB0C37 /* Accelerometer.m */; };
 		D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */; };
@@ -51,6 +52,7 @@
 		D3EB7ABE14F2FA9300C1AD84 /* SourceViewTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7ABD14F2FA9200C1AD84 /* SourceViewTemplate.html */; };
 		D3EB7B0A14F45DED00C1AD84 /* GrabberDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3EB7B0914F45DED00C1AD84 /* GrabberDemo.m */; };
 		D3EB7B1714F47CEC00C1AD84 /* GrabberDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7B1614F47CEC00C1AD84 /* GrabberDemo.psd */; };
+		D3EB7B1914F4996600C1AD84 /* AbsorbDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3EB7B1814F4996400C1AD84 /* AbsorbDemo.m */; };
 		D3FB395B148F353600E0BA9E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395A148F353600E0BA9E /* UIKit.framework */; };
 		D3FB395D148F353600E0BA9E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395C148F353600E0BA9E /* Foundation.framework */; };
 		D3FB395F148F353600E0BA9E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FB395E148F353600E0BA9E /* CoreGraphics.framework */; };
@@ -90,6 +92,7 @@
 		D311931814E271DD00B659B3 /* TODO */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		D321D1D014E8F8C400DE2A53 /* DeformableBitmapDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeformableBitmapDemo.m; sourceTree = "<group>"; };
 		D321D1D314E8F9C600DE2A53 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		D325955314F4AEAB00CFD00B /* AbsorbDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = AbsorbDemo.psd; sourceTree = "<group>"; };
 		D325DB3B1491970D00F1B411 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D3582DEF1490899400AB0C37 /* Accelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accelerometer.h; sourceTree = "<group>"; };
 		D3582DF01490899400AB0C37 /* Accelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accelerometer.m; sourceTree = "<group>"; };
@@ -171,6 +174,7 @@
 		D3EB7ABD14F2FA9200C1AD84 /* SourceViewTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = SourceViewTemplate.html; sourceTree = SOURCE_ROOT; };
 		D3EB7B0914F45DED00C1AD84 /* GrabberDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrabberDemo.m; sourceTree = "<group>"; };
 		D3EB7B1614F47CEC00C1AD84 /* GrabberDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = GrabberDemo.psd; sourceTree = "<group>"; };
+		D3EB7B1814F4996400C1AD84 /* AbsorbDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbsorbDemo.m; sourceTree = "<group>"; };
 		D3FB3956148F353600E0BA9E /* ChipmunkShowcase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChipmunkShowcase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3FB395A148F353600E0BA9E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D3FB395C148F353600E0BA9E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -213,6 +217,7 @@
 		D30A7AAC14E8BC5B00C50129 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				D325955314F4AEAB00CFD00B /* AbsorbDemo.psd */,
 				D3EB7B1614F47CEC00C1AD84 /* GrabberDemo.psd */,
 				D3EB7AAC14F2DF1F00C1AD84 /* SpringiesDemo.psd */,
 				D3EB7A4214F2383B00C1AD84 /* BouncyTerrainDemo.psd */,
@@ -255,6 +260,7 @@
 		D3C10FD41490ADD500F00AAE /* Demos */ = {
 			isa = PBXGroup;
 			children = (
+				D3EB7B1814F4996400C1AD84 /* AbsorbDemo.m */,
 				D3EB7B0914F45DED00C1AD84 /* GrabberDemo.m */,
 				D3EB7AAA14F2CBEF00C1AD84 /* SpringiesDemo.m */,
 				D321D1D014E8F8C400DE2A53 /* DeformableBitmapDemo.m */,
@@ -492,6 +498,7 @@
 				D3EB7ABA14F2F31200C1AD84 /* Demos in Resources */,
 				D3EB7ABE14F2FA9300C1AD84 /* SourceViewTemplate.html in Resources */,
 				D3EB7B1714F47CEC00C1AD84 /* GrabberDemo.psd in Resources */,
+				D325955414F4AEAB00CFD00B /* AbsorbDemo.psd in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,6 +531,7 @@
 				D3EB7AAB14F2CBF000C1AD84 /* SpringiesDemo.m in Sources */,
 				D3EB7AB414F2E69500C1AD84 /* SourceViewController.m in Sources */,
 				D3EB7B0A14F45DED00C1AD84 /* GrabberDemo.m in Sources */,
+				D3EB7B1914F4996600C1AD84 /* AbsorbDemo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

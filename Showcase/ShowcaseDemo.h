@@ -1,6 +1,12 @@
 #import "PolyRenderer.h"
 #import "Accelerometer.h"
 
+@interface ChipmunkShape(DemoRenderer)
+
+-(Color)color;
+
+@end
+
 #define GRABABLE_MASK_BIT (1<<31)
 #define NOT_GRABABLE_MASK (~GRABABLE_MASK_BIT)
 

@@ -27,7 +27,6 @@
 
 @interface ChipmunkShape()
 
--(Color)color;
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 
 @end

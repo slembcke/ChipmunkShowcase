@@ -106,5 +106,4 @@ RenderDot(cpBody *body, struct RenderContext *context)
 	}
 }
 
-
 @end

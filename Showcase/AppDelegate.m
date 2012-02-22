@@ -56,6 +56,7 @@ NSArray *DEMO_CLASS_NAMES = nil;
 		@"BreakableChainsDemo",
 		@"MultiGrabDemo",
 		@"TumbleDemo",
+		@"AbsorbDemo",
 		nil
 	];
 }
