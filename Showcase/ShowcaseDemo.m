@@ -52,15 +52,20 @@ ColorFromHash(cpHashValue hash, float alpha)
 	
 	GLfloat max = MAX(MAX(r, g), b);
 	GLfloat min = MIN(MIN(r, g), b);
-	GLfloat coef = 0.75/(max - min);
+	GLfloat intensity = 0.75;
 	
 	// Saturate and scale the color
-	return (Color){
-		(r - min)*coef,
-		(g - min)*coef,
-		(b - min)*coef,
-		alpha
-	};
+	if(min == max){
+		return RGBAColor(intensity, 0.0, 0.0, alpha);
+	} else {
+		GLfloat coef = alpha*intensity/(max - min);
+		return (Color){
+			(r - min)*coef,
+			(g - min)*coef,
+			(b - min)*coef,
+			alpha
+		};
+	}
 }
 
 -(Color)color

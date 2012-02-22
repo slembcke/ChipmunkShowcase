@@ -34,7 +34,8 @@ static NSString *CRATE = @"CRATE";
 		// Regular additions/removals can't be done in a collision callback.
 		// You can either create a post-step callback (different than a post-solve callback) to schedule the change
 		// or you can use the smartAdd/smartRemove methods which will create a callback if required.
-		[space smartAdd:[ChipmunkPivotJoint pivotJointWithBodyA:hook bodyB:crate pivot:hook.pos]];
+		_hookJoint = [ChipmunkPivotJoint pivotJointWithBodyA:hook bodyB:crate pivot:hook.pos];
+		[space smartAdd:_hookJoint];
 	}
 	
 	return cpTrue; // return value is ignored for sensor callbacks anyway
