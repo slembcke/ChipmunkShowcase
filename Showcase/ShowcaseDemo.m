@@ -289,10 +289,16 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 @synthesize space = _space;
 
 @synthesize ticks = _ticks;
+@synthesize fixedTime = _fixedTime;
 @synthesize accumulator = _accumulator;
 @synthesize timeScale = _timeScale;
 
 @synthesize timeStep = _timeStep;
+
+-(NSTimeInterval)renderTime
+{
+	return _fixedTime + _accumulator;
+}
 
 -(ChipmunkBody *)staticBody
 {

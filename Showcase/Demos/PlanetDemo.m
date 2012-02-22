@@ -31,7 +31,7 @@ rand_pos()
 	cpVect v;
 	do {
 		v = cpvmult(frand_unit_circle(), 500);
-	} while(cpvlength(v) < 85.0f);
+	} while(cpvlength(v) < 100.0f);
 	
 	return v;
 }
@@ -50,7 +50,7 @@ rand_pos()
 	// Set the box's velocity to put it into a circular orbit from its
 	// starting position.
 	cpFloat r = cpvlength(pos);
-	cpFloat v = 0.95*cpfsqrt(gravityStrength/r)/r;
+	cpFloat v = 0.99*cpfsqrt(gravityStrength/r)/r;
 	body.vel = cpvmult(cpvperp(pos), v);
 	
 	// Set the box's angular velocity to match its orbital period and

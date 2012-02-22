@@ -114,6 +114,15 @@ static NSString *CRATE = @"CRATE";
 	[super tick:dt];
 }
 
+-(void)render:(PolyRenderer *)renderer showContacts:(BOOL)showContacts
+{
+	cpFloat t = cpfsin(self.renderTime*2.0*M_PI)*0.5 + 0.5;
+	Color color = RGBAColor(1.0, 0.0, 0.0, cpflerp(0.25, 0.5, t));
+	[renderer drawSegmentFrom:cpv(_touchTarget.x, 100.0) to:_touchTarget radius:1.0 color:color];
+	
+	[super render:renderer showContacts:showContacts];
+}
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 {
 	UITouch *touch = [touches anyObject];

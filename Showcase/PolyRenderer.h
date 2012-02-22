@@ -8,11 +8,11 @@
 typedef struct Color {GLfloat r, g, b, a;} Color;
 
 static inline Color RGBAColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a){
-	return (Color){r, g, b, a};
+	return (Color){a*r, a*g, a*b, a};
 }
 
 static inline Color LAColor(GLfloat l, GLfloat a){
-	return (Color){l, l, l, a};
+	return (Color){a*l, a*l, a*l, a};
 }
 
 

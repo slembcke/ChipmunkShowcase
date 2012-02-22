@@ -15,14 +15,16 @@
 	self.space.sleepTimeThreshold = 0.5f;
 	self.space.collisionSlop = 0.5f;
 	
-	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
+	CGRect bounds = self.demoBounds;
+	bounds.size.height = bounds.size.width;
+	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
 	
 	NSUInteger height = [self numberForA4:14 A5:28];
 	cpFloat size = [self numberForA4:28.0 A5:20.0];
 	
 	for(int i=0; i < height; i++){
 		for(int j=0; j<=i; j++){
-			cpFloat mass = 3.0;
+			cpFloat mass = 2.0;
 			
 			cpFloat spacing = size + 2.0;
 			
