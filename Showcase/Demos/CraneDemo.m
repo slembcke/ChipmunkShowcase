@@ -38,7 +38,7 @@ static NSString *CRATE = @"CRATE";
 		[space smartAdd:_hookJoint];
 	}
 	
-	return cpTrue; // return value is ignored for sensor callbacks anyway
+	return TRUE; // return value is ignored for sensor callbacks anyway
 }
 
 
