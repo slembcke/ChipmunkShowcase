@@ -126,7 +126,6 @@ enum DemoReveal {
 {
 	NSString *nib_name = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone ? @"ViewController_iPhone" : @"ViewController_iPad");
 	if((self = [super initWithNibName:nib_name bundle:nil])){
-//	if((self = [super init])){
 		_demo = [[NSClassFromString(demo) alloc] init];
 		_demoReveal = DEMO_REVEAL_NONE;
 	}

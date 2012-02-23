@@ -16,6 +16,8 @@
 		D321D1D114E8F8C400DE2A53 /* DeformableBitmapDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D321D1D014E8F8C400DE2A53 /* DeformableBitmapDemo.m */; };
 		D321D1D414E8F9C600DE2A53 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D321D1D314E8F9C600DE2A53 /* ImageIO.framework */; };
 		D325955414F4AEAB00CFD00B /* AbsorbDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D325955314F4AEAB00CFD00B /* AbsorbDemo.psd */; };
+		D325959914F5B21C00CFD00B /* InstructionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D325959714F5B21C00CFD00B /* InstructionsController.m */; };
+		D325959A14F5B21C00CFD00B /* InstructionsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D325959814F5B21C00CFD00B /* InstructionsController.xib */; };
 		D325DB3C1491970D00F1B411 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D325DB3B1491970D00F1B411 /* QuartzCore.framework */; };
 		D3582DF11490899400AB0C37 /* Accelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3582DF01490899400AB0C37 /* Accelerometer.m */; };
 		D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */; };
@@ -93,6 +95,9 @@
 		D321D1D014E8F8C400DE2A53 /* DeformableBitmapDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeformableBitmapDemo.m; sourceTree = "<group>"; };
 		D321D1D314E8F9C600DE2A53 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		D325955314F4AEAB00CFD00B /* AbsorbDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = AbsorbDemo.psd; sourceTree = "<group>"; };
+		D325959614F5B21C00CFD00B /* InstructionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionsController.h; sourceTree = "<group>"; };
+		D325959714F5B21C00CFD00B /* InstructionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionsController.m; sourceTree = "<group>"; };
+		D325959814F5B21C00CFD00B /* InstructionsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstructionsController.xib; sourceTree = "<group>"; };
 		D325DB3B1491970D00F1B411 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D3582DEF1490899400AB0C37 /* Accelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accelerometer.h; sourceTree = "<group>"; };
 		D3582DF01490899400AB0C37 /* Accelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accelerometer.m; sourceTree = "<group>"; };
@@ -390,6 +395,8 @@
 				D3FB3975148F353600E0BA9E /* ViewController.m */,
 				D3C10FB91490944000F00AAE /* ShowcaseDemo.h */,
 				D3C10FBA1490944000F00AAE /* ShowcaseDemo.m */,
+				D325959614F5B21C00CFD00B /* InstructionsController.h */,
+				D325959714F5B21C00CFD00B /* InstructionsController.m */,
 				D3C10FD41490ADD500F00AAE /* Demos */,
 				D3C10FBC149097DD00F00AAE /* PolyRenderer */,
 				D3C10FBD149097F700F00AAE /* Misc */,
@@ -410,6 +417,7 @@
 				D3EB7A6B14F24A1600C1AD84 /* Default.psd */,
 				D3FB3977148F353600E0BA9E /* ViewController_iPhone.xib */,
 				D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */,
+				D325959814F5B21C00CFD00B /* InstructionsController.xib */,
 				D3EB7AB314F2E69500C1AD84 /* SourceViewController.xib */,
 				D3FB3966148F353600E0BA9E /* ChipmunkShowcase-Info.plist */,
 				D3FB3967148F353600E0BA9E /* InfoPlist.strings */,
@@ -499,6 +507,7 @@
 				D3EB7ABE14F2FA9300C1AD84 /* SourceViewTemplate.html in Resources */,
 				D3EB7B1714F47CEC00C1AD84 /* GrabberDemo.psd in Resources */,
 				D325955414F4AEAB00CFD00B /* AbsorbDemo.psd in Resources */,
+				D325959A14F5B21C00CFD00B /* InstructionsController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,6 +541,7 @@
 				D3EB7AB414F2E69500C1AD84 /* SourceViewController.m in Sources */,
 				D3EB7B0A14F45DED00C1AD84 /* GrabberDemo.m in Sources */,
 				D3EB7B1914F4996600C1AD84 /* AbsorbDemo.m in Sources */,
+				D325959914F5B21C00CFD00B /* InstructionsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

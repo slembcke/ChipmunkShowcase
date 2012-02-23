@@ -2,6 +2,7 @@
 
 #import "AppDelegate.h"
 
+#import "InstructionsController.h"
 #import "ViewController.h"
 #import "Accelerometer.h"
 
@@ -69,12 +70,35 @@ NSArray *DEMO_CLASS_NAMES = nil;
 
 //MARK: Appdelegate Methods
 
+-(void)showInstructions
+{
+	// Show the splash screen initially.
+	NSString *splashImage = @"Default.png";
+	UIViewController *splash = [[UIViewController alloc] init];
+	splash.view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:splashImage]];
+	self.window.rootViewController = splash;
+	
+	dispatch_async(dispatch_get_main_queue(), ^{
+		// Fade to the instructions screen.
+		CATransition *transition = [CATransition animation];
+		transition.duration = 0.5;
+		transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+		transition.type = kCATransitionFade;
+		[self.window.layer addAnimation:transition forKey:nil];
+		
+		// Show the instruction screen.
+		NSString *instructionsImage = @"instructions.png";
+		UIViewController *instructions = [[UIViewController alloc] init];
+		instructions.view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:instructionsImage]];
+		self.window.rootViewController = [[InstructionsController alloc] initWithNibName:@"InstructionsController" bundle:nil];
+	});
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	[Accelerometer installWithInterval:1.0/60.0 andAlpha:0.2];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.backgroundColor = [UIColor whiteColor];
 	
 	self.demoList = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 300.0, self.window.bounds.size.width) style:UITableViewStylePlain];
 	self.demoList.backgroundColor = [UIColor colorWithWhite:0.25 alpha:1.0];
@@ -83,9 +107,10 @@ NSArray *DEMO_CLASS_NAMES = nil;
 	self.demoList.delegate = self;
 	self.demoList.dataSource = self;
 	
-	self.currentDemo = [DEMO_CLASS_NAMES objectAtIndex:0];
+	[self showInstructions];
+//	self.currentDemo = [DEMO_CLASS_NAMES objectAtIndex:0];
 	
-	[ChipmunkSpace initialize];
+//	[ChipmunkSpace initialize];
 	
 	[self.window makeKeyAndVisible];
 	return YES;
