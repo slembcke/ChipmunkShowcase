@@ -637,6 +637,7 @@
 		D3FB3980148F353600E0BA9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Showcase/ChipmunkShowcase-Prefix.pch";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
@@ -647,6 +648,7 @@
 					"\"$(SRCROOT)/ChipmunkPro-iPhone-Trial\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -654,6 +656,7 @@
 		D3FB3981148F353600E0BA9E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Showcase/ChipmunkShowcase-Prefix.pch";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
@@ -664,6 +667,7 @@
 					"\"$(SRCROOT)/ChipmunkPro-iPhone-Trial\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
