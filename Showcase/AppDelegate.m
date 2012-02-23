@@ -67,14 +67,15 @@ NSArray *DEMO_CLASS_NAMES = nil;
 -(void)showInstructions
 {
 	// Show the splash screen initially.
-	NSString *splashImage = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? @"Default.png" : @"Default-Landscape.png");
+	NSString *splashImage = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? @"Default.png" : @"Default-Portrait.png");
 	UIViewController *splash = [[UIViewController alloc] init];
 	splash.view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:splashImage]];
 	self.window.rootViewController = splash;
 	
 	// Not sure how to force the window's layer to update itself.
-	// Gotta wait a frame to start the fade.
-	dispatch_async(dispatch_get_main_queue(), ^{
+	// Gotta wait a little while to start the fade... -_-
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC);
+	dispatch_after(popTime, dispatch_get_main_queue(), ^{
 		// Fade to the instructions screen.
 		CATransition *transition = [CATransition animation];
 		transition.duration = 0.5;
