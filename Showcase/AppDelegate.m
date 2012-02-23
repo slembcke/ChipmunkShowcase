@@ -108,6 +108,9 @@ NSArray *DEMO_CLASS_NAMES = nil;
 	
 	[self showInstructions];
 	
+	// Force the popup now instead of waiting until the first demo starts.
+	[ChipmunkSpace initialize];
+	
 	[self.window makeKeyAndVisible];
 	return YES;
 }

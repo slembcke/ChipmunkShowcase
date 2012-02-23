@@ -20,7 +20,7 @@
 
 -(IBAction)getCode:(id)sender
 {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/slembcke/Chipmunk-Physics"]];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/slembcke/ChipmunkShowcase"]];
 }
 
 -(IBAction)play:(id)sender
