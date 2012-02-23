@@ -22,12 +22,12 @@
 		D32595AA14F5C02D00CFD00B /* instructions@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D32595A814F5C02D00CFD00B /* instructions@2x.png */; };
 		D32595AC14F5C16900CFD00B /* InstructionsController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D32595AB14F5C16900CFD00B /* InstructionsController_iPad.xib */; };
 		D32595AE14F5C37B00CFD00B /* instructions~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D32595AD14F5C37B00CFD00B /* instructions~ipad.png */; };
-		D32595B014F5CA3A00CFD00B /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = D32595AF14F5CA3A00CFD00B /* Default-Portrait.png */; };
 		D325DB3C1491970D00F1B411 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D325DB3B1491970D00F1B411 /* QuartzCore.framework */; };
 		D3582DF11490899400AB0C37 /* Accelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3582DF01490899400AB0C37 /* Accelerometer.m */; };
 		D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */; };
 		D396EC441495E52000B94838 /* LogoSmashDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D359FB271495E103001147A9 /* LogoSmashDemo.m */; };
 		D396EC471495F6C500B94838 /* MultiGrabDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D396EC461495F6C500B94838 /* MultiGrabDemo.m */; };
+		D3A6B88314F5D6F00080FA3C /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D32595AF14F5CA3A00CFD00B /* Default-Portrait~ipad.png */; };
 		D3C10FBB1490944000F00AAE /* ShowcaseDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C10FBA1490944000F00AAE /* ShowcaseDemo.m */; };
 		D3C10FD31490ADCE00F00AAE /* PlinkDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */; };
 		D3C4358F1490B15800875EA3 /* TumbleDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C4358E1490B15800875EA3 /* TumbleDemo.m */; };
@@ -46,7 +46,7 @@
 		D3EB7A5914F2383B00C1AD84 /* TumbleDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A4D14F2383B00C1AD84 /* TumbleDemo.psd */; };
 		D3EB7A5B14F23B3D00C1AD84 /* DeformableBitmapDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A5A14F23B3D00C1AD84 /* DeformableBitmapDemo.psd */; };
 		D3EB7A6314F23E7300C1AD84 /* Icon.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A6014F23E7300C1AD84 /* Icon.psd */; };
-		D3EB7A6414F23E7300C1AD84 /* Icon~iPad.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A6114F23E7300C1AD84 /* Icon~iPad.psd */; };
+		D3EB7A6414F23E7300C1AD84 /* Icon~ipad.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A6114F23E7300C1AD84 /* Icon~ipad.psd */; };
 		D3EB7A6C14F24A1600C1AD84 /* Default.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3EB7A6B14F24A1600C1AD84 /* Default.psd */; };
 		D3EB7A9A14F2AC4200C1AD84 /* libChipmunkPro-iPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3EB7A9814F2AC4200C1AD84 /* libChipmunkPro-iPhone.a */; };
 		D3EB7AAB14F2CBF000C1AD84 /* SpringiesDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3EB7AAA14F2CBEF00C1AD84 /* SpringiesDemo.m */; };
@@ -106,7 +106,7 @@
 		D32595A814F5C02D00CFD00B /* instructions@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instructions@2x.png"; sourceTree = SOURCE_ROOT; };
 		D32595AB14F5C16900CFD00B /* InstructionsController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstructionsController_iPad.xib; sourceTree = "<group>"; };
 		D32595AD14F5C37B00CFD00B /* instructions~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instructions~ipad.png"; sourceTree = SOURCE_ROOT; };
-		D32595AF14F5CA3A00CFD00B /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = SOURCE_ROOT; };
+		D32595AF14F5CA3A00CFD00B /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = SOURCE_ROOT; };
 		D325DB3B1491970D00F1B411 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D3582DEF1490899400AB0C37 /* Accelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accelerometer.h; sourceTree = "<group>"; };
 		D3582DF01490899400AB0C37 /* Accelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accelerometer.m; sourceTree = "<group>"; };
@@ -133,7 +133,7 @@
 		D3EB7A4D14F2383B00C1AD84 /* TumbleDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = TumbleDemo.psd; sourceTree = "<group>"; };
 		D3EB7A5A14F23B3D00C1AD84 /* DeformableBitmapDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = DeformableBitmapDemo.psd; sourceTree = "<group>"; };
 		D3EB7A6014F23E7300C1AD84 /* Icon.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = Icon.psd; sourceTree = SOURCE_ROOT; };
-		D3EB7A6114F23E7300C1AD84 /* Icon~iPad.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Icon~iPad.psd"; sourceTree = SOURCE_ROOT; };
+		D3EB7A6114F23E7300C1AD84 /* Icon~ipad.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Icon~ipad.psd"; sourceTree = SOURCE_ROOT; };
 		D3EB7A6B14F24A1600C1AD84 /* Default.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = Default.psd; sourceTree = SOURCE_ROOT; };
 		D3EB7A6F14F2AC4200C1AD84 /* chipmunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chipmunk.h; sourceTree = "<group>"; };
 		D3EB7A7014F2AC4200C1AD84 /* chipmunk_ffi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chipmunk_ffi.h; sourceTree = "<group>"; };
@@ -423,9 +423,9 @@
 				D3EB7AB914F2F31200C1AD84 /* Demos */,
 				D3EB7ABD14F2FA9200C1AD84 /* SourceViewTemplate.html */,
 				D3EB7A6014F23E7300C1AD84 /* Icon.psd */,
-				D3EB7A6114F23E7300C1AD84 /* Icon~iPad.psd */,
+				D3EB7A6114F23E7300C1AD84 /* Icon~ipad.psd */,
 				D3EB7A6B14F24A1600C1AD84 /* Default.psd */,
-				D32595AF14F5CA3A00CFD00B /* Default-Portrait.png */,
+				D32595AF14F5CA3A00CFD00B /* Default-Portrait~ipad.png */,
 				D3FB3977148F353600E0BA9E /* ViewController_iPhone.xib */,
 				D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */,
 				D325959814F5B21C00CFD00B /* InstructionsController_iPhone.xib */,
@@ -509,7 +509,7 @@
 				D3EB7A5914F2383B00C1AD84 /* TumbleDemo.psd in Resources */,
 				D3EB7A5B14F23B3D00C1AD84 /* DeformableBitmapDemo.psd in Resources */,
 				D3EB7A6314F23E7300C1AD84 /* Icon.psd in Resources */,
-				D3EB7A6414F23E7300C1AD84 /* Icon~iPad.psd in Resources */,
+				D3EB7A6414F23E7300C1AD84 /* Icon~ipad.psd in Resources */,
 				D3EB7A6C14F24A1600C1AD84 /* Default.psd in Resources */,
 				D3EB7AAD14F2DF1F00C1AD84 /* SpringiesDemo.psd in Resources */,
 				D3EB7AB514F2E69500C1AD84 /* SourceViewController.xib in Resources */,
@@ -523,7 +523,7 @@
 				D32595AA14F5C02D00CFD00B /* instructions@2x.png in Resources */,
 				D32595AC14F5C16900CFD00B /* InstructionsController_iPad.xib in Resources */,
 				D32595AE14F5C37B00CFD00B /* instructions~ipad.png in Resources */,
-				D32595B014F5CA3A00CFD00B /* Default-Portrait.png in Resources */,
+				D3A6B88314F5D6F00080FA3C /* Default-Portrait~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
