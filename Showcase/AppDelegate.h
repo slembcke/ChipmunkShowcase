@@ -10,6 +10,6 @@
 @property(nonatomic, strong) UITableView *demoList;
 @property(nonatomic, strong) NSString *currentDemo;
 
--(void)nextDemo;
+-(void)play;
 
 @end

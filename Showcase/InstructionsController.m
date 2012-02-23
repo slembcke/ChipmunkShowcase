@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Howling Moon Software. All rights reserved.
 //
 
+#import "AppDelegate.h"
 #import "InstructionsController.h"
 
 @implementation InstructionsController {
@@ -14,17 +15,17 @@
 
 -(IBAction)learnMore:(id)sender
 {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://chipmunk-physics.net"]];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://chipmunk-physics.net/"]];
 }
 
 -(IBAction)getCode:(id)sender
 {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://github.com"]];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/slembcke/Chipmunk-Physics"]];
 }
 
 -(IBAction)play:(id)sender
 {
-	NSLog(@"Woo Play");
+	[(AppDelegate *)[UIApplication sharedApplication].delegate play];
 }
 
 -(void)viewDidLoad

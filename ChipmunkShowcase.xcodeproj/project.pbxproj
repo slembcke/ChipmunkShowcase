@@ -17,7 +17,11 @@
 		D321D1D414E8F9C600DE2A53 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D321D1D314E8F9C600DE2A53 /* ImageIO.framework */; };
 		D325955414F4AEAB00CFD00B /* AbsorbDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D325955314F4AEAB00CFD00B /* AbsorbDemo.psd */; };
 		D325959914F5B21C00CFD00B /* InstructionsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D325959714F5B21C00CFD00B /* InstructionsController.m */; };
-		D325959A14F5B21C00CFD00B /* InstructionsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D325959814F5B21C00CFD00B /* InstructionsController.xib */; };
+		D325959A14F5B21C00CFD00B /* InstructionsController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = D325959814F5B21C00CFD00B /* InstructionsController_iPhone.xib */; };
+		D32595A914F5C02D00CFD00B /* instructions.png in Resources */ = {isa = PBXBuildFile; fileRef = D32595A714F5C02D00CFD00B /* instructions.png */; };
+		D32595AA14F5C02D00CFD00B /* instructions@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D32595A814F5C02D00CFD00B /* instructions@2x.png */; };
+		D32595AC14F5C16900CFD00B /* InstructionsController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D32595AB14F5C16900CFD00B /* InstructionsController_iPad.xib */; };
+		D32595AE14F5C37B00CFD00B /* instructions~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = D32595AD14F5C37B00CFD00B /* instructions~ipad.png */; };
 		D325DB3C1491970D00F1B411 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D325DB3B1491970D00F1B411 /* QuartzCore.framework */; };
 		D3582DF11490899400AB0C37 /* Accelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3582DF01490899400AB0C37 /* Accelerometer.m */; };
 		D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */; };
@@ -97,7 +101,11 @@
 		D325955314F4AEAB00CFD00B /* AbsorbDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = AbsorbDemo.psd; sourceTree = "<group>"; };
 		D325959614F5B21C00CFD00B /* InstructionsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionsController.h; sourceTree = "<group>"; };
 		D325959714F5B21C00CFD00B /* InstructionsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionsController.m; sourceTree = "<group>"; };
-		D325959814F5B21C00CFD00B /* InstructionsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstructionsController.xib; sourceTree = "<group>"; };
+		D325959814F5B21C00CFD00B /* InstructionsController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstructionsController_iPhone.xib; sourceTree = "<group>"; };
+		D32595A714F5C02D00CFD00B /* instructions.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = instructions.png; sourceTree = SOURCE_ROOT; };
+		D32595A814F5C02D00CFD00B /* instructions@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instructions@2x.png"; sourceTree = SOURCE_ROOT; };
+		D32595AB14F5C16900CFD00B /* InstructionsController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstructionsController_iPad.xib; sourceTree = "<group>"; };
+		D32595AD14F5C37B00CFD00B /* instructions~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instructions~ipad.png"; sourceTree = SOURCE_ROOT; };
 		D325DB3B1491970D00F1B411 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D3582DEF1490899400AB0C37 /* Accelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accelerometer.h; sourceTree = "<group>"; };
 		D3582DF01490899400AB0C37 /* Accelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accelerometer.m; sourceTree = "<group>"; };
@@ -387,6 +395,8 @@
 			children = (
 				D3FB396D148F353600E0BA9E /* AppDelegate.h */,
 				D3FB396E148F353600E0BA9E /* AppDelegate.m */,
+				D325959614F5B21C00CFD00B /* InstructionsController.h */,
+				D325959714F5B21C00CFD00B /* InstructionsController.m */,
 				D3EB7A1414F040CE00C1AD84 /* GLView.h */,
 				D3EB7A1514F040CE00C1AD84 /* GLView.m */,
 				D3EB7AB114F2E69400C1AD84 /* SourceViewController.h */,
@@ -395,8 +405,6 @@
 				D3FB3975148F353600E0BA9E /* ViewController.m */,
 				D3C10FB91490944000F00AAE /* ShowcaseDemo.h */,
 				D3C10FBA1490944000F00AAE /* ShowcaseDemo.m */,
-				D325959614F5B21C00CFD00B /* InstructionsController.h */,
-				D325959714F5B21C00CFD00B /* InstructionsController.m */,
 				D3C10FD41490ADD500F00AAE /* Demos */,
 				D3C10FBC149097DD00F00AAE /* PolyRenderer */,
 				D3C10FBD149097F700F00AAE /* Misc */,
@@ -407,6 +415,9 @@
 		D3FB3965148F353600E0BA9E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D32595A714F5C02D00CFD00B /* instructions.png */,
+				D32595A814F5C02D00CFD00B /* instructions@2x.png */,
+				D32595AD14F5C37B00CFD00B /* instructions~ipad.png */,
 				D30A7AAC14E8BC5B00C50129 /* Icons */,
 				D3EB7AB714F2F2AA00C1AD84 /* google-code-prettify */,
 				D3EB7AB914F2F31200C1AD84 /* Demos */,
@@ -417,7 +428,8 @@
 				D3EB7A6B14F24A1600C1AD84 /* Default.psd */,
 				D3FB3977148F353600E0BA9E /* ViewController_iPhone.xib */,
 				D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */,
-				D325959814F5B21C00CFD00B /* InstructionsController.xib */,
+				D325959814F5B21C00CFD00B /* InstructionsController_iPhone.xib */,
+				D32595AB14F5C16900CFD00B /* InstructionsController_iPad.xib */,
 				D3EB7AB314F2E69500C1AD84 /* SourceViewController.xib */,
 				D3FB3966148F353600E0BA9E /* ChipmunkShowcase-Info.plist */,
 				D3FB3967148F353600E0BA9E /* InfoPlist.strings */,
@@ -507,7 +519,11 @@
 				D3EB7ABE14F2FA9300C1AD84 /* SourceViewTemplate.html in Resources */,
 				D3EB7B1714F47CEC00C1AD84 /* GrabberDemo.psd in Resources */,
 				D325955414F4AEAB00CFD00B /* AbsorbDemo.psd in Resources */,
-				D325959A14F5B21C00CFD00B /* InstructionsController.xib in Resources */,
+				D325959A14F5B21C00CFD00B /* InstructionsController_iPhone.xib in Resources */,
+				D32595A914F5C02D00CFD00B /* instructions.png in Resources */,
+				D32595AA14F5C02D00CFD00B /* instructions@2x.png in Resources */,
+				D32595AC14F5C16900CFD00B /* InstructionsController_iPad.xib in Resources */,
+				D32595AE14F5C37B00CFD00B /* instructions~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

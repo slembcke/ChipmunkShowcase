@@ -62,22 +62,18 @@ NSArray *DEMO_CLASS_NAMES = nil;
 	];
 }
 
--(void)nextDemo;
-{
-	NSUInteger index = [DEMO_CLASS_NAMES indexOfObject:self.currentDemo];
-	self.currentDemo = [DEMO_CLASS_NAMES objectAtIndex:(index + 1)%[DEMO_CLASS_NAMES count]];
-}
-
 //MARK: Appdelegate Methods
 
 -(void)showInstructions
 {
 	// Show the splash screen initially.
-	NSString *splashImage = @"Default.png";
+	NSString *splashImage = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? @"Default.png" : @"Default-Landscape.png");
 	UIViewController *splash = [[UIViewController alloc] init];
 	splash.view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:splashImage]];
 	self.window.rootViewController = splash;
 	
+	// Not sure how to force the window's layer to update itself.
+	// Gotta wait a frame to start the fade.
 	dispatch_async(dispatch_get_main_queue(), ^{
 		// Fade to the instructions screen.
 		CATransition *transition = [CATransition animation];
@@ -87,11 +83,14 @@ NSArray *DEMO_CLASS_NAMES = nil;
 		[self.window.layer addAnimation:transition forKey:nil];
 		
 		// Show the instruction screen.
-		NSString *instructionsImage = @"instructions.png";
-		UIViewController *instructions = [[UIViewController alloc] init];
-		instructions.view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:instructionsImage]];
-		self.window.rootViewController = [[InstructionsController alloc] initWithNibName:@"InstructionsController" bundle:nil];
+		NSString *nib_name = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? @"InstructionsController_iPhone" : @"InstructionsController_iPad");
+		self.window.rootViewController = [[InstructionsController alloc] initWithNibName:nib_name bundle:nil];
 	});
+}
+
+-(void)play;
+{
+	self.currentDemo = [DEMO_CLASS_NAMES objectAtIndex:0];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -108,9 +107,6 @@ NSArray *DEMO_CLASS_NAMES = nil;
 	self.demoList.dataSource = self;
 	
 	[self showInstructions];
-//	self.currentDemo = [DEMO_CLASS_NAMES objectAtIndex:0];
-	
-//	[ChipmunkSpace initialize];
 	
 	[self.window makeKeyAndVisible];
 	return YES;
