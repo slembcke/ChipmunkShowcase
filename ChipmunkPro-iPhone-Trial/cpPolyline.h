@@ -24,8 +24,8 @@ cpPolyline cpPolylineSimplifyCurves(cpPolyline line, cpFloat tol);
 */
 cpPolyline cpPolylineSimplifyVertexes(cpPolyline line, cpFloat tol);
 
-// Generate a convex hull that contains a polyline. (looped or not)
-cpPolyline cpPolylineToConvexHull(cpPolyline line);
+/// Get the convex hull of a polyline as a looped polyline.
+cpPolyline cpPolylineToConvexHull(cpPolyline line, cpFloat tol);
 
 
 /// Polyline sets are collections of polylines, generally built by cpMarchSoft() or cpMarchHard().
@@ -55,3 +55,14 @@ void cpPolylineSetFree(cpPolylineSet *set, cpBool freePolylines);
 	This is mostly intended to be used as a callback directly from cpMarchSoft() or cpMarchHard().
 */
 void cpPolylineSetCollectSegment(cpVect v0, cpVect v1, cpPolylineSet *lines);
+
+/**
+	Get an approximate convex decomposition from a polyline.
+	Returns a cpPolylineSet of convex hulls that match the original shape to within 'tol'.
+	NOTE: I don't consider this function 1.0 worthy for two reasons.
+		It doesn't always pick great splitting planes. This can lead to tiny or unnecessary polygons in the output.
+		If the input is a self intersecting polygon, the output might end up overly simplified. 
+*/
+
+cpPolylineSet *cpPolylineConvexDecomposition_BETA(cpPolyline line, cpFloat tol);
+

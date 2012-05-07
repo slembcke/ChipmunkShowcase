@@ -82,4 +82,10 @@ NSString *SCISSOR_GROUP = @"SCISSOR_GROUP";
 	return 1.0/120.0;
 }
 
+-(void)tick:(cpFloat)dt
+{
+	self.space.gravity = cpvmult([Accelerometer getAcceleration], 600);
+	[super tick:dt];
+}
+
 @end

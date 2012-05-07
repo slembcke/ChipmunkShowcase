@@ -148,6 +148,43 @@ cpFloat cpMomentForBox(cpFloat m, cpFloat width, cpFloat height);
 /// Calculate the moment of inertia for a solid box.
 cpFloat cpMomentForBox2(cpFloat m, cpBB box);
 
+/// Calculate the convex hull of a given set of points. Returns the count of points in the hull.
+/// @c result must be a pointer to an array with at least @c count elements.
+/// @c first is an optional pointer to an integer to store where the first vertex in the hull came from (i.e. verts[first] == result[0])
+/// @c tol is the allowed amount to shrink the hull when simplifying it. A tolerance of 0.0 creates an exact hull.
+int cpConvexHull(int count, cpVect *verts, cpVect *result, int *first, cpFloat tol);
+
+
+#if defined(__has_extension)
+#if __has_extension(blocks)
+// Define alternate block based alternatives for a few of the callback heavy functions.
+// Collision handlers are post-step callbacks are not included to avoid memory management issues.
+// If you want to use blocks for those and are aware of how to correctly manage the memory, the implementation is trivial. 
+
+void cpSpaceEachBodyBlock(cpSpace *space, void (^block)(cpBody *body));
+void cpSpaceEachShapeBlock(cpSpace *space, void (^block)(cpShape *shape));
+void cpSpaceEachConstraintBlock(cpSpace *space, void (^block)(cpConstraint *constraint));
+
+void cpBodyEachShapeBlock(cpBody *body, void (^block)(cpShape *shape));
+void cpBodyEachConstraintBlock(cpBody *body, void (^block)(cpConstraint *constraint));
+void cpBodyEachArbiterBlock(cpBody *body, void (^block)(cpArbiter *arbiter));
+
+typedef void (^cpSpaceNearestPointQueryBlockFunc)(cpShape *shape, cpFloat distance, cpVect point);
+void cpSpaceNearestPointQueryBlock(cpSpace *space, cpVect point, cpFloat maxDistance, cpLayers layers, cpGroup group, cpSpaceNearestPointQueryBlockFunc block);
+
+typedef void (^cpSpaceSegmentQueryBlockFunc)(cpShape *shape, cpFloat t, cpVect n);
+void cpSpaceSegmentQueryBlock(cpSpace *space, cpVect start, cpVect end, cpLayers layers, cpGroup group, cpSpaceSegmentQueryBlockFunc block);
+
+typedef void (^cpSpaceBBQueryBlockFunc)(cpShape *shape);
+void cpSpaceBBQueryBlock(cpSpace *space, cpBB bb, cpLayers layers, cpGroup group, cpSpaceBBQueryBlockFunc block);
+
+typedef void (^cpSpaceShapeQueryBlockFunc)(cpShape *shape, cpContactPointSet *points);
+cpBool cpSpaceShapeQueryBlock(cpSpace *space, cpShape *shape, cpSpaceShapeQueryBlockFunc block);
+
+#endif
+#endif
+
+
 //@}
 
 #ifdef __cplusplus

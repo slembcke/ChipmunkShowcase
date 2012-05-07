@@ -338,6 +338,8 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:self.space withSmoothing:cpfpow(0.3, 60) withGrabForce:grabForce];
 		_multiGrab.layers = GRABABLE_MASK_BIT;
 		_multiGrab.grabFriction = grabForce*0.1;
+		_multiGrab.grabRotaryFriction = 1e3;
+		_multiGrab.grabRadius = 20.0;
 		
 		_timeScale = 1.0;
 		_timeStep = self.preferredTimeStep;

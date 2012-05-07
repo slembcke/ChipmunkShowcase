@@ -3,6 +3,8 @@
 #import "cpMarch.h"
 #import "cpPolyline.h"
 
+@class ChipmunkPolylineSet;
+
 /// Wrapper for the cpPolyline type.
 @interface ChipmunkPolyline : NSObject {
 @private
@@ -46,8 +48,15 @@
 */
 -(ChipmunkPolyline *)simplifyVertexes:(cpFloat)tolerance;
 
-// Generate a convex hull that contains a polyline. (looped or not)
+/// Generate a convex hull that contains a polyline. (looped or not)
 -(ChipmunkPolyline *)toConvexHull;
+
+/// Generate an approximate convex hull that contains a polyline. (looped or not)
+-(ChipmunkPolyline *)toConvexHull:(cpFloat)tolerance;
+
+/// Generate a set of convex hulls for a polyline.
+/// See the note on cpPolylineConvexDecomposition_BETA() for more information.
+-(ChipmunkPolylineSet *)toConvexHulls_BETA:(cpFloat)tolerance;
 
 /// Create an array of segments for each segment in this polyline.
 -(NSArray *)asChipmunkSegmentsWithBody:(ChipmunkBody *)body radius:(cpFloat)radius offset:(cpVect)offset;

@@ -8,6 +8,8 @@
 	cpFloat _smoothing;
 	cpFloat _force;
 	cpFloat _grabFriction;
+	cpFloat _grabRotaryFriction;
+	cpFloat _grabRadius;
 	
 	cpLayers _layers;
 	cpGroup _group;
@@ -20,8 +22,17 @@
 @property(nonatomic, assign) cpGroup group;
 
 /// Amount of friction applied by the touch.
-/// Should be less than the grabForce. Defaults to 0.
+/// Should be less than the grabForce. Defaults to 0.0.
 @property(nonatomic, assign) cpFloat grabFriction;
+
+/// The amount torque to apply to the grab to keep it from spinning.
+/// Defaults to 0.0.
+@property(nonatomic, assign) cpFloat grabRotaryFriction;
+
+/// On a touch screen, a single point query can make it really hard to grab small objects with a fat finger.
+/// By providing a radius, it will make it much easier for users to grab objects.
+/// Defaults to 0.0.
+@property(nonatomic, assign) cpFloat grabRadius;
 
 /**
 	@c space is the space to grab shapes in.

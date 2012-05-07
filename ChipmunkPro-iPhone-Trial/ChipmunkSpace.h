@@ -189,7 +189,7 @@ __attribute__((__deprecated__));
 /// Block type used with [ChipmunkSpace addPostStepBlock:]
 typedef void (^ChipmunkPostStepBlock)();
 
-/// Same as [ChipmunkSpace addPostStepCallback:] but with a block. The passed block is copied instead of retained.
+/// Same as [ChipmunkSpace addPostStepCallback:] but with a block. The block is copied.
 - (void)addPostStepBlock:(ChipmunkPostStepBlock)block key:(id)key;
 
 /// Add the Chipmunk Object from the space at the end of the step.
@@ -198,20 +198,24 @@ typedef void (^ChipmunkPostStepBlock)();
 /// Remove the Chipmunk Object from the space at the end of the step.
 - (void)addPostStepRemoval:(id <ChipmunkObject>)obj;
 
-/// Returns a NSArray of all shapes that overlap the given point. The point is treated as having the given group and layers. 
-- (NSArray *)pointQueryAll:(cpVect)point layers:(cpLayers)layers group:(id)group;
+/// Return an array of ChipmunkNearestPointQueryInfo objects for shapes within @c maxDistance of @c point.
+/// The point is treated as having the given group and layers.
+- (NSArray *)nearestPointQueryAll:(cpVect)point maxDistance:(cpFloat)maxDistance layers:(cpLayers)layers group:(id)group;
 
-// TODO?
-//- (void)pointQuery:(cpVect)point layers:(cpLayers)layers group:(id)group target:(id)target selector:(SEL)selector;
+/// Find the closest shape to a point that is within @c maxDistance of @c point.
+/// The point is treated as having the given layers and group.
+- (ChipmunkNearestPointQueryInfo *)nearestPointQueryNearest:(cpVect)point maxDistance:(cpFloat)maxDistance layers:(cpLayers)layers group:(id)group;
 
-/// Returns the first shape that overlaps the given point. The point is treated as having the given group and layers. 
-- (ChipmunkShape *)pointQueryFirst:(cpVect)point layers:(cpLayers)layers group:(id)group;
+/// Returns a NSArray of all shapes that overlap the given point. The point is treated as having the given group and layers.
+/// @deprecated
+- (NSArray *)pointQueryAll:(cpVect)point layers:(cpLayers)layers group:(id)group __attribute__((__deprecated__));
+
+/// Returns the first shape that overlaps the given point. The point is treated as having the given group and layers.
+/// @deprecated 
+- (ChipmunkShape *)pointQueryFirst:(cpVect)point layers:(cpLayers)layers group:(id)group __attribute__((__deprecated__));
 
 /// Return a NSArray of ChipmunkSegmentQueryInfo objects for all the shapes that overlap the segment. The objects are unsorted.
 - (NSArray *)segmentQueryAllFrom:(cpVect)start to:(cpVect)end layers:(cpLayers)layers group:(id)group;
-
-// TODO?
-//- (void)segmentQueryFrom:(cpVect)start to:(cpVect)end layers:(cpLayers)layers group:(id)group target:(id)target selector:(SEL)selector;
 
 /// Returns the first shape that overlaps the given segment. The segment is treated as having the given group and layers. 
 - (ChipmunkSegmentQueryInfo *)segmentQueryFirstFrom:(cpVect)start to:(cpVect)end layers:(cpLayers)layers group:(id)group;
@@ -219,14 +223,11 @@ typedef void (^ChipmunkPostStepBlock)();
 /// Returns a NSArray of all shapes whose bounding boxes overlap the given bounding box. The box is treated as having the given group and layers. 
 - (NSArray *)bbQueryAll:(cpBB)bb layers:(cpLayers)layers group:(id)group;
 
-// TODO?
-//- (void)bbQuery:(cpBB)bb layers:(cpLayers)layers group:(id)group target:(id)target selector:(SEL)selector;
-
 /// Returns a NSArray of ChipmunkShapeQueryInfo objects for all the shapes that overlap @c shape.
 - (NSArray *)shapeQueryAll:(ChipmunkShape *)shape;
 
 /// Returns true if the shape overlaps anything in the space.
-- (BOOL)shapeTest:shape;
+- (BOOL)shapeTest:(ChipmunkShape *)shape;
 
 /// Perform a shape query for shape and call cpBodyActivate() for everythnig it touches.
 - (void)activateShapesTouchingShape:(ChipmunkShape *)shape;

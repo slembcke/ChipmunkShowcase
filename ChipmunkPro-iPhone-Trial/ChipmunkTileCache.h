@@ -96,6 +96,6 @@
 @property(nonatomic, assign) cpLayers segmentLayers;
 
 /// Collision type of the generated segments.
-@property(nonatomic, retain) id segmentCollisionType;
+@property(nonatomic, assign) id segmentCollisionType;
 
 @end
