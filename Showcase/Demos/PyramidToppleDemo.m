@@ -32,7 +32,7 @@
 	ChipmunkShape *shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:self.space.staticBody from:cpv(-600, -240) to:cpv(600, -240) radius:0]];
 	shape.elasticity = 1.0;
 	shape.friction = 1.0;
-	shape.layers = NOT_GRABABLE_MASK;
+//	shape.layers = NOT_GRABABLE_MASK;
 	
 	int rows = [self numberForA4:10 A5:15];
 	cpFloat height = [self numberForA4:30.0 A5:20.0];
