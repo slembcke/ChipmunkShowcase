@@ -342,6 +342,9 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 		_multiGrab.grabFriction = grabForce*0.1;
 		_multiGrab.grabRotaryFriction = 1e3;
 		_multiGrab.grabRadius = 20.0;
+		_multiGrab.pushMass = 1.0;
+		_multiGrab.pushFriction = 0.7;
+		_multiGrab.pushMode = TRUE;
 		
 		_timeScale = 1.0;
 		_timeStep = self.preferredTimeStep;
