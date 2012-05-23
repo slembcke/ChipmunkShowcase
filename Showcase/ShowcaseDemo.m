@@ -265,7 +265,7 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 @end
 
 @interface ShowcaseDemo(){
-	ChipmunkSpace *_space;
+	ChipmunkHastySpace *_space;
 	
 	ChipmunkMultiGrab *_multiGrab;
 	
@@ -333,6 +333,8 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 {
 	if((self = [super init])){
 		_space = [[ChipmunkHastySpace alloc] init];
+		// On iOS and OS X, 0 threads will automatically select the number of threads to use.
+		_space.threads = 0;
 		
 		cpFloat grabForce = 1e5;
 		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:self.space withSmoothing:cpfpow(0.3, 60) withGrabForce:grabForce];

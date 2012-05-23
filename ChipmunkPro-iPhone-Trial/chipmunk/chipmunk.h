@@ -22,6 +22,9 @@
 #ifndef CHIPMUNK_HEADER
 #define CHIPMUNK_HEADER
 
+#include <stdlib.h>
+#include <math.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -103,10 +106,10 @@ typedef struct cpSpace cpSpace;
 
 #include "cpSpace.h"
 
-// Chipmunk 6.0.3
+// Chipmunk 6.1.0
 #define CP_VERSION_MAJOR 6
-#define CP_VERSION_MINOR 0
-#define CP_VERSION_RELEASE 3
+#define CP_VERSION_MINOR 1
+#define CP_VERSION_RELEASE 0
 
 /// Version string.
 extern const char *cpVersionString;
@@ -149,11 +152,22 @@ cpFloat cpMomentForBox(cpFloat m, cpFloat width, cpFloat height);
 cpFloat cpMomentForBox2(cpFloat m, cpBB box);
 
 /// Calculate the convex hull of a given set of points. Returns the count of points in the hull.
-/// @c result must be a pointer to an array with at least @c count elements.
+/// @c result must be a pointer to a @c cpVect array with at least @c count elements. If @c result is @c NULL, then @c verts will be reduced instead.
 /// @c first is an optional pointer to an integer to store where the first vertex in the hull came from (i.e. verts[first] == result[0])
 /// @c tol is the allowed amount to shrink the hull when simplifying it. A tolerance of 0.0 creates an exact hull.
 int cpConvexHull(int count, cpVect *verts, cpVect *result, int *first, cpFloat tol);
 
+#ifdef _MSC_VER
+#include "malloc.h"
+#endif
+
+/// Convenience macro to work with cpConvexHull.
+/// @c count and @c verts is the input array passed to cpConvexHull().
+/// @c count_var and @c verts_var are the names of the variables the macro creates to store the result.
+/// The output vertex array is allocated on the stack using alloca() so it will be freed automatically, but cannot be returned from the current scope.
+#define CP_CONVEX_HULL(__count__, __verts__, __count_var__, __verts_var__) \
+cpVect *__verts_var__ = (cpVect *)alloca(__count__*sizeof(cpVect)); \
+int __count_var__ = cpConvexHull(__count__, __verts__, __verts_var__, NULL, 0.0); \
 
 #if defined(__has_extension)
 #if __has_extension(blocks)
