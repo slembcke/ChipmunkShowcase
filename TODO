@@ -1,5 +1,0 @@
-Joint rendering
-Stop using GLKit, it kills the input loop.
-Move main loop to another thread.
-Make a table view of demos that slides to reveal on the left instead of swiping between them.
-Swipe up to show the source code?
