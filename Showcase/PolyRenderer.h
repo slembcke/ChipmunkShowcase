@@ -40,8 +40,6 @@ static inline Color LAColor(GLfloat l, GLfloat a){
 typedef struct Vertex {cpVect vertex, texcoord; Color color;} Vertex;
 typedef struct Triangle {Vertex a, b, c;} Triangle;
 
-#import "PolyInstance.h"
-
 
 @interface PolyRenderer : NSObject
 

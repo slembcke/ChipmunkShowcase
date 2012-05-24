@@ -20,7 +20,6 @@
  */
 
 #import "PolyRenderer.h"
-#import "PolyInstance.h"
 
 #import <GLKit/GLKit.h>
 
@@ -33,7 +32,6 @@
 
 enum {
     UNIFORM_PROJECTION_MATRIX,
-//		UNIFORM_TEXTURE,
     NUM_UNIFORMS
 };
 GLint uniforms[NUM_UNIFORMS];
@@ -47,7 +45,6 @@ enum {
 
 @interface PolyRenderer(){
 	GLuint _program;
-//	GLuint _texture;
 
 	GLuint _vao;
 	GLuint _vbo;
@@ -220,7 +217,6 @@ enum {
 	
 	// Get uniform locations.
 	uniforms[UNIFORM_PROJECTION_MATRIX] = glGetUniformLocation(_program, "projection");
-//    uniforms[UNIFORM_TEXTURE] = glGetUniformLocation(_program, "texture");
 	
 	// Release vertex and fragment shaders.
 	if (vertShader) {
@@ -256,31 +252,6 @@ enum {
 		glUseProgram(_program);
 		self.projection = projection;
 		
-//		glUniform1i(uniforms[UNIFORM_TEXTURE], 0);
-		
-//		NSURL *texture_url = [[NSBundle mainBundle] URLForResource:@"gradient.png" withExtension:nil];
-//		
-//		NSError *error = nil;
-//		GLKTextureInfo *tex_info = [GLKTextureLoader textureWithContentsOfURL:texture_url
-//			options:[NSDictionary dictionaryWithObjectsAndKeys:
-//				[NSNumber numberWithBool:TRUE], GLKTextureLoaderGenerateMipmaps,
-//				[NSNumber numberWithBool:TRUE], GLKTextureLoaderOriginBottomLeft,
-//				[NSNumber numberWithBool:TRUE], GLKTextureLoaderGrayscaleAsAlpha,
-//				nil]
-//			error:&error
-//		];
-//		
-//		if(error){
-//			NSLog(@"%@", error);
-//		}
-//		
-//		_texture = tex_info.name;
-//		glBindTexture(GL_TEXTURE_2D, _texture);
-//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    
     glGenVertexArraysOES(1, &_vao);
     glBindVertexArrayOES(_vao);
 		
@@ -311,38 +282,11 @@ enum {
 	free(_buffer); _buffer = 0;
 	
 	glDeleteProgram(_program); _program = 0;
-//	glDeleteTextures(1, &_texture); _texture = 0;
 	glDeleteBuffers(1, &_vbo); _vbo = 0;
 	glDeleteVertexArraysOES(1, &_vao); _vao = 0;
 }
 
 //MARK: Immediate Mode
-
--(void)drawPoly:(PolyInstance *)poly withTransform:(Transform)transform;
-{
-	NSUInteger vertex_count = poly.vertexCount;
-	[self ensureCapacity:vertex_count];
-	
-	Vertex *vertex_src = poly.vertexes;
-	Vertex *vertex_dst = _buffer + _bufferCount;
-	
-	memcpy(vertex_dst, vertex_src, vertex_count*sizeof(Vertex));
-#if __ARM_NEON__
-	float32x2_t tx = vld1_f32(&transform.a);
-	float32x2_t ty = vld1_f32(&transform.d);
-	float32x2_t tcol2 = {transform.c, transform.f};
-	
-	for(int i=0; i<vertex_count; i++){
-		float32x2_t *ptr = (float32x2_t *)&vertex_dst[i].vertex;
-		float32x2_t p = vld1_f32(ptr);
-		vst1_f32(ptr, vadd_f32(vpadd_f32(vmul_f32(tx, p), vmul_f32(ty, p)), tcol2));
-	}
-#else
-	for(int i=0; i<vertex_count; i++) vertex_dst[i].vertex = t_point(transform, vertex_dst[i].vertex);
-#endif
-	
-	_bufferCount += vertex_count;
-}
 
 -(void)drawDot:(cpVect)pos radius:(cpFloat)radius color:(Color)color;
 {
@@ -474,9 +418,6 @@ enum {
 	
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex)*_bufferCount, _buffer);
 		
-//	glActiveTexture(GL_TEXTURE0);
-//	glBindTexture(GL_TEXTURE_2D, _texture);
-	
 	glUseProgram(_program);
 	glBindVertexArrayOES(_vao);
 	glDrawArrays(GL_TRIANGLES, 0, _bufferCount);
