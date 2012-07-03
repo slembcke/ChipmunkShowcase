@@ -175,10 +175,16 @@ rand_pos()
 	shape.friction = 0.7f;
 }
 
+static const cpFloat MoonOrbitDist = 240.0;
+
 -(void)setup
 {
 	{
+		// Normally you don't add infinite mass bodies to a space, but in this case it's ok because "regular" gravity is 0.
+		// This makes for a convenient way to add the planetoids to the space's list anyway.
+		// You could also then animate the planetoids using integration callbacks if you wished.
 		_planetBody = [self.space add:[[PlanetoidBody alloc] initWithGravity:5e6]];
+		_planetBody.angVel = -2.0;
 		
 		ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:_planetBody radius:70.0f offset:cpvzero]];
 		shape.elasticity = 1.0f;
@@ -188,7 +194,8 @@ rand_pos()
 	
 	{
 		_moonBody = [self.space add:[[PlanetoidBody alloc] initWithGravity:1e6]];
-		_moonBody.pos = cpv(240.0, 160.0);
+		_moonBody.pos = cpv(MoonOrbitDist, 0.0);
+		_moonBody.angVel = -5.0;
 		
 		ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:_moonBody radius:20.0f offset:cpvzero]];
 		shape.elasticity = 1.0f;
@@ -198,6 +205,16 @@ rand_pos()
 	
 	NSUInteger count = [self numberForA4:250 A5:400];
 	for(int i=0; i < count; i++) [self addBall];
+}
+
+// Manually animate the moon's position.
+-(void)tick:(cpFloat)dt
+{
+	cpVect pos = cpvmult(cpvforangle(self.fixedTime*1.0), MoonOrbitDist);
+	_moonBody.vel = cpvmult(cpvsub(pos, _moonBody.pos), 1.0/dt);
+	// Don't 
+	
+	[super tick:dt];
 }
 
 @end
