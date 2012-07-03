@@ -50,6 +50,10 @@
 @property(nonatomic, readonly) NSTimeInterval preferredTimeStep;
 @property(nonatomic, assign) NSTimeInterval timeStep;
 
+// Override this method if you want to use a custom ChipmunkSpace class.
+// Returns ChipmunkHastySpace by default.
+-(Class)spaceClass;
+
 // Tune for CPU and iPhone/iPad
 -(float)numberForA4:(float)A4 A5:(float)A5;
 -(CGRect)demoBounds;
