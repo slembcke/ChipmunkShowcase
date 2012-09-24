@@ -64,11 +64,11 @@ NSArray *DEMO_CLASS_NAMES = nil;
 +(void)initialize
 {
 	DEMO_CLASS_NAMES = [NSArray arrayWithObjects:
-		@"SolarSystemDemo",
 		@"LogoSmashDemo",
 		@"PyramidToppleDemo",
 		@"GrabberDemo",
 		@"PlanetDemo",
+		@"SolarSystemDemo",
 		@"SpringiesDemo",
 		@"PyramidStackDemo",
 		@"BouncyTerrainDemo",
@@ -89,7 +89,7 @@ NSArray *DEMO_CLASS_NAMES = nil;
 -(void)showInstructions
 {
 	// Show the splash screen initially.
-	NSString *splashImage = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? @"Default.png" : @"Default-Portrait.png");
+	NSString *splashImage = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? @"Default.png" : @"Default-LandscapeRight.png");
 	UIViewController *splash = [[UIViewController alloc] init];
 	splash.view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:splashImage]];
 	self.window.rootViewController = splash;
