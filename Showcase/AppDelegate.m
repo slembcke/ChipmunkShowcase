@@ -89,9 +89,8 @@ NSArray *DEMO_CLASS_NAMES = nil;
 -(void)showInstructions
 {
 	// Show the splash screen initially.
-	NSString *splashImage = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? @"Default.png" : @"Default-LandscapeRight.png");
 	UIViewController *splash = [[UIViewController alloc] init];
-	splash.view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:splashImage]];
+	splash.view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default.png"]];
 	self.window.rootViewController = splash;
 	
 	// Not sure how to force the window's layer to update itself.
