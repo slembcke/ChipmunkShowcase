@@ -34,7 +34,7 @@
 @property(nonatomic, assign) cpVect tileOffset;
 
 /// The sampling function to use.
-@property(readonly) ChipmunkAbstractSampler *sampler;
+@property(nonatomic, readonly) ChipmunkAbstractSampler *sampler;
 
 /// Create the cache from the given sampler, space to add the generated segments to,
 /// size of the tiles, and the number of samples for each tile.
@@ -74,7 +74,7 @@
 	cpGroup _segmentGroup;
 	cpLayers _segmentLayers;
 	
-	id _segmentCollisionType;
+	cpCollisionType _segmentCollisionType;
 }
 
 /// Threshold value used by cpPolylineSimplifyCurves().
@@ -96,6 +96,6 @@
 @property(nonatomic, assign) cpLayers segmentLayers;
 
 /// Collision type of the generated segments.
-@property(nonatomic, assign) id segmentCollisionType;
+@property(nonatomic, assign) cpCollisionType segmentCollisionType;
 
 @end

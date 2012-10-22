@@ -28,23 +28,23 @@
 }
 
 /// Width of the bitmap in pixels.
-@property(readonly) NSUInteger width;
+@property(nonatomic, readonly) NSUInteger width;
 
 /// Height of the bitmap in pixels.
-@property(readonly) NSUInteger height;
+@property(nonatomic, readonly) NSUInteger height;
 
 /// Bytes per pixel of the bitmap. (ex: RGBA8888 would be 4)
-@property(readonly) NSUInteger bytesPerPixel;
+@property(nonatomic, readonly) NSUInteger bytesPerPixel;
 
 /// Zero-based ndex of the component to sample. (ex: alpha of RGBA would be 3)
-@property(assign) NSUInteger component;
+@property(nonatomic, assign) NSUInteger component;
 
 /// NSData object holding the pixel data.
-@property(readonly) NSData *pixelData;
+@property(nonatomic, readonly) NSData *pixelData;
 
 /// Rect that the image maps to.
 /// Defaults to (0.5, 0.5, width - 0.5, height - 0.5) so that pixel centers will be cleanly sampled.
-@property(assign) cpBB outputRect;
+@property(nonatomic, assign) cpBB outputRect;
 
 /**
 	Init a sampler from bitmap data.
@@ -77,10 +77,10 @@
 }
 
 /// CGBitmapContext for this sampler.
-@property(readonly) CGContextRef context;
+@property(nonatomic, readonly) CGContextRef context;
 
 /// NSMutableData object holding the pixel data.
-@property(readonly) NSMutableData *pixelData;
+@property(nonatomic, readonly) NSMutableData *pixelData;
 
 /// Initialize a context based sampler. Must provide options for a valid context.
 /// Find out more here in the Quartz 2D Programming Guide.

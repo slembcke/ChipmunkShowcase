@@ -13,49 +13,49 @@
 +(ChipmunkShape *)shapeFromCPShape:(cpShape *)shape;
 
 /// Returns a pointer to the underlying cpShape C struct.
-@property (readonly) cpShape *shape;
+@property(nonatomic, readonly) cpShape *shape;
 
 /// The ChipmunkBody that this shape is attached to.
-@property (retain) ChipmunkBody *body;
+@property(nonatomic, retain) ChipmunkBody *body;
 
 /// The axis-aligned bounding box for this shape.
-@property (readonly) cpBB bb;
+@property(nonatomic, readonly) cpBB bb;
 
 /// Sensor shapes send collision callback messages, but don't create a collision response.
-@property BOOL sensor;
+@property(nonatomic, assign) BOOL sensor;
 
 /// How bouncy this shape is.
-@property cpFloat elasticity;
+@property(nonatomic, assign) cpFloat elasticity;
 
 /// How much friction this shape has.
-@property cpFloat friction;
+@property(nonatomic, assign) cpFloat friction;
 
 /**
 	The velocity of the shape's surface.
 	This velocity is used in the collision response when calculating the friction only.
 */
-@property cpVect surfaceVel;
+@property(nonatomic, assign) cpVect surfaceVel;
 
 /**
 	An object reference used as a collision type identifier. This is used when defining collision handlers.
 	@attention Like most @c delegate properties this is a weak reference and does not call @c retain.
 */
-@property (assign) id collisionType;
+@property(nonatomic, assign) cpCollisionType collisionType;
 
 /**
 	An object reference used as a collision group identifier. Shapes with the same group do not collide.
 	@attention Like most @c delegate properties this is a weak reference and does not call @c retain.
 */
-@property (assign) id group;
+@property(nonatomic, assign) cpGroup group;
 
 /// A layer bitmask that defines which objects 
-@property (assign) cpLayers layers;
+@property(nonatomic, assign) cpLayers layers;
 
 /**
 	An object that this shape is associated with. You can use this get a reference to your game object or controller object from within callbacks.
 	@attention Like most @c delegate properties this is a weak reference and does not call @c retain. This prevents reference cycles from occuring.
 */
-@property (assign) id data;
+@property(nonatomic, assign) id data;
 
 /// Update and cache the axis-aligned bounding box for this shape.
 - (cpBB)cacheBB;
@@ -78,17 +78,17 @@
 - (id)initWithInfo:(cpNearestPointQueryInfo *)info;
 
 /// Returns a pointer to the underlying cpNearestPointQueryInfo C struct.
-@property (readonly) cpNearestPointQueryInfo *info;
+@property(nonatomic, readonly) cpNearestPointQueryInfo *info;
 
 /// The ChipmunkShape found.
-@property (readonly) ChipmunkShape *shape;
+@property(nonatomic, readonly) ChipmunkShape *shape;
 
 /// The distance between the point and the surface of the shape.
 /// Negative distances mean that the point is that depth inside the shape.
-@property (readonly) cpFloat dist;
+@property(nonatomic, readonly) cpFloat dist;
 
 /// The closest point on the surface of the shape to the point.
-@property (readonly) cpVect point;
+@property(nonatomic, readonly) cpVect point;
 
 @end
 
@@ -103,28 +103,28 @@
 - (id)initWithInfo:(cpSegmentQueryInfo *)info start:(cpVect)start end:(cpVect)end;
 
 /// Returns a pointer to the underlying cpSegmentQueryInfo C struct.
-@property (readonly) cpSegmentQueryInfo *info;
+@property(nonatomic, readonly) cpSegmentQueryInfo *info;
 
 /// The ChipmunkShape found.
-@property (readonly) ChipmunkShape *shape;
+@property(nonatomic, readonly) ChipmunkShape *shape;
 
 /// The percentage between the start and end points where the collision occurred.
-@property (readonly) cpFloat t;
+@property(nonatomic, readonly) cpFloat t;
 
 /// The normal of the collision with the shape.
-@property (readonly) cpVect normal;
+@property(nonatomic, readonly) cpVect normal;
 
 /// The point of the collision in absolute (world) coordinates.
-@property (readonly) cpVect point;
+@property(nonatomic, readonly) cpVect point;
 
 /// The distance from the start point where the collision occurred.
-@property (readonly) cpFloat dist;
+@property(nonatomic, readonly) cpFloat dist;
 
 /// The start point.
-@property (readonly) cpVect start;
+@property(nonatomic, readonly) cpVect start;
 
 /// The end point.
-@property (readonly) cpVect end;
+@property(nonatomic, readonly) cpVect end;
 
 @end
 
@@ -138,8 +138,8 @@
 
 - (id)initWithShape:(ChipmunkShape *)shape andPoints:(cpContactPointSet *)set;
 
-@property (readonly) ChipmunkShape *shape;
-@property (readonly) cpContactPointSet *contactPoints;
+@property(nonatomic, readonly) ChipmunkShape *shape;
+@property(nonatomic, readonly) cpContactPointSet *contactPoints;
 
 @end
 
@@ -157,10 +157,10 @@
 - (id)initWithBody:(ChipmunkBody *)body radius:(cpFloat)radius offset:(cpVect)offset;
 
 /// The radius of the circle.
-@property (readonly) cpFloat radius;
+@property(nonatomic, readonly) cpFloat radius;
 
 /// The offset from the center of gravity.
-@property (readonly) cpVect offset;
+@property(nonatomic, readonly) cpVect offset;
 
 @end
 
@@ -178,16 +178,16 @@
 - (id)initWithBody:(ChipmunkBody *)body from:(cpVect)a to:(cpVect)b radius:(cpFloat)radius;
 
 /// The start of the segment shape.
-@property (readonly) cpVect a;
+@property(nonatomic, readonly) cpVect a;
 
 /// The end of the segment shape.
-@property (readonly) cpVect b;
+@property(nonatomic, readonly) cpVect b;
 
 /// The normal of the segment shape.
-@property (readonly) cpVect normal;
+@property(nonatomic, readonly) cpVect normal;
 
 /// The beveling radius of the segment shape.
-@property (readonly) cpFloat radius;
+@property(nonatomic, readonly) cpFloat radius;
 
 @end
 
@@ -217,7 +217,7 @@
 - (id)initBoxWithBody:(ChipmunkBody *)body bb:(cpBB)bb;
 
 /// The number of vertexes in this polygon.
-@property (readonly) int count;
+@property(nonatomic, readonly) int count;
 
 /// Access the vertexes of this polygon.
 - (cpVect)getVertex:(int)index;

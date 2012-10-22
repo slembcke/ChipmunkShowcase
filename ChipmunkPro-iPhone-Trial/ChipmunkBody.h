@@ -40,58 +40,58 @@
 - (id)initStaticBody;
 
 /// Mass of the rigid body. Mass does not have to be expressed in any particular units, but relative masses should be consistent.
-@property cpFloat mass;
+@property(nonatomic, assign) cpFloat mass;
 
 /// Moment of inertia of the body. The mass tells you how hard it is to push an object, the MoI tells you how hard it is to spin the object. Don't try to guess the MoI, use the cpMomentFor*() functions to try and estimate it.
-@property cpFloat moment;
+@property(nonatomic, assign) cpFloat moment;
 
 /// The position of the rigid body's center of gravity.
-@property cpVect pos;
+@property(nonatomic, assign) cpVect pos;
 
 /// The linear velocity of the rigid body.
-@property cpVect vel;
+@property(nonatomic, assign) cpVect vel;
 
 /// The linear force applied to the rigid body. Unlike in some physics engines, the force does not reset itself during each step. Make sure that you are reseting the force between frames if that is what you intended.
-@property cpVect force;
+@property(nonatomic, assign) cpVect force;
 
 /// The rotation angle of the rigid body in radians.
-@property cpFloat angle;
+@property(nonatomic, assign) cpFloat angle;
 
 /// The angular velocity of the rigid body in radians per second.
-@property cpFloat angVel;
+@property(nonatomic, assign) cpFloat angVel;
 
 /// The torque being applied to the rigid body. Like force, this property is not reset every frame.
-@property cpFloat torque;
+@property(nonatomic, assign) cpFloat torque;
 
 /// A unit length vector vector that stores the current rotation of the body as a 2D spinor or complex number. Can be used for fast rotation.
-@property (readonly) cpVect rot;
+@property(nonatomic, readonly) cpVect rot;
 
 /// Returns a pointer to the underlying cpBody C struct.
-@property (readonly) cpBody *body;
+@property(nonatomic, readonly) cpBody *body;
 
 /**
 	An object that this constraint is associated with. You can use this get a reference to your game object or controller object from within callbacks.
 	@attention Like most @c delegate properties this is a weak reference and does not call @c retain. This prevents reference cycles from occuring.
 */
-@property (assign) id data;
+@property(nonatomic, assign) id data;
 
 /// Maximum velocity allowed for this body. Defaults to @c INFINITY.
-@property (assign) cpFloat velLimit;
+@property(nonatomic, assign) cpFloat velLimit;
 
 /// Maximum angular velocity allowed for this body. Defaults to @c INFINITY.
-@property (assign) cpFloat angVelLimit;
+@property(nonatomic, assign) cpFloat angVelLimit;
 
 /// Has the body been put to sleep by the space?
-@property (readonly) bool isSleeping;
+@property(nonatomic, readonly) bool isSleeping;
 
 /// Has the body <strong>not</strong> been added to any spaces?
-@property (readonly) bool isRogue;
+@property(nonatomic, readonly) bool isRogue;
 
 /// Is the body the static body associated with a space?
-@property (readonly) bool isStatic;
+@property(nonatomic, readonly) bool isStatic;
 
 /// Get the kinetic energy of this body.
-@property (readonly) cpFloat kineticEnergy;
+@property(nonatomic, readonly) cpFloat kineticEnergy;
 
 /**
   Convert from body local to world coordinates.
