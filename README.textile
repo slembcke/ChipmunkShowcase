@@ -1,0 +1,10 @@
+h2. Chipmunk Showcase
+
+!http://kortham.net/temp/upshot_2u7iZhzV.png!
+
+The Chipmunk Showcase app takes full advantage of Chipmunk Pro to provide a high performance demo app on iOS while showing you how simple using it can be.
+
+The showcase application is available on "iTunes here for free":https://itunes.apple.com/us/app/chipmunk-pro/id505070172?mt=8  
+
+The showcase contains a variety of scenes demonstrating different engine features, such as  the available joints, multi-touch input, breakable joints, deformable terrain, and others. Also take a look at the "ChipmunkDemo examples inside Chipmunk":https://github.com/slembcke/Chipmunk-Physics 
+
