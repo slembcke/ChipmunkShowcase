@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1280</int>
-		<string key="IBDocument.SystemVersion">10K549</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
-		<string key="IBDocument.AppKitVersion">1038.36</string>
-		<string key="IBDocument.HIToolboxVersion">461.00</string>
+		<int key="IBDocument.SystemTarget">1536</int>
+		<string key="IBDocument.SystemVersion">12C60</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2843</string>
+		<string key="IBDocument.AppKitVersion">1187.34</string>
+		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">933</string>
+			<string key="NS.object.0">1929</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
-			<string>IBUIView</string>
 			<string>IBProxyObject</string>
+			<string>IBUIButton</string>
 			<string>IBUILabel</string>
+			<string>IBUISlider</string>
 			<string>IBUISwitch</string>
 			<string>IBUITextView</string>
-			<string>IBUISlider</string>
-			<string>IBUIButton</string>
+			<string>IBUIView</string>
 		</array>
 		<array key="IBDocument.PluginDependencies">
 			<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -64,6 +64,7 @@
 								<object class="NSColor" key="IBUIShadowColor" id="585812031">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MCAwIDAAA</bytes>
+									<string key="IBUIColorCocoaTouchKeyPath">darkTextColor</string>
 								</object>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
@@ -278,7 +279,7 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 					</object>
 					<object class="IBUIView" id="554927226">
 						<reference key="NSNextResponder" ref="788008972"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{480, 320}</string>
 						<reference key="NSSuperview" ref="788008972"/>
 						<reference key="NSWindow"/>
@@ -292,7 +293,7 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 					</object>
 					<object class="IBUILabel" id="776453768">
 						<reference key="NSNextResponder" ref="788008972"/>
-						<int key="NSvFlags">292</int>
+						<int key="NSvFlags">301</int>
 						<string key="NSFrame">{{43, 107}, {394, 106}}</string>
 						<reference key="NSSuperview" ref="788008972"/>
 						<reference key="NSWindow"/>
@@ -317,11 +318,11 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
 							<string key="name">ChalkboardSE-Bold</string>
 							<string key="family">Chalkboard SE</string>
-							<int key="traits">0</int>
+							<int key="traits">2</int>
 							<double key="pointSize">72</double>
 						</object>
 						<object class="NSFont" key="IBUIFont">
-							<string key="NSName">Helvetica</string>
+							<string key="NSName">ChalkboardSE-Bold</string>
 							<double key="NSSize">72</double>
 							<int key="NSfFlags">16</int>
 						</object>
@@ -632,6 +633,25 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 				<object class="IBPartialClassDescription">
 					<string key="className">ViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="iterations:">UISlider</string>
+						<string key="timeScale:">UISlider</string>
+						<string key="timeStep:">UISlider</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="iterations:">
+							<string key="name">iterations:</string>
+							<string key="candidateClassName">UISlider</string>
+						</object>
+						<object class="IBActionInfo" key="timeScale:">
+							<string key="name">timeScale:</string>
+							<string key="candidateClassName">UISlider</string>
+						</object>
+						<object class="IBActionInfo" key="timeStep:">
+							<string key="name">timeStep:</string>
+							<string key="candidateClassName">UISlider</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="_demoLabel">UILabel</string>
 						<string key="_drawContacts">UISwitch</string>
@@ -702,6 +722,6 @@ UmVuZGVyOiA2MC4wIEh6A</string>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">933</string>
+		<string key="IBCocoaTouchPluginVersion">1929</string>
 	</data>
 </archive>

@@ -344,7 +344,9 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 	if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
 		return CGRectMake(-320, -240, 640, 480);
 	} else {
-		return CGRectMake(-360, -240, 720, 480);
+		CGSize screen = [UIScreen mainScreen].bounds.size;
+		CGFloat width = screen.height*480.0/screen.width;
+		return CGRectMake(-width/2.0, -240, width, 480);
 	}
 }
 

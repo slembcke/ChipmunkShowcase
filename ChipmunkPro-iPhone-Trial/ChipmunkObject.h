@@ -12,8 +12,15 @@
 
 @end
 
+
+/// Have NSArray implement ChipmunkObject so that you can easily use them as containers.
+@interface NSArray(ChipmunkObject) <ChipmunkObject>
+@end
+
+
 /// @deprecated since 6.0.2 Use [NSArray arrayWithObjects:] or similar instead.
 NSSet * ChipmunkObjectFlatten(id <ChipmunkObject> firstObject, ...) __attribute__((deprecated));
+
 
 /**
 	This protocol is implemented by objects that know how to add themselves to a space.
@@ -21,7 +28,7 @@ NSSet * ChipmunkObjectFlatten(id <ChipmunkObject> firstObject, ...) __attribute_
 */
 @protocol ChipmunkBaseObject <ChipmunkObject>
 
-@property (assign) id data;
+@property(nonatomic, assign) id data;
 
 - (void)addToSpace:(ChipmunkSpace *)space;
 - (void)removeFromSpace:(ChipmunkSpace *)space;

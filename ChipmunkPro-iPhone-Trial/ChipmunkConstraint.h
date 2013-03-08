@@ -15,13 +15,13 @@
 }
 
 /// Returns a pointer to the underlying cpConstraint C struct.
-@property (readonly) cpConstraint *constraint;
+@property(nonatomic, readonly) cpConstraint *constraint;
 
 /// The first ChipmunkBody the constraint controls.
-@property (retain, readonly) ChipmunkBody *bodyA;
+@property(nonatomic, readonly) ChipmunkBody *bodyA;
 
 /// The second ChipmunkBody the constraint controls.
-@property (retain, readonly) ChipmunkBody *bodyB;
+@property(nonatomic, readonly) ChipmunkBody *bodyB;
 
 /// Get the ChipmunkConstraint object associciated with a cpConstraint pointer.
 /// Undefined if the cpConstraint wasn't created using Objective-Chipmunk.
@@ -32,25 +32,25 @@
 	This allows joints to be pulled apart if too much force is applied to them.
 	It also allows you to use constraints as force or friction generators for controlling bodies.
 */
-@property cpFloat maxForce;
+@property(nonatomic, assign) cpFloat maxForce;
 
 /**
 	The rate at which joint error is corrected.
 	Defaults to pow(1.0 - 0.1, 60.0) meaning that it will correct 10% of the error every 1/60th of a second.
 */
-@property cpFloat errorBias;
+@property(nonatomic, assign) cpFloat errorBias;
 
 /**
 	Maximum rate (speed) that a joint can be corrected at (defaults to infinity).
-	Setting this value to a finite value allows you to control a joint like a 
+	Setting this value to a finite value allows you to control a joint like a servo motor.
 */
-@property cpFloat maxBias;
+@property(nonatomic, assign) cpFloat maxBias;
 
 /**
 	An object that this constraint is associated with. You can use this get a reference to your game object or controller object from within callbacks.
 	@attention Like most @c delegate properties this is a weak reference and does not call @c retain. This prevents reference cycles from occuring.
 */
-@property (assign) id data;
+@property(nonatomic, assign) id data;
 
 @end
 
@@ -77,13 +77,13 @@
 - (id)initWithBodyA:(ChipmunkBody *)a bodyB:(ChipmunkBody *)b anchr1:(cpVect)anchr1 anchr2:(cpVect)anchr2;
 
 /// The anchor point on the first body.
-@property cpVect anchr1;
+@property(nonatomic, assign) cpVect anchr1;
 
 /// The anchor point on the second body.
-@property cpVect anchr2;
+@property(nonatomic, assign) cpVect anchr2;
 
 /// The distance between the two anchor points that the joint keeps.
-@property cpFloat dist;
+@property(nonatomic, assign) cpFloat dist;
 
 @end
 
@@ -108,16 +108,16 @@
 - (id)initWithBodyA:(ChipmunkBody *)a bodyB:(ChipmunkBody *)b anchr1:(cpVect)anchr1 anchr2:(cpVect)anchr2 min:(cpFloat)min max:(cpFloat)max;
 
 /// The anchor point on the first body.
-@property cpVect anchr1;
+@property(nonatomic, assign) cpVect anchr1;
 
 /// The anchor point on the second body.
-@property cpVect anchr2;
+@property(nonatomic, assign) cpVect anchr2;
 
 /// The minimum allowed distance between anchor points.
-@property cpFloat min;
+@property(nonatomic, assign) cpFloat min;
 
 /// The maximum allowed distance between anchor points.
-@property cpFloat max;
+@property(nonatomic, assign) cpFloat max;
 
 @end
 
@@ -153,10 +153,10 @@
 - (id)initWithBodyA:(ChipmunkBody *)a bodyB:(ChipmunkBody *)b pivot:(cpVect)pivot;
 
 /// The anchor point on the first body.
-@property cpVect anchr1;
+@property(nonatomic, assign) cpVect anchr1;
 
 /// The anchor point on the second body.
-@property cpVect anchr2;
+@property(nonatomic, assign) cpVect anchr2;
 
 @end
 
@@ -187,7 +187,13 @@
 */
 - (id)initWithBodyA:(ChipmunkBody *)a bodyB:(ChipmunkBody *)b groove_a:(cpVect)groove_a groove_b:(cpVect)groove_b anchr2:(cpVect)anchr2;
 
-// TODO groove setters
+/// The start point of the groove on the first body.
+@property(nonatomic, assign) cpVect grooveA;
+/// The end point of the groove on the first body.
+@property(nonatomic, assign) cpVect grooveB;
+
+/// The anchor point on the second body.
+@property(nonatomic, assign) cpVect anchr2;
 
 @end
 
@@ -218,19 +224,19 @@
 - (id)initWithBodyA:(ChipmunkBody *)a bodyB:(ChipmunkBody *)b anchr1:(cpVect)anchr1 anchr2:(cpVect)anchr2 restLength:(cpFloat)restLength stiffness:(cpFloat)stiffness damping:(cpFloat)damping;
 
 /// The anchor point on the first body.
-@property cpVect anchr1;
+@property(nonatomic, assign) cpVect anchr1;
 
 /// The anchor point on the second body.
-@property cpVect anchr2;
+@property(nonatomic, assign) cpVect anchr2;
 
 /// The length the spring wants to contract or expand to.
-@property cpFloat restLength;
+@property(nonatomic, assign) cpFloat restLength;
 
 /// The <a href="http://en.wikipedia.org/wiki/Young's_modulus">young's modulus</a> of the spring.
-@property cpFloat stiffness;
+@property(nonatomic, assign) cpFloat stiffness;
 
 /// The amount of viscous damping to apply.
-@property cpFloat damping;
+@property(nonatomic, assign) cpFloat damping;
 
 @end
 
@@ -261,13 +267,13 @@
 - (id)initWithBodyA:(ChipmunkBody *)a bodyB:(ChipmunkBody *)b restAngle:(cpFloat)restAngle stiffness:(cpFloat)stiffness damping:(cpFloat)damping;
 
 /// The angular offset the spring attempts to keep between the two bodies.
-@property cpFloat restAngle;
+@property(nonatomic, assign) cpFloat restAngle;
 
 /// The <a href="http://en.wikipedia.org/wiki/Young's_modulus">young's modulus</a> of the spring.
-@property cpFloat stiffness;
+@property(nonatomic, assign) cpFloat stiffness;
 
 /// The amount of viscous damping to apply.
-@property cpFloat damping;
+@property(nonatomic, assign) cpFloat damping;
 
 @end
 
@@ -294,10 +300,10 @@
 - (id)initWithBodyA:(ChipmunkBody *)a bodyB:(ChipmunkBody *)b min:(cpFloat)min max:(cpFloat)max;
 
 /// The minimum angular delta of the joint in radians.
-@property cpFloat min;
+@property(nonatomic, assign) cpFloat min;
 
 /// The maximum angular delta of the joint in radians.
-@property cpFloat max;
+@property(nonatomic, assign) cpFloat max;
 
 @end
 
@@ -318,7 +324,7 @@
 - (id)initWithBodyA:(ChipmunkBody *)a bodyB:(ChipmunkBody *)b rate:(cpFloat)rate;
 
 /// The relative rotation speed of the two bodies in radians per second.
-@property cpFloat rate;
+@property(nonatomic, assign) cpFloat rate;
 
 @end
 
@@ -348,9 +354,9 @@
 - (id)initWithBodyA:(ChipmunkBody *)a bodyB:(ChipmunkBody *)b phase:(cpFloat)phase ratio:(cpFloat)ratio;
 
 /// The angular offset in radians.
-@property cpFloat phase;
+@property(nonatomic, assign) cpFloat phase;
 /// The ratio of the rotational speeds.
-@property cpFloat ratio;
+@property(nonatomic, assign) cpFloat ratio;
 
 @end
 
@@ -377,12 +383,12 @@
 - (id)initWithBodyA:(ChipmunkBody *)a bodyB:(ChipmunkBody *)b phase:(cpFloat)phase ratchet:(cpFloat)ratchet;
 
 /// The current ratchet position in radians.
-@property cpFloat angle;
+@property(nonatomic, assign) cpFloat angle;
 
 /// The angular offset of the ratchet positions in radians
-@property cpFloat phase;
+@property(nonatomic, assign) cpFloat phase;
 
 /// The angle in radians of each ratchet position. Negative values cause the ratchet to operate in the opposite direction.
-@property cpFloat ratchet;
+@property(nonatomic, assign) cpFloat ratchet;
 
 @end

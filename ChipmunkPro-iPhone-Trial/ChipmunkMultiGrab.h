@@ -1,5 +1,28 @@
 #import "ObjectiveChipmunk.h"
 
+@interface ChipmunkGrab : NSObject<ChipmunkObject> {
+	NSArray *_chipmunkObjects;
+	
+	cpVect _pos;
+	cpFloat _smoothing;
+	
+	ChipmunkShape *_grabbedShape;
+	
+	id _data;
+}
+
+/// Last touch location of the grab.
+@property(nonatomic, readonly) cpVect pos;
+
+/// The ChipmunkShape that this grab was created for.
+@property(nonatomic, readonly) ChipmunkShape *grabbedShape;
+
+/// User definable pointer
+@property(nonatomic, retain) id data;
+
+@end
+
+
 /// Simple class to implement multitouch grabbing of physics objects.
 @interface ChipmunkMultiGrab : NSObject {
 	ChipmunkSpace *_space;
@@ -56,7 +79,9 @@
 @property(nonatomic, assign) cpFloat pushMass;
 @property(nonatomic, assign) cpFloat pushFriction;
 @property(nonatomic, assign) cpFloat pushElasticity;
-@property(nonatomic, assign) id pushCollisionType;
+@property(nonatomic, assign) cpCollisionType pushCollisionType;
+
+@property(nonatomic, readonly) NSArray *grabs;
 
 
 /**
@@ -68,12 +93,16 @@
 -(id)initForSpace:(ChipmunkSpace *)space withSmoothing:(cpFloat)smoothing withGrabForce:(cpFloat)grabForce;
 
 /// Start tracking a new grab point
--(BOOL)beginLocation:(cpVect)pos;
+/// Returns the ChipmunkGrab that is tracking the touch, but only if a shape was grabbed.
+/// Returns nil when creating a push shape (if push mode is enabled), or when no shape is grabbed.
+-(ChipmunkGrab *)beginLocation:(cpVect)pos;
 
 /// Update a grab point.
--(void)updateLocation:(cpVect)pos;
+/// Returns the ChipmunkGrab that is tracking the touch, but only if the grab is tracking a shape.
+-(ChipmunkGrab *)updateLocation:(cpVect)pos;
 
 /// End a grab point.
--(void)endLocation:(cpVect)pos;
+/// Returns the ChipmunkGrab that was tracking the touch, but only if the grab was tracking a shape.
+-(ChipmunkGrab *)endLocation:(cpVect)pos;
 
 @end

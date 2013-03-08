@@ -16,25 +16,25 @@
 +(ChipmunkPolyline *)fromPolyline:(cpPolyline)line;
 
 /// Returns true if the first and last vertex are equal.
-@property(readonly) bool isLooped;
+@property(nonatomic, readonly) bool isLooped;
 
 /// Returns the signed area of the polyline calculated by cpAreaForPoly.
 /// Non-looped polylines return an area of 0.
-@property(readonly) cpFloat area;
+@property(nonatomic, readonly) cpFloat area;
 
 /// Centroid of the polyline calculated by cpCentroidForPoly.
 /// It is an error to call this on a non-looped polyline.
-@property(readonly) cpVect centroid;
+@property(nonatomic, readonly) cpVect centroid;
 
 /// Calculates the moment of inertia for a looped polyline with the given mass and offset.
 -(cpFloat)momentForMass:(cpFloat)mass offset:(cpVect)offset;
 
 
 /// Vertex count.
-@property(readonly) NSUInteger count;
+@property(nonatomic, readonly) NSUInteger count;
 
 /// Array of vertexes.
-@property(readonly) const cpVect *verts;
+@property(nonatomic, readonly) const cpVect *verts;
 
 /**
 	Returns a copy of a polyline simplified by using the Douglas-Peucker algorithm.
@@ -76,7 +76,7 @@
 -(id)initWithPolylineSet:(cpPolylineSet *)set;
 +(ChipmunkPolylineSet *)fromPolylineSet:(cpPolylineSet *)set;
 
-@property(readonly) NSUInteger count;
+@property(nonatomic, readonly) NSUInteger count;
 
 -(ChipmunkPolyline *)lineAtIndex:(NSUInteger)index;
 
@@ -89,11 +89,16 @@
 */
 @interface ChipmunkAbstractSampler : NSObject {
 @protected
+	cpFloat _marchThreshold;
 	cpMarchSampleFunc _sampleFunc;
 }
 
+/// The threshold passed to the cpMarch*() functions.
+/// The value of the contour you want to extract.
+@property(nonatomic, assign) cpFloat marchThreshold;
+
 /// Get the primitive cpMarchSampleFunc used by this sampler.
-@property(readonly) cpMarchSampleFunc sampleFunc;
+@property(nonatomic, readonly) cpMarchSampleFunc sampleFunc;
 
 /// Designated initializer.
 -(id)initWithSamplingFunction:(cpMarchSampleFunc)sampleFunc;

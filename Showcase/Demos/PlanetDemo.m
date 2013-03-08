@@ -21,6 +21,29 @@
 
 #import "ShowcaseDemo.h"
 
+static const cpFloat GRAVITY_STRENGTH = 5.0e6f;
+
+// Define a custom body type with a velocity integration callback.
+@interface PlanetDemoBody : ChipmunkBody
+@end
+
+@implementation PlanetDemoBody
+
+-(void)updateVelocity:(cpFloat)dt gravity:(cpVect)gravity damping:(cpFloat)damping
+{
+	// Gravitational acceleration is proportional to the inverse square of
+	// distance, and directed toward the origin. The central planet is assumed
+	// to be massive enough that it affects the satellites but not vice versa.
+	cpVect pos = self.pos;
+	cpFloat sqdist = cpvlengthsq(pos);
+	cpVect g = cpvmult(pos, -GRAVITY_STRENGTH/(sqdist*cpfsqrt(sqdist)));
+	
+	[super updateVelocity:dt gravity:g damping:damping];
+}
+
+@end
+
+
 @interface PlanetDemo : ShowcaseDemo @end
 @implementation PlanetDemo {
 	ChipmunkBody *_planetBody;
@@ -29,21 +52,6 @@
 -(NSString *)name
 {
 	return @"Planet";
-}
-
-static const cpFloat gravityStrength = 5.0e6f;
-
-static void
-PlanetGravityVelocityFunc(cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt)
-{
-	// Gravitational acceleration is proportional to the inverse square of
-	// distance, and directed toward the origin. The central planet is assumed
-	// to be massive enough that it affects the satellites but not vice versa.
-	cpVect pos = cpBodyGetPos(body);
-	cpFloat sqdist = cpvlengthsq(pos);
-	cpVect g = cpvmult(pos, -gravityStrength/(sqdist*cpfsqrt(sqdist)));
-	
-	cpBodyUpdateVelocity(body, g, damping, dt);
 }
 
 static cpVect
@@ -64,14 +72,13 @@ rand_pos()
 	
 	cpVect pos = rand_pos();
 	
-	ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForBox(mass, size, size)]];
-	body.body->velocity_func = PlanetGravityVelocityFunc;
+	ChipmunkBody *body = [self.space add:[PlanetDemoBody bodyWithMass:mass andMoment:cpMomentForBox(mass, size, size)]];
 	body.pos = pos;
 	
 	// Set the box's velocity to put it into a circular orbit from its
 	// starting position.
 	cpFloat r = cpvlength(pos);
-	cpFloat v = 0.99*cpfsqrt(gravityStrength/r)/r;
+	cpFloat v = 0.99*cpfsqrt(GRAVITY_STRENGTH/r)/r;
 	body.vel = cpvmult(cpvperp(pos), v);
 	
 	// Set the box's angular velocity to match its orbital period and

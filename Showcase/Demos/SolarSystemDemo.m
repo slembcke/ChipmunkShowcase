@@ -108,27 +108,16 @@
 @end
 
 
+// Make a custom body subclass with a custom velocity integration method.
 @interface SatelliteBody : ChipmunkBody @end
 @implementation SatelliteBody
 
-static void
-SatelliteBodyVelocityFunc(cpBody *body, cpVect gravity, cpFloat damping, cpFloat dt)
+-(void)updateVelocity:(cpFloat)dt gravity:(cpVect)gravity damping:(cpFloat)damping
 {
 	// The ChipmunkSpace object reference is stored in the user data pointer of the space.
 	// Use that to recalculate the fancy multi-planet gravity for us.
-	SolarSystemSpace *space = cpSpaceGetUserData(cpBodyGetSpace(body));
-	gravity = [space gravityAt:cpBodyGetPos(body)];
-	
-	cpBodyUpdateVelocity(body, gravity, damping, dt);
-}
-
--(id)initWithMass:(cpFloat)mass andMoment:(cpFloat)moment
-{
-	if((self = [super initWithMass:mass andMoment:moment])){
-		self.body->velocity_func = SatelliteBodyVelocityFunc;
-	}
-	
-	return self;
+	SolarSystemSpace *space = (SolarSystemSpace *)self.space;
+	[super updateVelocity:dt gravity:[space gravityAt:self.pos] damping:damping];
 }
 
 @end
@@ -162,13 +151,19 @@ rand_pos()
 	return v;
 }
 
--(void)addBall
+-(void)addBall:(cpFloat)gravity
 {
 	const cpFloat radius = 5.0f;
 	const cpFloat mass = 1.0f;
 	
 	ChipmunkBody *body = [self.space add:[SatelliteBody bodyWithMass:mass andMoment:cpMomentForCircle(mass, 0.0, radius, cpvzero)]];
 	body.pos = rand_pos();
+	
+	// Set the velocity to put it into a circular orbit from its
+	// starting position.
+	cpFloat r = cpvlength(body.pos);
+	cpFloat v = 0.99*cpfsqrt(gravity/r)/r;
+	body.vel = cpvmult(cpvperp(body.pos), v);
 	
 	ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:body radius:radius offset:cpvzero]];
 	shape.elasticity = 0.0f;
@@ -179,11 +174,12 @@ static const cpFloat MoonOrbitDist = 240.0;
 
 -(void)setup
 {
+	cpFloat planetGravity = 5e6;
 	{
 		// Normally you don't add infinite mass bodies to a space, but in this case it's ok because "regular" gravity is 0.
 		// This makes for a convenient way to add the planetoids to the space's list anyway.
 		// This also allows us to animate the planetoids by modifying their velocities and letting the space take care of the rest.
-		_planetBody = [self.space add:[[PlanetoidBody alloc] initWithGravity:5e6]];
+		_planetBody = [self.space add:[[PlanetoidBody alloc] initWithGravity:planetGravity]];
 		_planetBody.angVel = -2.0;
 		
 		ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:_planetBody radius:70.0f offset:cpvzero]];
@@ -204,7 +200,7 @@ static const cpFloat MoonOrbitDist = 240.0;
 	}
 	
 	NSUInteger count = [self numberForA4:250 A5:400];
-	for(int i=0; i < count; i++) [self addBall];
+	for(int i=0; i < count; i++) [self addBall:planetGravity];
 }
 
 // Manually animate the moon's position.
