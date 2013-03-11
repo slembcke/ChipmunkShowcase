@@ -181,7 +181,7 @@ enum DemoReveal {
 	if(_demoReveal == DEMO_REVEAL_NONE && _demoReveal != demoReveal){
 		[[reveals objectAtIndex:demoReveal] setHidden:FALSE];
 		
-		[self.glView setUserInteractionEnabled:FALSE];
+//		[self.glView setUserInteractionEnabled:FALSE];
 		
 		[UIView animateWithDuration:SLIDE_ANIMATION_DURATION animations:^{
 			[UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
@@ -200,7 +200,7 @@ enum DemoReveal {
 		} completion:^(BOOL finished){
 			if(finished){
 				[[reveals objectAtIndex:revealToHide] setHidden:TRUE];
-				[self.glView setUserInteractionEnabled:TRUE];
+//				[self.glView setUserInteractionEnabled:TRUE];
 			}
 		}];
 	}
