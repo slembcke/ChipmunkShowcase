@@ -412,7 +412,7 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 -(void)render:(PolyRenderer *)renderer showContacts:(BOOL)showContacts;
 {
 	for(ChipmunkShape *shape in _space.shapes){
-		[shape drawWithRenderer:renderer dt:_accumulator];
+		if(!shape.sensor) [shape drawWithRenderer:renderer dt:_accumulator];
 	}
 	
 	for(ChipmunkConstraint *constraint in _space.constraints){

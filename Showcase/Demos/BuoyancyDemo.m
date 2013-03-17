@@ -98,6 +98,15 @@
 	cpSpaceAddCollisionHandler(self.space.space, waterID, floatID, NULL, WaterPreSolve, NULL, NULL, NULL);
 }
 
+-(void)render:(PolyRenderer *)renderer showContacts:(BOOL)showContacts
+{
+	[super render:renderer showContacts:showContacts];
+	
+	[renderer drawSegmentFrom:cpv(-1000, 0) to:cpv(1000, 0) radius:1.0 color:RGBAColor(1, 1, 1, 1)];
+}
+
+// This function comes from the regular C Chipmunk demo.
+// There is little reason other than lower performance to rewrite in Obj-C.
 static cpBool
 WaterPreSolve(cpArbiter *arb, cpSpace *space, void *ptr)
 {
@@ -160,103 +169,3 @@ WaterPreSolve(cpArbiter *arb, cpSpace *space, void *ptr)
 }
 
 @end
-
-/*
-static cpSpace *
-init(void)
-{
-	ChipmunkDemoMessageString = messageBuffer;
-	
-	cpSpace *space = cpSpaceNew();
-	cpSpaceSetIterations(space, 30);
-	cpSpaceSetGravity(space, cpv(0, -500));
-//	cpSpaceSetDamping(space, 0.5);
-	cpSpaceSetSleepTimeThreshold(space, 0.5f);
-	cpSpaceSetCollisionSlop(space, 0.5f);
-	
-	cpBody *body, *staticBody = cpSpaceGetStaticBody(space);
-	cpShape *shape;
-	
-	// Create segments around the edge of the screen.
-	shape = cpSpaceAddShape(space, cpSegmentShapeNew(staticBody, cpv(-320,-240), cpv(-320,240), 0.0f));
-	cpShapeSetElasticity(shape, 1.0f);
-	cpShapeSetFriction(shape, 1.0f);
-	cpShapeSetLayers(shape, NOT_GRABABLE_MASK);
-
-	shape = cpSpaceAddShape(space, cpSegmentShapeNew(staticBody, cpv(320,-240), cpv(320,240), 0.0f));
-	cpShapeSetElasticity(shape, 1.0f);
-	cpShapeSetFriction(shape, 1.0f);
-	cpShapeSetLayers(shape, NOT_GRABABLE_MASK);
-
-	shape = cpSpaceAddShape(space, cpSegmentShapeNew(staticBody, cpv(-320,-240), cpv(320,-240), 0.0f));
-	cpShapeSetElasticity(shape, 1.0f);
-	cpShapeSetFriction(shape, 1.0f);
-	cpShapeSetLayers(shape, NOT_GRABABLE_MASK);
-	
-	shape = cpSpaceAddShape(space, cpSegmentShapeNew(staticBody, cpv(-320,240), cpv(320,240), 0.0f));
-	cpShapeSetElasticity(shape, 1.0f);
-	cpShapeSetFriction(shape, 1.0f);
-	cpShapeSetLayers(shape, NOT_GRABABLE_MASK);
-	
-	{
-		// Add the edges of the bucket
-		cpBB bb = cpBBNew(-300, -200, 100, 0);
-		cpFloat radius = 5.0f;
-		
-		shape = cpSpaceAddShape(space, cpSegmentShapeNew(staticBody, cpv(bb.l, bb.b), cpv(bb.l, bb.t), radius));
-		cpShapeSetElasticity(shape, 1.0f);
-		cpShapeSetFriction(shape, 1.0f);
-		cpShapeSetLayers(shape, NOT_GRABABLE_MASK);
-
-		shape = cpSpaceAddShape(space, cpSegmentShapeNew(staticBody, cpv(bb.r, bb.b), cpv(bb.r, bb.t), radius));
-		cpShapeSetElasticity(shape, 1.0f);
-		cpShapeSetFriction(shape, 1.0f);
-		cpShapeSetLayers(shape, NOT_GRABABLE_MASK);
-
-		shape = cpSpaceAddShape(space, cpSegmentShapeNew(staticBody, cpv(bb.l, bb.b), cpv(bb.r, bb.b), radius));
-		cpShapeSetElasticity(shape, 1.0f);
-		cpShapeSetFriction(shape, 1.0f);
-		cpShapeSetLayers(shape, NOT_GRABABLE_MASK);
-		
-		// Add the sensor for the water.
-		shape = cpSpaceAddShape(space, cpBoxShapeNew2(staticBody, bb));
-		cpShapeSetSensor(shape, cpTrue);
-		cpShapeSetCollisionType(shape, 1);
-	}
-
-
-	{
-		cpFloat width = 200.0f;
-		cpFloat height = 50.0f;
-		cpFloat mass = 0.3*FLUID_DENSITY*width*height;
-		cpFloat moment = cpMomentForBox(mass, width, height);
-		
-		body = cpSpaceAddBody(space, cpBodyNew(mass, moment));
-		cpBodySetPos(body, cpv(-50, -100));
-		cpBodySetVel(body, cpv(0, -100));
-		cpBodySetAngVel(body, 1);
-		
-		shape = cpSpaceAddShape(space, cpBoxShapeNew(body, width, height));
-		cpShapeSetFriction(shape, 0.8f);
-	}
-	
-	{
-		cpFloat width = 40.0f;
-		cpFloat height = width*2;
-		cpFloat mass = 0.3*FLUID_DENSITY*width*height;
-		cpFloat moment = cpMomentForBox(mass, width, height);
-		
-		body = cpSpaceAddBody(space, cpBodyNew(mass, moment));
-		cpBodySetPos(body, cpv(-200, -50));
-		cpBodySetVel(body, cpv(0, -100));
-		cpBodySetAngVel(body, 1);
-		
-		shape = cpSpaceAddShape(space, cpBoxShapeNew(body, width, height));
-		cpShapeSetFriction(shape, 0.8f);
-	}
-	
-	cpSpaceAddCollisionHandler(space, 1, 0, NULL, (cpCollisionPreSolveFunc)waterPreSolve, NULL, NULL, NULL);
-		
-	return space;
-}
-*/
