@@ -55,7 +55,7 @@
 -(Class)spaceClass;
 
 // Tune for CPU and iPhone/iPad
--(float)numberForA4:(float)A4 A5:(float)A5;
+-(float)numberForA4:(float)A4 A5:(float)A5 A6:(float)A6;
 -(CGRect)demoBounds;
 
 -(void)update:(NSTimeInterval)dt;
