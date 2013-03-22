@@ -40,8 +40,8 @@
 	bounds.size.height = bounds.size.width;
 	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
 	
-	NSUInteger height = [self numberForA4:14 A5:28];
-	cpFloat size = [self numberForA4:28.0 A5:20.0];
+	NSUInteger height = [self numberForA4:14 A5:28 A6:31];
+	cpFloat size = [self numberForA4:28.0 A5:20.0 A6:18.0];
 	
 	for(int i=0; i < height; i++){
 		for(int j=0; j<=i; j++){

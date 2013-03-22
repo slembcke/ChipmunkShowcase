@@ -54,7 +54,7 @@
 		}
 	}
 	
-	_count = [self numberForA4:300 A5:600];
+	_count = [self numberForA4:300 A5:700 A6:1200];
 }
 
 -(void)tick:(cpFloat)dt;

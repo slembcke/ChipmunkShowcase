@@ -353,7 +353,8 @@ enum {
 		extrude[i] = (struct ExtrudeVerts){offset, n2};
 	}
 	
-	BOOL outline = TRUE;//(line.a > 0.0 && width > 0.0);
+	BOOL outlined = (line.a > 0.0 && width > 0.0);
+	BOOL filled = (fill.a > 0.0);
 	
 	NSUInteger triangle_count = 3*count - 2;
 	NSUInteger vertex_count = 3*triangle_count;
@@ -362,13 +363,15 @@ enum {
 	Triangle *triangles = (Triangle *)(_buffer + _bufferCount);
 	Triangle *cursor = triangles;
 	
-	cpFloat inset = (outline == 0.0 ? 0.5 : 0.0);
-	for(int i=0; i<count-2; i++){
-		cpVect v0 = cpvsub(verts[0  ], cpvmult(extrude[0  ].offset, inset));
-		cpVect v1 = cpvsub(verts[i+1], cpvmult(extrude[i+1].offset, inset));
-		cpVect v2 = cpvsub(verts[i+2], cpvmult(extrude[i+2].offset, inset));
-		
-		*cursor++ = (Triangle){{v0, cpvzero, fill}, {v1, cpvzero, fill}, {v2, cpvzero, fill},};
+	cpFloat inset = (outlined ? 0.5 : 0.0);
+	if(filled){
+		for(int i=0; i<count-2; i++){
+			cpVect v0 = cpvsub(verts[0  ], cpvmult(extrude[0  ].offset, inset));
+			cpVect v1 = cpvsub(verts[i+1], cpvmult(extrude[i+1].offset, inset));
+			cpVect v2 = cpvsub(verts[i+2], cpvmult(extrude[i+2].offset, inset));
+			
+			*cursor++ = (Triangle){{v0, cpvzero, fill}, {v1, cpvzero, fill}, {v2, cpvzero, fill},};
+		}
 	}
 	
 	for(int i=0; i<count; i++){
@@ -381,7 +384,7 @@ enum {
 		cpVect offset0 = extrude[i].offset;
 		cpVect offset1 = extrude[j].offset;
 		
-		if(outline){
+		if(outlined){
 			cpVect inner0 = cpvsub(v0, cpvmult(offset0, width));
 			cpVect inner1 = cpvsub(v1, cpvmult(offset1, width));
 			cpVect outer0 = cpvadd(v0, cpvmult(offset0, width));
@@ -389,7 +392,7 @@ enum {
 			
 			*cursor++ = (Triangle){{inner0, cpvneg(n0), line}, {inner1, cpvneg(n0), line}, {outer1, n0, line}};
 			*cursor++ = (Triangle){{inner0, cpvneg(n0), line}, {outer0, n0, line}, {outer1, n0, line}};
-		} else {
+		} else if(filled){
 			cpVect inner0 = cpvsub(v0, cpvmult(offset0, 0.5));
 			cpVect inner1 = cpvsub(v1, cpvmult(offset1, 0.5));
 			cpVect outer0 = cpvadd(v0, cpvmult(offset0, 0.5));
@@ -400,7 +403,7 @@ enum {
 		}
 	}
 	
-	_bufferCount += vertex_count;
+	_bufferCount += 3*(cursor - triangles);
 }
 
 //MARK: Rendering

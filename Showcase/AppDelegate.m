@@ -68,6 +68,8 @@ NSArray *DEMO_CLASS_NAMES = nil;
 		@"PyramidToppleDemo",
 		@"GrabberDemo",
 		@"PlanetDemo",
+		@"BuoyancyDemo",
+		@"StickyDemo",
 		@"SolarSystemDemo",
 		@"SpringiesDemo",
 		@"PyramidStackDemo",

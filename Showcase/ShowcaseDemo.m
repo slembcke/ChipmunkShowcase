@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 
-#import <sys/sysctl.h>
+#import <sys/utsname.h>
 
 #define CP_ALLOW_PRIVATE_ACCESS
 
@@ -330,13 +330,28 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 	return _space.staticBody;
 }
 
--(float)numberForA4:(float)A4 A5:(float)A5;
+-(float)numberForA4:(float)A4 A5:(float)A5 A6:(float)A6;
 {
-	unsigned int cpu_count = 1;
-	size_t size = sizeof(cpu_count);
-	sysctlbyname("hw.ncpu", &cpu_count, &size, NULL, 0);
+	struct utsname platform;
+	int rc = uname(&platform);
+	if(rc == -1) return A4;
 	
-	return (cpu_count > 1 ? A5 : A4);
+	NSString *desc = @(platform.machine);
+	if([desc compare:@"iPad2"] < 0){
+		return A4;
+	} else if([desc compare:@"iPad4"] < 0){
+		return A5;
+	} else if([desc compare:@"iPhone"] < 0){
+		return A6;
+	} else if([desc compare:@"iPhone3"] < 0){
+		return A4;
+	} else if([desc compare:@"iPhone4"] < 0){
+		return A5;
+	} else if([desc compare:@"x86_64"] < 0){
+		return A6;
+	} else {
+		return A4;
+	}
 }
 
 -(CGRect)demoBounds
@@ -409,7 +424,7 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 -(void)render:(PolyRenderer *)renderer showContacts:(BOOL)showContacts;
 {
 	for(ChipmunkShape *shape in _space.shapes){
-		[shape drawWithRenderer:renderer dt:_accumulator];
+		if(!shape.sensor) [shape drawWithRenderer:renderer dt:_accumulator];
 	}
 	
 	for(ChipmunkConstraint *constraint in _space.constraints){

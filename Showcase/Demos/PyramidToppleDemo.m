@@ -44,7 +44,7 @@
 
 -(void)setup
 {
-	self.space.iterations = [self numberForA4:15 A5:20];
+	self.space.iterations = [self numberForA4:15 A5:20 A6:25];
 	self.space.gravity = cpv(0, -300.0);
 	self.space.sleepTimeThreshold = 0.5f;
 	self.space.collisionSlop = 0.5f;
@@ -55,8 +55,8 @@
 	shape.friction = 1.0;
 //	shape.layers = NOT_GRABABLE_MASK;
 	
-	int rows = [self numberForA4:10 A5:15];
-	cpFloat height = [self numberForA4:30.0 A5:20.0];
+	int rows = [self numberForA4:10 A5:15 A6:18];
+	cpFloat height = [self numberForA4:30.0 A5:20.0 A6:20.0];
 	cpFloat width = height/4.0;
 	
 	// Add the dominoes.

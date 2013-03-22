@@ -199,14 +199,14 @@ static const cpFloat MoonOrbitDist = 240.0;
 		shape.layers = NOT_GRABABLE_MASK;
 	}
 	
-	NSUInteger count = [self numberForA4:250 A5:400];
+	NSUInteger count = [self numberForA4:250 A5:700 A6:1000];
 	for(int i=0; i < count; i++) [self addBall:planetGravity];
 }
 
 // Manually animate the moon's position.
 -(void)tick:(cpFloat)dt
 {
-	cpVect pos = cpvmult(cpvforangle(self.fixedTime*1.0), MoonOrbitDist);
+	cpVect pos = cpvmult(cpvforangle(self.fixedTime*0.6), MoonOrbitDist);
 	_moonBody.vel = cpvmult(cpvsub(pos, _moonBody.pos), 1.0/dt);
 	// Don't set the position, the space will do that as it updates the moon body.
 	
