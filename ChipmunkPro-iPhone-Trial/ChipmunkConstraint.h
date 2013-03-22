@@ -46,11 +46,24 @@
 */
 @property(nonatomic, assign) cpFloat maxBias;
 
+/// Get the most recent impulse applied by this constraint.
+@property(nonatomic, readonly) cpFloat impulse;
+
+/// Get the space the body is added to.
+@property(nonatomic, readonly) ChipmunkSpace *space;
+
 /**
 	An object that this constraint is associated with. You can use this get a reference to your game object or controller object from within callbacks.
 	@attention Like most @c delegate properties this is a weak reference and does not call @c retain. This prevents reference cycles from occuring.
 */
 @property(nonatomic, assign) id data;
+
+/// Override this method to update a constraints parameters just before running the physics each step.
+-(void)preSolve:(ChipmunkSpace *)space;
+
+/// Override this method to poll values from a constraint each frame after the physics runs.
+/// This can be used to implement breakable joints for instance.
+-(void)postSolve:(ChipmunkSpace *)space;
 
 @end
 

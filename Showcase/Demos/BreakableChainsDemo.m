@@ -21,6 +21,28 @@
 
 #import "ShowcaseDemo.h"
 
+@interface BreakableSlideJoint : ChipmunkSlideJoint
+@end
+
+@implementation BreakableSlideJoint
+
+-(void)postSolve:(ChipmunkSpace *)space
+{
+	cpFloat dt = space.currentTimeStep;
+	
+	// Convert the impulse to a force by dividing it by the timestep.
+	cpFloat force = self.impulse/dt;
+	cpFloat maxForce = self.maxForce;
+
+	// If the force is almost as big as the joint's max force, break it.
+	if(force > 0.9*maxForce){
+		[space smartRemove:self];
+	}
+}
+
+@end
+
+
 @interface BreakableChainsDemo : ShowcaseDemo @end
 @implementation BreakableChainsDemo
 
@@ -31,21 +53,6 @@
 
 #define CHAIN_COUNT 8
 #define LINK_COUNT 10
-
-static void
-BreakableJointPostSolve(cpConstraint *joint, cpSpace *space)
-{
-	cpFloat dt = cpSpaceGetCurrentTimeStep(space);
-	
-	// Convert the impulse to a force by dividing it by the timestep.
-	cpFloat force = cpConstraintGetImpulse(joint)/dt;
-	cpFloat maxForce = cpConstraintGetMaxForce(joint);
-
-	// If the force is almost as big as the joint's max force, break it.
-	if(force > 0.9*maxForce){
-		[cpSpaceGetUserData(space) smartRemove:cpConstraintGetUserData(joint)];
-	}
-}
 
 -(void)setup
 {
@@ -74,13 +81,12 @@ BreakableJointPostSolve(cpConstraint *joint, cpSpace *space)
 			
 			ChipmunkConstraint *constraint = nil;
 			if(prev == nil){
-				constraint = [self.space add:[ChipmunkSlideJoint slideJointWithBodyA:body bodyB:self.space.staticBody anchr1:cpv(0, height/2) anchr2:cpv(pos.x, 240) min:0.0 max:spacing]];
+				constraint = [self.space add:[BreakableSlideJoint slideJointWithBodyA:body bodyB:self.space.staticBody anchr1:cpv(0, height/2) anchr2:cpv(pos.x, 240) min:0.0 max:spacing]];
 			} else {
-				constraint = [self.space add:[ChipmunkSlideJoint slideJointWithBodyA:body bodyB:prev anchr1:cpv(0, height/2) anchr2:cpv(0, -height/2) min:0.0 max:spacing]];
+				constraint = [self.space add:[BreakableSlideJoint slideJointWithBodyA:body bodyB:prev anchr1:cpv(0, height/2) anchr2:cpv(0, -height/2) min:0.0 max:spacing]];
 			}
 			
 			constraint.maxForce = 8.0e4;
-			cpConstraintSetPostSolveFunc(constraint.constraint, BreakableJointPostSolve);
 			
 			prev = body;
 		}

@@ -269,16 +269,16 @@ typedef void (^ChipmunkPostStepBlock)(void);
 	
 	You you will find that @code a->collision_type == 1 @endcode and @code b->collision_type == 2 @endcode.
 */
-#define CHIPMUNK_ARBITER_GET_SHAPES(arb, a, b) ChipmunkShape *a, *b; { \
-	cpShape *shapeA, *shapeB; \
-	cpArbiterGetShapes(arb, &shapeA, &shapeB); \
-	a = shapeA->data; b = shapeB->data; \
+#define CHIPMUNK_ARBITER_GET_SHAPES(__arb__, __a__, __b__) ChipmunkShape *__a__, *__b__; { \
+	cpShape *__shapeA__, *__shapeB__; \
+	cpArbiterGetShapes(__arb__, &__shapeA__, &__shapeB__); \
+	__a__ = __shapeA__->data; __b__ = __shapeB__->data; \
 }
 
-#define CHIPMUNK_ARBITER_GET_BODIES(arb, a, b) ChipmunkBody *a, *b; { \
-	cpBody *bodyA, *bodyB; \
-	cpArbiterGetBodies(arb, &bodyA, &bodyB); \
-	a = bodyA->data; b = bodyB->data; \
+#define CHIPMUNK_ARBITER_GET_BODIES(__arb__, __a__, __b__) ChipmunkBody *__a__, *__b__; { \
+	cpBody *__bodyA__, *__bodyB__; \
+	cpArbiterGetBodies(__arb__, &__bodyA__, &__bodyB__); \
+	__a__ = __bodyA__->data; __b__ = __bodyB__->data; \
 }
 
 

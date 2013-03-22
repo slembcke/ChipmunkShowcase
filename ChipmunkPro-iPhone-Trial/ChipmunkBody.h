@@ -109,6 +109,18 @@
 - (cpVect)world2local:(cpVect)v;
 
 /**
+	Get the velocity of a point on a body.
+	Get the world (absolute) velocity of a point on a rigid body specified in body local coordinates.
+*/
+- (cpVect)velocityAtLocalPoint:(cpVect)p;
+
+/**
+	Get the velocity of a point on a body.
+	Get the world (absolute) velocity of a point on a rigid body specified in world coordinates.
+*/
+- (cpVect)velocityAtWorldPoint:(cpVect)p;
+
+/**
   Reset force and torque.
   Set the force on this rigid body to cpvzero, and set the torque to 0.0.
 */
