@@ -70,6 +70,7 @@ NSArray *DEMO_CLASS_NAMES = nil;
 		@"PlanetDemo",
 		@"BuoyancyDemo",
 		@"StickyDemo",
+		@"RemoteArm",
 		@"SolarSystemDemo",
 		@"SpringiesDemo",
 		@"PyramidStackDemo",
@@ -110,6 +111,7 @@ NSArray *DEMO_CLASS_NAMES = nil;
 		// Show the instruction screen.
 		NSString *nib_name = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ? @"InstructionsController_iPhone" : @"InstructionsController_iPad");
 		self.window.rootViewController = [[InstructionsController alloc] initWithNibName:nib_name bundle:nil];
+//		self.currentDemo = @"RemoteArm";
 //	});
 }
 

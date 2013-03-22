@@ -26,6 +26,8 @@
 		D325DB3C1491970D00F1B411 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D325DB3B1491970D00F1B411 /* QuartzCore.framework */; };
 		D3582DF11490899400AB0C37 /* Accelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3582DF01490899400AB0C37 /* Accelerometer.m */; };
 		D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */; };
+		D360ABF516FD00E000649802 /* RemoteArm.m in Sources */ = {isa = PBXBuildFile; fileRef = D360ABF416FD00E000649802 /* RemoteArm.m */; };
+		D360AC0516FD23C100649802 /* RemoteArm.psd in Resources */ = {isa = PBXBuildFile; fileRef = D360AC0416FD23C100649802 /* RemoteArm.psd */; };
 		D3921D8B16F56CE000F10915 /* BuoyancyDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3921D8A16F56CE000F10915 /* BuoyancyDemo.psd */; };
 		D3921D8F16F56F4100F10915 /* StickyDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3921D8E16F56F4100F10915 /* StickyDemo.m */; };
 		D3921D9416F57D1600F10915 /* StickyDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3921D9316F57D1600F10915 /* StickyDemo.psd */; };
@@ -120,6 +122,8 @@
 		D3582DF01490899400AB0C37 /* Accelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accelerometer.m; sourceTree = "<group>"; };
 		D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController_iPad.xib; sourceTree = "<group>"; };
 		D359FB271495E103001147A9 /* LogoSmashDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoSmashDemo.m; sourceTree = "<group>"; };
+		D360ABF416FD00E000649802 /* RemoteArm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteArm.m; sourceTree = "<group>"; };
+		D360AC0416FD23C100649802 /* RemoteArm.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = RemoteArm.psd; sourceTree = "<group>"; };
 		D3921D8A16F56CE000F10915 /* BuoyancyDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = BuoyancyDemo.psd; sourceTree = "<group>"; };
 		D3921D8E16F56F4100F10915 /* StickyDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyDemo.m; sourceTree = "<group>"; };
 		D3921D9316F57D1600F10915 /* StickyDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = StickyDemo.psd; sourceTree = "<group>"; };
@@ -244,6 +248,7 @@
 		D30A7AAC14E8BC5B00C50129 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				D360AC0416FD23C100649802 /* RemoteArm.psd */,
 				D3921D9316F57D1600F10915 /* StickyDemo.psd */,
 				D3921D8A16F56CE000F10915 /* BuoyancyDemo.psd */,
 				D3DFB4A51610FC8B00162F19 /* SolarSystemDemo.psd */,
@@ -308,6 +313,7 @@
 				D396EC461495F6C500B94838 /* MultiGrabDemo.m */,
 				D39C8CD216F3B1BD00A9F5D7 /* BuoyancyDemo.m */,
 				D3921D8E16F56F4100F10915 /* StickyDemo.m */,
+				D360ABF416FD00E000649802 /* RemoteArm.m */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -549,6 +555,7 @@
 				D39C31FA169528C90046340D /* Default-568h.psd in Resources */,
 				D3921D8B16F56CE000F10915 /* BuoyancyDemo.psd in Resources */,
 				D3921D9416F57D1600F10915 /* StickyDemo.psd in Resources */,
+				D360AC0516FD23C100649802 /* RemoteArm.psd in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -586,6 +593,7 @@
 				D305BF7F15A3439600B98A57 /* SolarSystemDemo.m in Sources */,
 				D39C8CD316F3B1BD00A9F5D7 /* BuoyancyDemo.m in Sources */,
 				D3921D8F16F56F4100F10915 /* StickyDemo.m in Sources */,
+				D360ABF516FD00E000649802 /* RemoteArm.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
