@@ -417,11 +417,6 @@ enum DemoReveal {
 	[self setupGL];
 }
 
--(void)viewDidLayoutSubviews
-{
-	[self setupGL];
-}
-
 -(void)viewDidUnload
 {    
 	[super viewDidUnload];

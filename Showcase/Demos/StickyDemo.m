@@ -44,11 +44,13 @@
 	
 	[self addBounds:self.demoBounds collisionType:stickyType];
 	
-	for(int i=0; i<5; i++){
-		for(int j=0; j<5; j++){
-			cpFloat radius = 30.0f;
-			ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:1.0 andMoment:cpMomentForCircle(1.0, 0.0, radius, cpvzero)]];
-			body.pos = cpv((i-2)*2.0*radius, (j-2)*2.0*radius);
+	for(int i=0; i<10; i++){
+		for(int j=0; j<10; j++){
+			cpFloat radius = 15.0f;
+			cpFloat mass = 0.25;
+			
+			ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForCircle(mass, 0.0, radius, cpvzero)]];
+			body.pos = cpv((i-5)*2.0*radius, (j-5)*2.0*radius);
 			
 			ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:body radius:radius offset:cpvzero]];
 			shape.friction = 0.9;
@@ -107,7 +109,7 @@ boundSeg(ChipmunkSpace *space, cpVect a, cpVect b, cpCollisionType stickyType)
 		ChipmunkConstraint *joint = [ChipmunkPivotJoint pivotJointWithBodyA:body_a bodyB:body_b pivot:point];
 		
 		// Give it a finite force for the stickyness.
-		joint.maxForce = 1e4;
+		joint.maxForce = 6e3;
 		
 		// Schedule a post-step() callback to add the joint.
 		[space smartAdd:joint];

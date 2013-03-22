@@ -199,7 +199,7 @@ static const cpFloat MoonOrbitDist = 240.0;
 		shape.layers = NOT_GRABABLE_MASK;
 	}
 	
-	NSUInteger count = [self numberForA4:250 A5:700 A6:1000];
+	NSUInteger count = [self numberForA4:250 A5:700 A6:900];
 	for(int i=0; i < count; i++) [self addBall:planetGravity];
 }
 
