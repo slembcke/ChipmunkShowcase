@@ -341,13 +341,10 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 
 -(CGRect)demoBounds
 {
-	if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-		return CGRectMake(-320, -240, 640, 480);
-	} else {
-		CGSize screen = [UIScreen mainScreen].bounds.size;
-		CGFloat width = screen.height*480.0/screen.width;
-		return CGRectMake(-width/2.0, -240, width, 480);
-	}
+	CGSize size = [UIScreen mainScreen].bounds.size;
+	CGFloat width = size.height*480.0/size.width;
+	
+	return CGRectMake(-width/2.0, -240, width, 480);
 }
 
 -(void)setup {}

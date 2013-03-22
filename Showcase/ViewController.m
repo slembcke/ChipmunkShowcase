@@ -410,7 +410,10 @@ enum DemoReveal {
 	}
 	
 	// TODO add down swipe for an info pane?
+}
 
+-(void)viewDidLayoutSubviews
+{
 	[self setupGL];
 }
 

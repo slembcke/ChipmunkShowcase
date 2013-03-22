@@ -28,6 +28,7 @@
 		D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */; };
 		D396EC441495E52000B94838 /* LogoSmashDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D359FB271495E103001147A9 /* LogoSmashDemo.m */; };
 		D396EC471495F6C500B94838 /* MultiGrabDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D396EC461495F6C500B94838 /* MultiGrabDemo.m */; };
+		D39C31FA169528C90046340D /* Default-568h.psd in Resources */ = {isa = PBXBuildFile; fileRef = D39C31F9169528C90046340D /* Default-568h.psd */; };
 		D3C10FBB1490944000F00AAE /* ShowcaseDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C10FBA1490944000F00AAE /* ShowcaseDemo.m */; };
 		D3C10FD31490ADCE00F00AAE /* PlinkDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */; };
 		D3C4358F1490B15800875EA3 /* TumbleDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C4358E1490B15800875EA3 /* TumbleDemo.m */; };
@@ -116,6 +117,7 @@
 		D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController_iPad.xib; sourceTree = "<group>"; };
 		D359FB271495E103001147A9 /* LogoSmashDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoSmashDemo.m; sourceTree = "<group>"; };
 		D396EC461495F6C500B94838 /* MultiGrabDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiGrabDemo.m; sourceTree = "<group>"; };
+		D39C31F9169528C90046340D /* Default-568h.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Default-568h.psd"; sourceTree = SOURCE_ROOT; };
 		D3C10FB91490944000F00AAE /* ShowcaseDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowcaseDemo.h; sourceTree = "<group>"; };
 		D3C10FBA1490944000F00AAE /* ShowcaseDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowcaseDemo.m; sourceTree = "<group>"; };
 		D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlinkDemo.m; sourceTree = "<group>"; };
@@ -431,6 +433,7 @@
 				D3EB7A6014F23E7300C1AD84 /* Icon.psd */,
 				D3EB7A6114F23E7300C1AD84 /* Icon~ipad.psd */,
 				D3EB7A6B14F24A1600C1AD84 /* Default.psd */,
+				D39C31F9169528C90046340D /* Default-568h.psd */,
 				D32595AF14F5CA3A00CFD00B /* Default~ipad.png */,
 				D3FB3977148F353600E0BA9E /* ViewController_iPhone.xib */,
 				D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */,
@@ -531,6 +534,7 @@
 				D32595AC14F5C16900CFD00B /* InstructionsController_iPad.xib in Resources */,
 				D32595AE14F5C37B00CFD00B /* instructions~ipad.png in Resources */,
 				D3DFB4A61610FC8B00162F19 /* SolarSystemDemo.psd in Resources */,
+				D39C31FA169528C90046340D /* Default-568h.psd in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -650,6 +654,7 @@
 				GCC_PREFIX_HEADER = "Showcase/ChipmunkShowcase-Prefix.pch";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = "Showcase/ChipmunkShowcase-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../ChipmunkPro/ChipmunkPro-iPhone\"",
@@ -669,6 +674,7 @@
 				GCC_PREFIX_HEADER = "Showcase/ChipmunkShowcase-Prefix.pch";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = "Showcase/ChipmunkShowcase-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../ChipmunkPro/ChipmunkPro-iPhone\"",
