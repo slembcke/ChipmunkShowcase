@@ -14,6 +14,8 @@
 		D311931314E25F7800B659B3 /* TheoJansenDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931214E25F7700B659B3 /* TheoJansenDemo.m */; };
 		D311931514E265C000B659B3 /* BreakableChainsDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931414E265C000B659B3 /* BreakableChainsDemo.m */; };
 		D311931714E2699F00B659B3 /* CraneDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931614E2699F00B659B3 /* CraneDemo.m */; };
+		D3189F5D1784DF5C00EA8B86 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3189F5C1784DF5C00EA8B86 /* GLKit.framework */; };
+		D3189F5F1784DFA000EA8B86 /* rings.png in Resources */ = {isa = PBXBuildFile; fileRef = D3189F5E1784DFA000EA8B86 /* rings.png */; };
 		D321D1D114E8F8C400DE2A53 /* DeformableBitmapDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D321D1D014E8F8C400DE2A53 /* DeformableBitmapDemo.m */; };
 		D321D1D414E8F9C600DE2A53 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D321D1D314E8F9C600DE2A53 /* ImageIO.framework */; };
 		D325955414F4AEAB00CFD00B /* AbsorbDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D325955314F4AEAB00CFD00B /* AbsorbDemo.psd */; };
@@ -104,6 +106,8 @@
 		D311931414E265C000B659B3 /* BreakableChainsDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BreakableChainsDemo.m; sourceTree = "<group>"; };
 		D311931614E2699F00B659B3 /* CraneDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CraneDemo.m; sourceTree = "<group>"; };
 		D311931814E271DD00B659B3 /* TODO */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
+		D3189F5C1784DF5C00EA8B86 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		D3189F5E1784DFA000EA8B86 /* rings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rings.png; sourceTree = "<group>"; };
 		D321D1D014E8F8C400DE2A53 /* DeformableBitmapDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeformableBitmapDemo.m; sourceTree = "<group>"; };
 		D321D1D314E8F9C600DE2A53 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		D325955314F4AEAB00CFD00B /* AbsorbDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = AbsorbDemo.psd; sourceTree = "<group>"; };
@@ -228,6 +232,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3189F5D1784DF5C00EA8B86 /* GLKit.framework in Frameworks */,
 				D321D1D414E8F9C600DE2A53 /* ImageIO.framework in Frameworks */,
 				D325DB3C1491970D00F1B411 /* QuartzCore.framework in Frameworks */,
 				D3FB395B148F353600E0BA9E /* UIKit.framework in Frameworks */,
@@ -400,6 +405,7 @@
 		D3FB3959148F353600E0BA9E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D3189F5C1784DF5C00EA8B86 /* GLKit.framework */,
 				D321D1D314E8F9C600DE2A53 /* ImageIO.framework */,
 				D325DB3B1491970D00F1B411 /* QuartzCore.framework */,
 				D3FB395A148F353600E0BA9E /* UIKit.framework */,
@@ -435,6 +441,7 @@
 		D3FB3965148F353600E0BA9E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D3189F5E1784DFA000EA8B86 /* rings.png */,
 				D32595A714F5C02D00CFD00B /* instructions.png */,
 				D32595A814F5C02D00CFD00B /* instructions@2x.png */,
 				D32595AD14F5C37B00CFD00B /* instructions~ipad.png */,
@@ -521,6 +528,7 @@
 				D3EB7A4F14F2383B00C1AD84 /* BreakableChainsDemo.psd in Resources */,
 				D3EB7A5014F2383B00C1AD84 /* CraneDemo.psd in Resources */,
 				D3EB7A5214F2383B00C1AD84 /* LogoSmashDemo.psd in Resources */,
+				D3189F5F1784DFA000EA8B86 /* rings.png in Resources */,
 				D3EB7A5314F2383B00C1AD84 /* MultiGrabDemo.psd in Resources */,
 				D3EB7A5414F2383B00C1AD84 /* PlanetDemo.psd in Resources */,
 				D3EB7A5514F2383B00C1AD84 /* PlinkDemo.psd in Resources */,

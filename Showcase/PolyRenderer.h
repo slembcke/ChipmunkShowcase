@@ -48,6 +48,7 @@ typedef struct Triangle {Vertex a, b, c;} Triangle;
 -(id)initWithProjection:(Transform)projection;
 
 -(void)drawDot:(cpVect)pos radius:(cpFloat)radius color:(Color)color;
+-(void)drawRing:(cpVect)pos radius:(cpFloat)radius which:(float)which;
 -(void)drawSegmentFrom:(cpVect)a to:(cpVect)b radius:(cpFloat)radius color:(Color)color;
 -(void)drawPolyWithVerts:(cpVect *)verts count:(NSUInteger)count width:(cpFloat)width fill:(Color)fill line:(Color)line;
 

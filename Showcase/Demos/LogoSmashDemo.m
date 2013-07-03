@@ -106,7 +106,8 @@ static void
 RenderDot(cpBody *body, struct RenderContext *context)
 {
 	cpVect pos = cpvadd(body->p, cpvmult(body->v, context->accumulator));
-	[context->renderer drawDot:pos radius:4.0 color:SHAPE_OUTLINE_COLOR];
+	[context->renderer drawRing:pos radius:4.0 which:(int)(body)%7];
+//	[context->renderer drawDot:pos radius:4.0 color:SHAPE_OUTLINE_COLOR];
 }
 
 -(void)render:(PolyRenderer *)renderer showContacts:(BOOL)showContacts;

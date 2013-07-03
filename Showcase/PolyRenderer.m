@@ -49,6 +49,8 @@ enum {
 	GLuint _vao;
 	GLuint _vbo;
 	
+	GLuint _texture;
+	
 	NSUInteger _vboCapacity;
 	NSUInteger _bufferCapacity, _bufferCount;
 	Vertex *_buffer;
@@ -218,6 +220,26 @@ enum {
 	// Get uniform locations.
 	uniforms[UNIFORM_PROJECTION_MATRIX] = glGetUniformLocation(_program, "projection");
 	
+	NSError *err = nil;
+	
+	NSURL *url = [[NSBundle mainBundle] URLForResource:@"rings" withExtension:@"png"];
+	GLKTextureInfo *info = [GLKTextureLoader textureWithContentsOfURL:url options:@{
+		GLKTextureLoaderApplyPremultiplication: @(YES),
+		GLKTextureLoaderGenerateMipmaps: @(YES),
+		GLKTextureLoaderOriginBottomLeft: @(YES),
+	} error:&err];
+	_texture = info.name;
+	
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(info.target, info.name);
+	glTexParameteri(GL_TEXTURE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	
+	int loc = glGetUniformLocation(_program, "texture");
+	glUniform1i(loc, 0);
+	
 	// Release vertex and fragment shaders.
 	if (vertShader) {
 			glDetachShader(_program, vertShader);
@@ -297,6 +319,24 @@ enum {
 	Vertex b = {{pos.x - radius, pos.y + radius}, {-1.0,  1.0}, color};
 	Vertex c = {{pos.x + radius, pos.y + radius}, { 1.0,  1.0}, color};
 	Vertex d = {{pos.x + radius, pos.y - radius}, { 1.0, -1.0}, color};
+	
+	Triangle *triangles = (Triangle *)(_buffer + _bufferCount);
+	triangles[0] = (Triangle){a, b, c};
+	triangles[1] = (Triangle){a, c, d};
+	
+	_bufferCount += vertex_count;
+}
+
+-(void)drawRing:(cpVect)pos radius:(cpFloat)radius which:(float)which;
+{
+	NSUInteger vertex_count = 2*3;
+	[self ensureCapacity:vertex_count];
+	
+	Color color = RGBAColor(1, 1, 1, 1);
+	Vertex a = {{pos.x - radius, pos.y - radius}, {0.0 + which, 0.0}, color};
+	Vertex b = {{pos.x - radius, pos.y + radius}, {0.0 + which, 1.0}, color};
+	Vertex c = {{pos.x + radius, pos.y + radius}, {1.0 + which, 1.0}, color};
+	Vertex d = {{pos.x + radius, pos.y - radius}, {1.0 + which, 0.0}, color};
 	
 	Triangle *triangles = (Triangle *)(_buffer + _bufferCount);
 	triangles[0] = (Triangle){a, b, c};

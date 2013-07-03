@@ -339,8 +339,10 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 	NSString *desc = @(platform.machine);
 	if([desc compare:@"iPad2"] < 0){
 		return A4;
-	} else if([desc compare:@"iPad4"] < 0){
+	} else if([desc compare:@"iPad3"] < 0){
 		return A5;
+	} else if([desc compare:@"iPad3,4"] < 0){
+		return A6;
 	} else if([desc compare:@"iPhone"] < 0){
 		return A6;
 	} else if([desc compare:@"iPhone3"] < 0){
