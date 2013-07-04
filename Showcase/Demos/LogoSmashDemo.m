@@ -65,7 +65,7 @@ get_pixel(int x, int y)
 	body.pos = pos;
 	
 	ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:body radius:1.9 offset:cpvzero]];
-	shape.elasticity = 0.0;
+	shape.elasticity = 0.3;
 	shape.friction = 0.0;
 }
 
@@ -92,6 +92,8 @@ get_pixel(int x, int y)
 	shape.elasticity = 0.0;
 	shape.friction = 0.0;
 	shape.layers = NOT_GRABABLE_MASK;
+	
+	[self.space addBounds:self.demoBounds thickness:200.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
 }
 
 -(void)prepareStaticRenderer:(PolyRenderer *)renderer {}

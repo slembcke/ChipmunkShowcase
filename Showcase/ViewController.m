@@ -477,42 +477,42 @@ enum DemoReveal {
 			[_glView clear];
 			[_renderer render];
 			
-			GLint viewport[4];
-			glGetIntegerv(GL_VIEWPORT, viewport);
-			
-			GLint w = viewport[2];
-			GLint h = viewport[3];
-			int stride = 4*w;
-			int bytes = stride*h;
-			
-			char *pixels = malloc(bytes);
-			
-			PRINT_GL_ERRORS();
-			glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-			PRINT_GL_ERRORS();
-			
-			
-			CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
-			CGBitmapInfo bitmap_info = kCGBitmapByteOrderDefault;
-			
-			CGDataProviderRef dataProvider = CGDataProviderCreateWithData(NULL, pixels, bytes, NULL);
-			CGImageRef out_image = CGImageCreate(w, h, 8, 32, stride, colorspace, bitmap_info, dataProvider, NULL, false, kCGRenderingIntentDefault);
-			
-			NSString *path = [NSString stringWithFormat:@"/tmp/frames/%04d.png", _ticks];
-			
-			CFStringRef out_type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)@"png", NULL);
-			NSURL *out_url = [NSURL fileURLWithPath:path];
-			CGImageDestinationRef image_destination = CGImageDestinationCreateWithURL((__bridge CFURLRef)out_url, out_type, 1, NULL);
-			CGImageDestinationAddImage(image_destination, out_image, NULL);
-			CGImageDestinationFinalize(image_destination);
-			
-			free(pixels);
-			CGColorSpaceRelease(colorspace);
-			CGDataProviderRelease(dataProvider);
-			CGImageRelease(out_image);
-			CFRelease(out_type);
-			
-			NSLog(@"Wrote: %@", path);
+//			GLint viewport[4];
+//			glGetIntegerv(GL_VIEWPORT, viewport);
+//			
+//			GLint w = viewport[2];
+//			GLint h = viewport[3];
+//			int stride = 4*w;
+//			int bytes = stride*h;
+//			
+//			char *pixels = malloc(bytes);
+//			
+//			PRINT_GL_ERRORS();
+//			glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+//			PRINT_GL_ERRORS();
+//			
+//			
+//			CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+//			CGBitmapInfo bitmap_info = kCGBitmapByteOrderDefault;
+//			
+//			CGDataProviderRef dataProvider = CGDataProviderCreateWithData(NULL, pixels, bytes, NULL);
+//			CGImageRef out_image = CGImageCreate(w, h, 8, 32, stride, colorspace, bitmap_info, dataProvider, NULL, false, kCGRenderingIntentDefault);
+//			
+//			NSString *path = [NSString stringWithFormat:@"/tmp/frames/%04d.png", _ticks];
+//			
+//			CFStringRef out_type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)@"png", NULL);
+//			NSURL *out_url = [NSURL fileURLWithPath:path];
+//			CGImageDestinationRef image_destination = CGImageDestinationCreateWithURL((__bridge CFURLRef)out_url, out_type, 1, NULL);
+//			CGImageDestinationAddImage(image_destination, out_image, NULL);
+//			CGImageDestinationFinalize(image_destination);
+//			
+//			free(pixels);
+//			CGColorSpaceRelease(colorspace);
+//			CGDataProviderRelease(dataProvider);
+//			CGImageRelease(out_image);
+//			CFRelease(out_type);
+//			
+//			NSLog(@"Wrote: %@", path);
 		} sync:needs_sync];
 		
 		_renderTicks++;
