@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D305BF7F15A3439600B98A57 /* SolarSystemDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D305BF7E15A3439600B98A57 /* SolarSystemDemo.m */; };
+		751E3DAB178481F400598F61 /* SolarSystemProjectileDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 751E3DAA178481F400598F61 /* SolarSystemProjectileDemo.m */; };
+		751E3DAD17848D4400598F61 /* FlowFieldDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 751E3DAC17848D4400598F61 /* FlowFieldDemo.m */; };
 		D311930A14E23C2600B659B3 /* PlanetDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311930914E23C2600B659B3 /* PlanetDemo.m */; };
 		D311930F14E258A400B659B3 /* PyramidStackDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311930E14E258A400B659B3 /* PyramidStackDemo.m */; };
 		D311931114E258B200B659B3 /* PyramidToppleDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931014E258B200B659B3 /* PyramidToppleDemo.m */; };
@@ -98,7 +99,8 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
-		D305BF7E15A3439600B98A57 /* SolarSystemDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SolarSystemDemo.m; sourceTree = "<group>"; };
+		751E3DAA178481F400598F61 /* SolarSystemProjectileDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SolarSystemProjectileDemo.m; sourceTree = "<group>"; };
+		751E3DAC17848D4400598F61 /* FlowFieldDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowFieldDemo.m; sourceTree = "<group>"; };
 		D311930914E23C2600B659B3 /* PlanetDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanetDemo.m; sourceTree = "<group>"; };
 		D311930E14E258A400B659B3 /* PyramidStackDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PyramidStackDemo.m; sourceTree = "<group>"; };
 		D311931014E258B200B659B3 /* PyramidToppleDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PyramidToppleDemo.m; sourceTree = "<group>"; };
@@ -305,7 +307,8 @@
 				D311931014E258B200B659B3 /* PyramidToppleDemo.m */,
 				D311930E14E258A400B659B3 /* PyramidStackDemo.m */,
 				D311930914E23C2600B659B3 /* PlanetDemo.m */,
-				D305BF7E15A3439600B98A57 /* SolarSystemDemo.m */,
+				751E3DAA178481F400598F61 /* SolarSystemProjectileDemo.m */,
+				751E3DAC17848D4400598F61 /* FlowFieldDemo.m */,
 				D359FB271495E103001147A9 /* LogoSmashDemo.m */,
 				D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */,
 				D3C4358E1490B15800875EA3 /* TumbleDemo.m */,
@@ -590,10 +593,11 @@
 				D3EB7B0A14F45DED00C1AD84 /* GrabberDemo.m in Sources */,
 				D3EB7B1914F4996600C1AD84 /* AbsorbDemo.m in Sources */,
 				D325959914F5B21C00CFD00B /* InstructionsController.m in Sources */,
-				D305BF7F15A3439600B98A57 /* SolarSystemDemo.m in Sources */,
 				D39C8CD316F3B1BD00A9F5D7 /* BuoyancyDemo.m in Sources */,
 				D3921D8F16F56F4100F10915 /* StickyDemo.m in Sources */,
 				D360ABF516FD00E000649802 /* RemoteArm.m in Sources */,
+				751E3DAB178481F400598F61 /* SolarSystemProjectileDemo.m in Sources */,
+				751E3DAD17848D4400598F61 /* FlowFieldDemo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
