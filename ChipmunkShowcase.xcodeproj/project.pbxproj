@@ -16,6 +16,7 @@
 		D311931714E2699F00B659B3 /* CraneDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931614E2699F00B659B3 /* CraneDemo.m */; };
 		D3189F5D1784DF5C00EA8B86 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3189F5C1784DF5C00EA8B86 /* GLKit.framework */; };
 		D3189F5F1784DFA000EA8B86 /* rings.png in Resources */ = {isa = PBXBuildFile; fileRef = D3189F5E1784DFA000EA8B86 /* rings.png */; };
+		D3189F611784ECE300EA8B86 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3189F601784ECE300EA8B86 /* MobileCoreServices.framework */; };
 		D321D1D114E8F8C400DE2A53 /* DeformableBitmapDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D321D1D014E8F8C400DE2A53 /* DeformableBitmapDemo.m */; };
 		D321D1D414E8F9C600DE2A53 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D321D1D314E8F9C600DE2A53 /* ImageIO.framework */; };
 		D325955414F4AEAB00CFD00B /* AbsorbDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D325955314F4AEAB00CFD00B /* AbsorbDemo.psd */; };
@@ -108,6 +109,7 @@
 		D311931814E271DD00B659B3 /* TODO */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		D3189F5C1784DF5C00EA8B86 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		D3189F5E1784DFA000EA8B86 /* rings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rings.png; sourceTree = "<group>"; };
+		D3189F601784ECE300EA8B86 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		D321D1D014E8F8C400DE2A53 /* DeformableBitmapDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeformableBitmapDemo.m; sourceTree = "<group>"; };
 		D321D1D314E8F9C600DE2A53 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		D325955314F4AEAB00CFD00B /* AbsorbDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = AbsorbDemo.psd; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3189F611784ECE300EA8B86 /* MobileCoreServices.framework in Frameworks */,
 				D3189F5D1784DF5C00EA8B86 /* GLKit.framework in Frameworks */,
 				D321D1D414E8F9C600DE2A53 /* ImageIO.framework in Frameworks */,
 				D325DB3C1491970D00F1B411 /* QuartzCore.framework in Frameworks */,
@@ -405,6 +408,7 @@
 		D3FB3959148F353600E0BA9E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D3189F601784ECE300EA8B86 /* MobileCoreServices.framework */,
 				D3189F5C1784DF5C00EA8B86 /* GLKit.framework */,
 				D321D1D314E8F9C600DE2A53 /* ImageIO.framework */,
 				D325DB3B1491970D00F1B411 /* QuartzCore.framework */,

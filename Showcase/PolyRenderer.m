@@ -232,12 +232,13 @@ enum {
 	
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(info.target, info.name);
-	glTexParameteri(GL_TEXTURE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(info.target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(info.target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(info.target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(info.target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	
 	int loc = glGetUniformLocation(_program, "texture");
+	glUseProgram(_program);
 	glUniform1i(loc, 0);
 	
 	// Release vertex and fragment shaders.
