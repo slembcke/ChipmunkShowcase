@@ -96,7 +96,8 @@
 	const GLenum discards[]  = {GL_COLOR_ATTACHMENT0};
 	glDiscardFramebufferEXT(GL_FRAMEBUFFER, 1, discards);
 	
-	glClearColor(52.0/255.0, 62.0/255.0, 72.0/255.0, 1.0);
+//	glClearColor(52.0/255.0, 62.0/255.0, 72.0/255.0, 1.0);
+	glClearColor(0, 0, 0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 

@@ -44,6 +44,8 @@
 // Now actually implement the demo. \o/
 @interface FlowFieldDemo : ShowcaseDemo @end
 @implementation FlowFieldDemo {
+	float _explosionTime;
+	cpVect _explosionLocation;
 }
 
 -(NSString *)name
@@ -64,7 +66,7 @@ rand_pos()
 
 -(void)addBall:(cpVect)direction at:(cpVect)point
 {
-	const cpFloat radius = 2.0f;
+	const cpFloat radius = 1.0f;
 	const cpFloat mass = 1.0f;
 	
 	ChipmunkBody *body = [self.space add:[FlowBody bodyWithMass:mass andMoment:cpMomentForCircle(mass, 0.0, radius, cpvzero)]];
@@ -80,10 +82,33 @@ rand_pos()
 {
     self.space.damping = 0.5;
     
-    for(int i=0; i<1000; i++){
+    for(int i=0; i<4000; i++){
         cpVect pos = cpvmult(frand_unit_circle(), 1000.0);
         [self addBall:cpvzero at:pos];
     }
+		
+		_explosionTime = 10.0;
+		_explosionLocation = cpv(53, 53);
+}
+
+-(void)tick:(cpFloat)dt
+{
+	[super tick:dt];
+	
+	_explosionTime -= dt;
+	if(_explosionTime < 0.0){
+		cpBB bb = cpBBNewForCircle(_explosionLocation, 50.0);
+		cpSpaceBBQuery_b(self.space.space, bb, CP_ALL_LAYERS, CP_NO_GROUP, ^(cpShape *shape){
+			cpBody *body = cpShapeGetBody(shape);
+			
+			cpVect delta = cpvsub(cpBodyGetPos(body), _explosionLocation);
+			cpVect explosion = cpvmult(cpvnormalize(delta), cpflerp(250.0, 0.0, cpfclamp01(cpvlength(delta)/50.0)));
+			cpBodyApplyImpulse(body, explosion, cpvzero);
+		});
+		
+		_explosionLocation = cpvrotate(_explosionLocation, cpv(0, 1));
+		_explosionTime += 2.0;
+	}
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
@@ -91,6 +116,8 @@ rand_pos()
     for(UITouch *touch in touches){
         cpVect origin = cpv(-320, 0);
         cpVect point = [self convertTouch:touch];
+				NSLog(@"Point (%5.2f, %5.2f).", point.x, point.y);
+				
         cpVect direction = cpvnormalize(cpvsub(point, origin));
         
         for(int i=0; i<100; i++){
@@ -113,7 +140,23 @@ static void
 RenderDot(cpBody *body, struct RenderContext *context)
 {
 	cpVect pos = cpvadd(body->p, cpvmult(body->v, context->accumulator));
-	[context->renderer drawDot:pos radius:2.0 color:SHAPE_OUTLINE_COLOR];
+//	[context->renderer drawDot:pos radius:2.0 color:SHAPE_OUTLINE_COLOR];
+	
+	unsigned long val = (unsigned long)body;
+	
+	// scramble the bits up using Robert Jenkins' 32 bit integer hash function
+	val = (val+0x7ed55d16) + (val<<12);
+	val = (val^0xc761c23c) ^ (val>>19);
+	val = (val+0x165667b1) + (val<<5);
+	val = (val+0xd3a2646c) ^ (val<<9);
+	val = (val+0xfd7046c5) + (val<<3);
+	val = (val^0xb55a4f09) ^ (val>>16);
+	
+	if(val&1){
+		[context->renderer drawRing:pos radius:8.0 which:(val >> 1)%7];
+	} else {
+		[context->renderer drawRing:pos radius:4.0 which:(val >> 1)%7 + 7];
+	}
 }
 
 -(void)render:(PolyRenderer *)renderer showContacts:(BOOL)showContacts;

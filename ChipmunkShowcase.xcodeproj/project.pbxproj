@@ -16,7 +16,6 @@
 		D311931514E265C000B659B3 /* BreakableChainsDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931414E265C000B659B3 /* BreakableChainsDemo.m */; };
 		D311931714E2699F00B659B3 /* CraneDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931614E2699F00B659B3 /* CraneDemo.m */; };
 		D3189F5D1784DF5C00EA8B86 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3189F5C1784DF5C00EA8B86 /* GLKit.framework */; };
-		D3189F5F1784DFA000EA8B86 /* rings.png in Resources */ = {isa = PBXBuildFile; fileRef = D3189F5E1784DFA000EA8B86 /* rings.png */; };
 		D3189F611784ECE300EA8B86 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3189F601784ECE300EA8B86 /* MobileCoreServices.framework */; };
 		D321D1D114E8F8C400DE2A53 /* DeformableBitmapDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D321D1D014E8F8C400DE2A53 /* DeformableBitmapDemo.m */; };
 		D321D1D414E8F9C600DE2A53 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D321D1D314E8F9C600DE2A53 /* ImageIO.framework */; };
@@ -39,6 +38,7 @@
 		D396EC471495F6C500B94838 /* MultiGrabDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D396EC461495F6C500B94838 /* MultiGrabDemo.m */; };
 		D39C31FA169528C90046340D /* Default-568h.psd in Resources */ = {isa = PBXBuildFile; fileRef = D39C31F9169528C90046340D /* Default-568h.psd */; };
 		D39C8CD316F3B1BD00A9F5D7 /* BuoyancyDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D39C8CD216F3B1BD00A9F5D7 /* BuoyancyDemo.m */; };
+		D3A3D4F517876B6600FEEBED /* rings.png in Resources */ = {isa = PBXBuildFile; fileRef = D3A3D4F417876B6600FEEBED /* rings.png */; };
 		D3C10FBB1490944000F00AAE /* ShowcaseDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C10FBA1490944000F00AAE /* ShowcaseDemo.m */; };
 		D3C10FD31490ADCE00F00AAE /* PlinkDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */; };
 		D3C4358F1490B15800875EA3 /* TumbleDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C4358E1490B15800875EA3 /* TumbleDemo.m */; };
@@ -112,7 +112,6 @@
 		D311931614E2699F00B659B3 /* CraneDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CraneDemo.m; sourceTree = "<group>"; };
 		D311931814E271DD00B659B3 /* TODO */ = {isa = PBXFileReference; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		D3189F5C1784DF5C00EA8B86 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
-		D3189F5E1784DFA000EA8B86 /* rings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rings.png; sourceTree = "<group>"; };
 		D3189F601784ECE300EA8B86 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		D321D1D014E8F8C400DE2A53 /* DeformableBitmapDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeformableBitmapDemo.m; sourceTree = "<group>"; };
 		D321D1D314E8F9C600DE2A53 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -138,6 +137,7 @@
 		D396EC461495F6C500B94838 /* MultiGrabDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiGrabDemo.m; sourceTree = "<group>"; };
 		D39C31F9169528C90046340D /* Default-568h.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Default-568h.psd"; sourceTree = SOURCE_ROOT; };
 		D39C8CD216F3B1BD00A9F5D7 /* BuoyancyDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuoyancyDemo.m; sourceTree = "<group>"; };
+		D3A3D4F417876B6600FEEBED /* rings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rings.png; sourceTree = "<group>"; };
 		D3C10FB91490944000F00AAE /* ShowcaseDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShowcaseDemo.h; sourceTree = "<group>"; };
 		D3C10FBA1490944000F00AAE /* ShowcaseDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShowcaseDemo.m; sourceTree = "<group>"; };
 		D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlinkDemo.m; sourceTree = "<group>"; };
@@ -454,7 +454,7 @@
 		D3FB3965148F353600E0BA9E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D3189F5E1784DFA000EA8B86 /* rings.png */,
+				D3A3D4F417876B6600FEEBED /* rings.png */,
 				D32595A714F5C02D00CFD00B /* instructions.png */,
 				D32595A814F5C02D00CFD00B /* instructions@2x.png */,
 				D32595AD14F5C37B00CFD00B /* instructions~ipad.png */,
@@ -541,7 +541,6 @@
 				D3EB7A4F14F2383B00C1AD84 /* BreakableChainsDemo.psd in Resources */,
 				D3EB7A5014F2383B00C1AD84 /* CraneDemo.psd in Resources */,
 				D3EB7A5214F2383B00C1AD84 /* LogoSmashDemo.psd in Resources */,
-				D3189F5F1784DFA000EA8B86 /* rings.png in Resources */,
 				D3EB7A5314F2383B00C1AD84 /* MultiGrabDemo.psd in Resources */,
 				D3EB7A5414F2383B00C1AD84 /* PlanetDemo.psd in Resources */,
 				D3EB7A5514F2383B00C1AD84 /* PlinkDemo.psd in Resources */,
@@ -557,6 +556,7 @@
 				D3EB7AAD14F2DF1F00C1AD84 /* SpringiesDemo.psd in Resources */,
 				D3EB7AB514F2E69500C1AD84 /* SourceViewController.xib in Resources */,
 				D3EB7AB814F2F2AA00C1AD84 /* google-code-prettify in Resources */,
+				D3A3D4F517876B6600FEEBED /* rings.png in Resources */,
 				D3EB7ABA14F2F31200C1AD84 /* Demos in Resources */,
 				D3EB7ABE14F2FA9300C1AD84 /* SourceViewTemplate.html in Resources */,
 				D3EB7B1714F47CEC00C1AD84 /* GrabberDemo.psd in Resources */,

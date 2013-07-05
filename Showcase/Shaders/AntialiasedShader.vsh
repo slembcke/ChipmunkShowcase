@@ -31,7 +31,7 @@ varying mediump vec2 frag_texcoord;
 void main()
 {
 	frag_color = color;
-	frag_texcoord = texcoord*vec2(1.0/8.0, 1.0);
+	frag_texcoord = texcoord*vec2(1.0/16.0, 1.0);
 	
 	gl_Position = projection*position;
 }
