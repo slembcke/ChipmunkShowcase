@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D305BF7F15A3439600B98A57 /* SolarSystemDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D305BF7E15A3439600B98A57 /* SolarSystemDemo.m */; };
+		751E3DAB178481F400598F61 /* SolarSystemProjectileDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 751E3DAA178481F400598F61 /* SolarSystemProjectileDemo.m */; };
+		751E3DAD17848D4400598F61 /* FlowFieldDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 751E3DAC17848D4400598F61 /* FlowFieldDemo.m */; };
 		D311930A14E23C2600B659B3 /* PlanetDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311930914E23C2600B659B3 /* PlanetDemo.m */; };
 		D311930F14E258A400B659B3 /* PyramidStackDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311930E14E258A400B659B3 /* PyramidStackDemo.m */; };
 		D311931114E258B200B659B3 /* PyramidToppleDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D311931014E258B200B659B3 /* PyramidToppleDemo.m */; };
@@ -29,6 +30,8 @@
 		D325DB3C1491970D00F1B411 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D325DB3B1491970D00F1B411 /* QuartzCore.framework */; };
 		D3582DF11490899400AB0C37 /* Accelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = D3582DF01490899400AB0C37 /* Accelerometer.m */; };
 		D358DFB814929B9A00D2EE0D /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */; };
+		D360ABF516FD00E000649802 /* RemoteArm.m in Sources */ = {isa = PBXBuildFile; fileRef = D360ABF416FD00E000649802 /* RemoteArm.m */; };
+		D360AC0516FD23C100649802 /* RemoteArm.psd in Resources */ = {isa = PBXBuildFile; fileRef = D360AC0416FD23C100649802 /* RemoteArm.psd */; };
 		D3921D8B16F56CE000F10915 /* BuoyancyDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3921D8A16F56CE000F10915 /* BuoyancyDemo.psd */; };
 		D3921D8F16F56F4100F10915 /* StickyDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3921D8E16F56F4100F10915 /* StickyDemo.m */; };
 		D3921D9416F57D1600F10915 /* StickyDemo.psd in Resources */ = {isa = PBXBuildFile; fileRef = D3921D9316F57D1600F10915 /* StickyDemo.psd */; };
@@ -99,7 +102,8 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
-		D305BF7E15A3439600B98A57 /* SolarSystemDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SolarSystemDemo.m; sourceTree = "<group>"; };
+		751E3DAA178481F400598F61 /* SolarSystemProjectileDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SolarSystemProjectileDemo.m; sourceTree = "<group>"; };
+		751E3DAC17848D4400598F61 /* FlowFieldDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlowFieldDemo.m; sourceTree = "<group>"; };
 		D311930914E23C2600B659B3 /* PlanetDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanetDemo.m; sourceTree = "<group>"; };
 		D311930E14E258A400B659B3 /* PyramidStackDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PyramidStackDemo.m; sourceTree = "<group>"; };
 		D311931014E258B200B659B3 /* PyramidToppleDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PyramidToppleDemo.m; sourceTree = "<group>"; };
@@ -126,6 +130,8 @@
 		D3582DF01490899400AB0C37 /* Accelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accelerometer.m; sourceTree = "<group>"; };
 		D358DFB714929B9A00D2EE0D /* ViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController_iPad.xib; sourceTree = "<group>"; };
 		D359FB271495E103001147A9 /* LogoSmashDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoSmashDemo.m; sourceTree = "<group>"; };
+		D360ABF416FD00E000649802 /* RemoteArm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteArm.m; sourceTree = "<group>"; };
+		D360AC0416FD23C100649802 /* RemoteArm.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = RemoteArm.psd; sourceTree = "<group>"; };
 		D3921D8A16F56CE000F10915 /* BuoyancyDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = BuoyancyDemo.psd; sourceTree = "<group>"; };
 		D3921D8E16F56F4100F10915 /* StickyDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyDemo.m; sourceTree = "<group>"; };
 		D3921D9316F57D1600F10915 /* StickyDemo.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = StickyDemo.psd; sourceTree = "<group>"; };
@@ -252,6 +258,7 @@
 		D30A7AAC14E8BC5B00C50129 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				D360AC0416FD23C100649802 /* RemoteArm.psd */,
 				D3921D9316F57D1600F10915 /* StickyDemo.psd */,
 				D3921D8A16F56CE000F10915 /* BuoyancyDemo.psd */,
 				D3DFB4A51610FC8B00162F19 /* SolarSystemDemo.psd */,
@@ -308,7 +315,8 @@
 				D311931014E258B200B659B3 /* PyramidToppleDemo.m */,
 				D311930E14E258A400B659B3 /* PyramidStackDemo.m */,
 				D311930914E23C2600B659B3 /* PlanetDemo.m */,
-				D305BF7E15A3439600B98A57 /* SolarSystemDemo.m */,
+				751E3DAA178481F400598F61 /* SolarSystemProjectileDemo.m */,
+				751E3DAC17848D4400598F61 /* FlowFieldDemo.m */,
 				D359FB271495E103001147A9 /* LogoSmashDemo.m */,
 				D3C10FD21490ADCE00F00AAE /* PlinkDemo.m */,
 				D3C4358E1490B15800875EA3 /* TumbleDemo.m */,
@@ -316,6 +324,7 @@
 				D396EC461495F6C500B94838 /* MultiGrabDemo.m */,
 				D39C8CD216F3B1BD00A9F5D7 /* BuoyancyDemo.m */,
 				D3921D8E16F56F4100F10915 /* StickyDemo.m */,
+				D360ABF416FD00E000649802 /* RemoteArm.m */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -561,6 +570,7 @@
 				D39C31FA169528C90046340D /* Default-568h.psd in Resources */,
 				D3921D8B16F56CE000F10915 /* BuoyancyDemo.psd in Resources */,
 				D3921D9416F57D1600F10915 /* StickyDemo.psd in Resources */,
+				D360AC0516FD23C100649802 /* RemoteArm.psd in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -595,9 +605,11 @@
 				D3EB7B0A14F45DED00C1AD84 /* GrabberDemo.m in Sources */,
 				D3EB7B1914F4996600C1AD84 /* AbsorbDemo.m in Sources */,
 				D325959914F5B21C00CFD00B /* InstructionsController.m in Sources */,
-				D305BF7F15A3439600B98A57 /* SolarSystemDemo.m in Sources */,
 				D39C8CD316F3B1BD00A9F5D7 /* BuoyancyDemo.m in Sources */,
 				D3921D8F16F56F4100F10915 /* StickyDemo.m in Sources */,
+				D360ABF516FD00E000649802 /* RemoteArm.m in Sources */,
+				751E3DAB178481F400598F61 /* SolarSystemProjectileDemo.m in Sources */,
+				751E3DAD17848D4400598F61 /* FlowFieldDemo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
