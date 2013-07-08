@@ -25,7 +25,19 @@
 
 // Make a custom body subclass with a custom velocity integration method.
 @interface FlowBody : ChipmunkBody @end
-@implementation FlowBody
+@implementation FlowBody{
+@protected
+	int _color;
+}
+
+-(id)initWithMass:(cpFloat)mass andMoment:(cpFloat)moment
+{
+	if((self = [super initWithMass:mass andMoment:moment])){
+		_color = (rand()>>16) % 7;
+	}
+	
+	return self;
+}
 
 -(void)updateVelocity:(cpFloat)dt gravity:(cpVect)gravity damping:(cpFloat)damping
 {
@@ -36,6 +48,21 @@
     cpVect turb = cpvmult(cpv(cpfsin(p.x*scale), cpfsin(p.y*scale)), 100.0f);
     cpVect g = cpvadd(cpvadd(inwards, spin), turb);
 	[super updateVelocity:dt gravity:g damping:damping];
+}
+
+-(void)render:(PolyRenderer *)renderer
+{
+	[renderer drawRing:self.pos radius:5.3 which:_color + 7];
+}
+
+@end
+
+@interface RingBody : FlowBody @end
+@implementation RingBody
+
+-(void)render:(PolyRenderer *)renderer
+{
+	[renderer drawRing:self.pos radius:16.0 which:_color];
 }
 
 @end
@@ -71,20 +98,42 @@ rand_pos()
 	
 	ChipmunkBody *body = [self.space add:[FlowBody bodyWithMass:mass andMoment:cpMomentForCircle(mass, 0.0, radius, cpvzero)]];
 	body.pos = point;
-    body.vel = cpvmult(direction, 150);
+	body.vel = cpvmult(direction, 150);
 	
 	ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:body radius:radius offset:cpvzero]];
 	shape.elasticity = 0.0f;
 	shape.friction = 0.7f;
+	shape.layers = 1;
+}
+
+-(void)addRing:(cpVect)direction at:(cpVect)point
+{
+	const cpFloat radius = 1.0f;
+	const cpFloat mass = 2.0f;
+	
+	ChipmunkBody *body = [self.space add:[RingBody bodyWithMass:mass andMoment:cpMomentForCircle(mass, 0.0, radius, cpvzero)]];
+	body.pos = point;
+	body.vel = cpvmult(direction, 150);
+	
+	ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:body radius:radius offset:cpvzero]];
+	shape.elasticity = 0.0f;
+	shape.friction = 0.7f;
+	shape.layers = 2;
+	shape.group = @"foo";
 }
 
 -(void)setup
 {
     self.space.damping = 0.5;
     
-    for(int i=0; i<4000; i++){
+    for(int i=0; i<2000; i++){
         cpVect pos = cpvmult(frand_unit_circle(), 1000.0);
         [self addBall:cpvzero at:pos];
+    }
+		
+    for(int i=0; i<600; i++){
+        cpVect pos = cpvmult(frand_unit_circle(), 1000.0);
+        [self addRing:cpvzero at:pos];
     }
 		
 		_explosionTime = 10.0;
@@ -102,30 +151,31 @@ rand_pos()
 			cpBody *body = cpShapeGetBody(shape);
 			
 			cpVect delta = cpvsub(cpBodyGetPos(body), _explosionLocation);
-			cpVect explosion = cpvmult(cpvnormalize(delta), cpflerp(250.0, 0.0, cpfclamp01(cpvlength(delta)/50.0)));
+			cpFloat strength = cpflerp(500.0, 0.0, cpfclamp01(cpvlength(delta)/75.0));
+			cpVect explosion = cpvmult(cpvnormalize(delta), strength/body->m);
 			cpBodyApplyImpulse(body, explosion, cpvzero);
 		});
 		
 		_explosionLocation = cpvrotate(_explosionLocation, cpv(0, 1));
-		_explosionTime += 2.0;
+		_explosionTime += 3.0;
 	}
 }
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
-{
-    for(UITouch *touch in touches){
-        cpVect origin = cpv(-320, 0);
-        cpVect point = [self convertTouch:touch];
-				NSLog(@"Point (%5.2f, %5.2f).", point.x, point.y);
-				
-        cpVect direction = cpvnormalize(cpvsub(point, origin));
-        
-        for(int i=0; i<100; i++){
-            cpVect offset = cpvmult(frand_unit_circle(), 50.0);
-            [self addBall:cpvzero at:cpvadd(point, offset)];
-        }
-    }
-}
+//-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+//{
+//    for(UITouch *touch in touches){
+//        cpVect origin = cpv(-320, 0);
+//        cpVect point = [self convertTouch:touch];
+//				NSLog(@"Point (%5.2f, %5.2f).", point.x, point.y);
+//				
+//        cpVect direction = cpvnormalize(cpvsub(point, origin));
+//        
+//        for(int i=0; i<100; i++){
+//            cpVect offset = cpvmult(frand_unit_circle(), 50.0);
+//            [self addBall:cpvzero at:cpvadd(point, offset)];
+//        }
+//    }
+//}
 
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {}
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {}
@@ -139,24 +189,10 @@ struct RenderContext {
 static void
 RenderDot(cpBody *body, struct RenderContext *context)
 {
-	cpVect pos = cpvadd(body->p, cpvmult(body->v, context->accumulator));
 //	[context->renderer drawDot:pos radius:2.0 color:SHAPE_OUTLINE_COLOR];
 	
-	unsigned long val = (unsigned long)body;
-	
-	// scramble the bits up using Robert Jenkins' 32 bit integer hash function
-	val = (val+0x7ed55d16) + (val<<12);
-	val = (val^0xc761c23c) ^ (val>>19);
-	val = (val+0x165667b1) + (val<<5);
-	val = (val+0xd3a2646c) ^ (val<<9);
-	val = (val+0xfd7046c5) + (val<<3);
-	val = (val^0xb55a4f09) ^ (val>>16);
-	
-	if(val&1){
-		[context->renderer drawRing:pos radius:8.0 which:(val >> 1)%7];
-	} else {
-		[context->renderer drawRing:pos radius:4.0 which:(val >> 1)%7 + 7];
-	}
+	FlowBody *b = body->data;
+	[b render:context->renderer];
 }
 
 -(void)render:(PolyRenderer *)renderer showContacts:(BOOL)showContacts;
