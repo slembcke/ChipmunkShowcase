@@ -200,6 +200,7 @@ NSArray *DEMO_CLASS_NAMES = nil;
 	
 	cell.textLabel.text = obj.name;
 	cell.textLabel.textColor = [UIColor whiteColor];
+	cell.backgroundColor = [UIColor colorWithWhite:0.25 alpha:1.0];
 	cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png", name]];
 	
 	return cell;
