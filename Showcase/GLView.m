@@ -19,6 +19,8 @@
  * SOFTWARE.
  */
 
+#define THREADS 1
+
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/EAGLDrawable.h>
 
@@ -28,8 +30,10 @@
 	GLuint _framebuffer;
 	GLuint _renderbuffer;
 	
+#if THREADS
 	BOOL _isRendering;
 	dispatch_queue_t _renderQueue;
+#endif
 }
 
 @synthesize isRendering = _isRendering;
@@ -40,12 +44,16 @@
 
 -(void)sync
 {
+#if THREADS
 	dispatch_sync(_renderQueue, ^{});
+#endif
 }
 
 -(void)runInRenderQueue:(void (^)(void))block sync:(BOOL)sync;
 {
+#if THREADS
 	(sync ? dispatch_sync : dispatch_async)(_renderQueue, ^{
+#endif
 		[EAGLContext setCurrentContext:_context];
 		
 		block();
@@ -55,7 +63,9 @@
 		NSAssert(err == GL_NO_ERROR, @"Aborting due to GL Errors.");
 		
 		[EAGLContext setCurrentContext:nil];
+#if THREADS
 	});
+#endif
 }
 
 //MARK: Framebuffer
@@ -138,7 +148,9 @@
 		
 		layer.contentsScale = [UIScreen mainScreen].scale;
 		
+#if THREADS
 		_renderQueue = dispatch_queue_create("net.chipmunk-physics.showcase-renderqueue", NULL);
+#endif
 	}
 	
 	return self;
@@ -150,7 +162,9 @@
 		[self destroyFramebuffer];
 	} sync:TRUE];
 	
+#if THREADS
 	dispatch_release(_renderQueue);
+#endif
 }
 
 //MARK: Render methods

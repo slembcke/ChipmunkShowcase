@@ -33,7 +33,7 @@
 {
 	self.space.gravity = cpv(0, -100.0f);
 	self.space.iterations = 30;
-	self.space.sleepTimeThreshold = 0.5f;
+//	self.space.sleepTimeThreshold = 0.5f;
 	self.space.collisionSlop = 0.5f;
 	
 	CGRect bounds = self.demoBounds;
