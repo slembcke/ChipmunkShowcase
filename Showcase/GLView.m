@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 
-#define THREADS 1
+#define THREADS 0
 
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/EAGLDrawable.h>
@@ -53,8 +53,8 @@
 {
 #if THREADS
 	(sync ? dispatch_sync : dispatch_async)(_renderQueue, ^{
-#endif
 		[EAGLContext setCurrentContext:_context];
+#endif
 		
 		block();
 		
@@ -62,8 +62,8 @@
 		for(err = glGetError(); err; err = glGetError()) NSLog(@"GLError: 0x%04X", err);
 		NSAssert(err == GL_NO_ERROR, @"Aborting due to GL Errors.");
 		
-		[EAGLContext setCurrentContext:nil];
 #if THREADS
+		[EAGLContext setCurrentContext:nil];
 	});
 #endif
 }
@@ -121,10 +121,16 @@
 
 -(void)setContext:(EAGLContext *)context
 {
-	[self runInRenderQueue:^{
+#if THREADS
+	(sync ? dispatch_sync : dispatch_async)(_renderQueue, ^{
+#endif
 		_context = context;
+		[EAGLContext setCurrentContext:_context];
+		
 		NSAssert(_context && [EAGLContext setCurrentContext:_context] && [self createFramebuffer], @"Failed to set up context.");
-	} sync:TRUE];
+#if THREADS
+	};
+#endif
 }
 
 //MARK: Memory methods
