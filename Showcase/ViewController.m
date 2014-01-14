@@ -464,13 +464,17 @@ enum DemoReveal {
 	
 	BOOL needs_sync = (time - _lastFrameTime > MAX_DT);
 	if(!_glView.isRendering || needs_sync){
+		// This forces the rendering and physics to resynchronize if the rendering gets behind.
 		if(needs_sync) [_glView sync];
-		[_demo render:_renderer showContacts:_drawContacts.on];
+		
+		GLuint vao = [_renderer buffer:^{
+			[_demo render:_renderer showContacts:_drawContacts.on];
+		}];
 		
 		[_glView display:^{
 			[_glView clear];
-			[_renderer render];
-		} sync:needs_sync];
+			[_renderer execute:vao];
+		}];
 		
 		_renderTicks++;
 		_lastFrameTime = time;

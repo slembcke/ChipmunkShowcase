@@ -175,23 +175,18 @@
 
 //MARK: Render methods
 
--(void)display:(void (^)(void))block sync:(BOOL)sync;
+-(void)display:(void (^)(void))block
 {
-	// Only queue one frame to render at a time unless synced.
-	if(sync || !_isRendering){
-		_isRendering = TRUE;
+	[self runInRenderQueue:^{
+		glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
 		
-		[self runInRenderQueue:^{
-			glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
-			
-			block();
-			
-			glBindRenderbuffer(GL_RENDERBUFFER, _renderbuffer);
-			[_context presentRenderbuffer:GL_RENDERBUFFER];
-						
-			_isRendering = FALSE;
-		} sync:sync];
-	}
+		block();
+		
+		glBindRenderbuffer(GL_RENDERBUFFER, _renderbuffer);
+		[_context presentRenderbuffer:GL_RENDERBUFFER];
+					
+		_isRendering = FALSE;
+	} sync:FALSE];
 }
 
 @end

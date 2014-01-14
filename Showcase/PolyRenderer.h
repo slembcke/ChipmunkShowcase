@@ -40,6 +40,8 @@ static inline Color LAColor(GLfloat l, GLfloat a){
 typedef struct Vertex {cpVect vertex, texcoord; Color color;} Vertex;
 typedef struct Triangle {Vertex a, b, c;} Triangle;
 
+typedef struct VertexBuffer VertexBuffer;
+
 
 @interface PolyRenderer : NSObject
 
@@ -51,6 +53,7 @@ typedef struct Triangle {Vertex a, b, c;} Triangle;
 -(void)drawSegmentFrom:(cpVect)a to:(cpVect)b radius:(cpFloat)radius color:(Color)color;
 -(void)drawPolyWithVerts:(cpVect *)verts count:(NSUInteger)count width:(cpFloat)width fill:(Color)fill line:(Color)line;
 
--(void)render;
+-(VertexBuffer *)buffer:(void (^)(void))block;
+-(void)execute:(VertexBuffer *)buffer;
 
 @end
