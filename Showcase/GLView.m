@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 
-#define THREADS 0
+#define THREADS 1
 
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/EAGLDrawable.h>
@@ -129,7 +129,7 @@
 		
 		NSAssert(_context && [EAGLContext setCurrentContext:_context] && [self createFramebuffer], @"Failed to set up context.");
 #if THREADS
-	};
+	});
 #endif
 }
 
@@ -155,7 +155,7 @@
 		layer.contentsScale = [UIScreen mainScreen].scale;
 		
 #if THREADS
-		_renderQueue = dispatch_queue_create("net.chipmunk-physics.showcase-renderqueue", NULL);
+		_renderQueue = dispatch_queue_create("net.chipmunk-physics.showcase-renderqueue", DISPATCH_QUEUE_SERIAL);
 #endif
 	}
 	

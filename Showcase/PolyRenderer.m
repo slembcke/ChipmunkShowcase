@@ -51,17 +51,15 @@ struct VertexBuffer {
 	NSUInteger capacity, count;
 };
 
-@interface PolyRenderer(){
+#define BUFFER_COUNT 2
+
+@implementation PolyRenderer {
 	GLuint _program;
 	Transform _projection;
 	
-	VertexBuffer _buffer;
+	VertexBuffer _buffers[BUFFER_COUNT];
+	NSUInteger _currentBuffer;
 }
-
-@end
-
-
-@implementation PolyRenderer
 
 @synthesize projection = _projection;
 
@@ -235,14 +233,30 @@ struct VertexBuffer {
 
 //MARK: Memory
 
--(void)ensureCapacity:(NSUInteger)count
+-(VertexBuffer *)buffer
 {
-	if(_buffer.count + count > _buffer.capacity){
-		_buffer.capacity += MAX(_buffer.capacity, count);
-		_buffer.verts = realloc(_buffer.verts, _buffer.capacity*sizeof(Vertex));
-		
+	return (_buffers + _currentBuffer);
+}
+
+static void
+EnsureCapacity(VertexBuffer *buffer, NSUInteger count)
+{
+	if(buffer->count + count > buffer->capacity){
+		buffer->capacity += MAX(buffer->capacity, count);
+		buffer->verts = realloc(buffer->verts, buffer->capacity*sizeof(Vertex));
 //		NSLog(@"Resized vertex buffer to %d", _bufferCapacity);
 	}
+}
+
+-(Vertex *)bufferVertexes:(NSUInteger)count
+{
+	VertexBuffer *buffer = self.buffer;
+	EnsureCapacity(buffer, count);
+	
+	Vertex *verts = (buffer->verts + buffer->count);
+	
+	buffer->count += count;
+	return verts;
 }
 
 -(id)initWithProjection:(Transform)projection;
@@ -254,24 +268,26 @@ struct VertexBuffer {
 		glUseProgram(_program);
 		self.projection = projection;
 		
-    glGenVertexArraysOES(1, &_buffer.vao);
-    glBindVertexArrayOES(_buffer.vao);
-		
-    glGenBuffers(1, &_buffer.vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, _buffer.vbo);
-		[self ensureCapacity:512];
-    
-    glEnableVertexAttribArray(ATTRIB_VERTEX);
-    glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, vertex));
-    
-    glEnableVertexAttribArray(ATTRIB_TEXCOORD);
-    glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, texcoord));
-    
-    glEnableVertexAttribArray(ATTRIB_COLOR);
-    glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, color));
-    
-    glBindVertexArrayOES(0);
-		PRINT_GL_ERRORS();
+		for(int i=0; i<BUFFER_COUNT; i++){
+			glGenVertexArraysOES(1, &_buffers[i].vao);
+			glBindVertexArrayOES(_buffers[i].vao);
+			
+			glGenBuffers(1, &_buffers[i].vbo);
+			glBindBuffer(GL_ARRAY_BUFFER, _buffers[i].vbo);
+			EnsureCapacity(_buffers + i, 512);
+			
+			glEnableVertexAttribArray(ATTRIB_VERTEX);
+			glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, vertex));
+			
+			glEnableVertexAttribArray(ATTRIB_TEXCOORD);
+			glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, texcoord));
+			
+			glEnableVertexAttribArray(ATTRIB_COLOR);
+			glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, color));
+			
+			glBindVertexArrayOES(0);
+			PRINT_GL_ERRORS();
+		}
 	}
 	
 	return self;
@@ -281,37 +297,31 @@ struct VertexBuffer {
 {
 	NSAssert([EAGLContext currentContext], @"No GL context set!");
 	
-	free(_buffer.verts); _buffer.verts = 0;
-	
-	glDeleteProgram(_program); _program = 0;
-	glDeleteBuffers(1, &_buffer.vbo); _buffer.vbo = 0;
-	glDeleteVertexArraysOES(1, &_buffer.vao); _buffer.vao = 0;
+	for(int i=0; i<BUFFER_COUNT; i++){
+		free(_buffers[i].verts); _buffers[i].verts = 0;
+		
+		glDeleteProgram(_program); _program = 0;
+		glDeleteBuffers(1, &_buffers[i].vbo); _buffers[i].vbo = 0;
+		glDeleteVertexArraysOES(1, &_buffers[i].vao); _buffers[i].vao = 0;
+	}
 }
 
 //MARK: Immediate Mode
 
 -(void)drawDot:(cpVect)pos radius:(cpFloat)radius color:(Color)color;
 {
-	NSUInteger vertex_count = 2*3;
-	[self ensureCapacity:vertex_count];
-	
 	Vertex a = {{pos.x - radius, pos.y - radius}, {-1.0, -1.0}, color};
 	Vertex b = {{pos.x - radius, pos.y + radius}, {-1.0,  1.0}, color};
 	Vertex c = {{pos.x + radius, pos.y + radius}, { 1.0,  1.0}, color};
 	Vertex d = {{pos.x + radius, pos.y - radius}, { 1.0, -1.0}, color};
 	
-	Triangle *triangles = (Triangle *)(_buffer.verts + _buffer.count);
+	Triangle *triangles = (Triangle *)[self bufferVertexes:2*3];
 	triangles[0] = (Triangle){a, b, c};
 	triangles[1] = (Triangle){a, c, d};
-	
-	_buffer.count += vertex_count;
 }
 
 -(void)drawSegmentFrom:(cpVect)a to:(cpVect)b radius:(cpFloat)radius color:(Color)color;
 {
-	NSUInteger vertex_count = 6*3;
-	[self ensureCapacity:vertex_count];
-	
 	cpVect n = cpvnormalize(cpvperp(cpvsub(b, a)));
 	cpVect t = cpvperp(n);
 	
@@ -326,15 +336,13 @@ struct VertexBuffer {
 	cpVect v6 = cpvsub(a, cpvsub(nw, tw));
 	cpVect v7 = cpvadd(a, cpvadd(nw, tw));
 	
-	Triangle *triangles = (Triangle *)(_buffer.verts + _buffer.count);
+	Triangle *triangles = (Triangle *)[self bufferVertexes:6*3];
 	triangles[0] = (Triangle){{v0, cpvneg(cpvadd(n, t)), color}, {v1, cpvsub(n, t), color}, {v2, cpvneg(n), color},};
 	triangles[1] = (Triangle){{v3, n, color}, {v1, cpvsub(n, t), color}, {v2, cpvneg(n), color},};
 	triangles[2] = (Triangle){{v3, n, color}, {v4, cpvneg(n), color}, {v2, cpvneg(n), color},};
 	triangles[3] = (Triangle){{v3, n, color}, {v4, cpvneg(n), color}, {v5, n, color},};
 	triangles[4] = (Triangle){{v6, cpvsub(t, n), color}, {v4, cpvneg(n), color}, {v5, n, color},};
 	triangles[5] = (Triangle){{v6, cpvsub(t, n), color}, {v7, cpvadd(n, t), color}, {v5, n, color},};
-	
-	_buffer.count += vertex_count;
 }
 
 -(void)drawPolyWithVerts:(cpVect *)verts count:(NSUInteger)count width:(cpFloat)width fill:(Color)fill line:(Color)line;
@@ -360,9 +368,8 @@ struct VertexBuffer {
 	
 	NSUInteger triangle_count = 3*count - 2;
 	NSUInteger vertex_count = 3*triangle_count;
-	[self ensureCapacity:vertex_count];
 	
-	Triangle *triangles = (Triangle *)(_buffer.verts + _buffer.count);
+	Triangle *triangles = (Triangle *)[self bufferVertexes:vertex_count];
 	Triangle *cursor = triangles;
 	
 	cpFloat inset = (outlined ? 0.5 : 0.0);
@@ -405,15 +412,26 @@ struct VertexBuffer {
 		}
 	}
 	
-	_buffer.count += 3*(cursor - triangles);
+	// Hacktastic.
+	self.buffer->count += 3*(cursor - triangles) - vertex_count;
 }
 
 //MARK: Rendering
 
 -(VertexBuffer *)buffer:(void (^)(void))block
 {
+	VertexBuffer *buffer = self.buffer;
+	if(buffer->count){
+		NSLog(@"Buffer not ready. (Has not been cleared)");
+		return NULL;
+	}
+	
+	// Buffer the draw calls.
 	block();
-	return &_buffer;
+	
+	// Switch to the next buffer.
+	_currentBuffer = (_currentBuffer + 1)%BUFFER_COUNT;
+	return buffer;
 }
 
 -(void)execute:(VertexBuffer *)buffer
