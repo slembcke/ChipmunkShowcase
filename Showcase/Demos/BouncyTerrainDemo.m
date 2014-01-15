@@ -93,7 +93,15 @@ static int bouncy_terrain_count = sizeof(bouncy_terrain_verts)/sizeof(cpVect);
 		hexagon[i] = cpvmult(cpv(cos(angle), sin(angle)), radius);
 	}
 	
-	NSUInteger count = [self numberForA4:400 A5:600 A6:700];
+	// Render @60fps
+	// Threads 850
+	// Single 750
+	
+	// Smooth input
+	// Threads 825
+	// Single 475
+	
+	NSUInteger count = [self numberForA4:400 A5:500 A6:700];
 	
 	for(int i=0; i < count; i++){
 		cpFloat mass = radius*radius;

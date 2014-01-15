@@ -54,8 +54,8 @@
 	shape.elasticity = 1.0;
 	shape.friction = 1.0;
 //	shape.layers = NOT_GRABABLE_MASK;
-	
-	int rows = [self numberForA4:10 A5:15 A6:18];
+		
+	int rows = [self numberForA4:10 A5:14 A6:18];
 	cpFloat height = [self numberForA4:30.0 A5:20.0 A6:20.0];
 	cpFloat width = height/4.0;
 	
