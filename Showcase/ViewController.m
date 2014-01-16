@@ -477,7 +477,7 @@ enum DemoReveal {
 				[_renderer execute:buffer];
 			}];
 		}
-		
+			
 		_renderTicks++;
 		_lastFrameTime = time;
 	}

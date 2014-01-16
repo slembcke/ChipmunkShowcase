@@ -242,9 +242,11 @@ static void
 EnsureCapacity(VertexBuffer *buffer, NSUInteger count)
 {
 	if(buffer->count + count > buffer->capacity){
-		buffer->capacity += MAX(buffer->capacity, count);
-		buffer->verts = realloc(buffer->verts, buffer->capacity*sizeof(Vertex));
-//		NSLog(@"Resized vertex buffer to %d", _bufferCapacity);
+		NSLog(@"VBO too small. Aborting.");
+		abort();
+//		buffer->capacity += MAX(buffer->capacity, count);
+//		buffer->verts = realloc(buffer->verts, buffer->capacity*sizeof(Vertex));
+////		NSLog(@"Resized vertex buffer to %d", _bufferCapacity);
 	}
 }
 
@@ -272,9 +274,15 @@ EnsureCapacity(VertexBuffer *buffer, NSUInteger count)
 			glGenVertexArraysOES(1, &_buffers[i].vao);
 			glBindVertexArrayOES(_buffers[i].vao);
 			
+			_buffers[i].capacity = 128*1024;
+			GLsizei buffer_bytes = _buffers[i].capacity*sizeof(Vertex);
+			NSLog(@"Allocating %d buffer bytes", buffer_bytes);
+			
 			glGenBuffers(1, &_buffers[i].vbo);
 			glBindBuffer(GL_ARRAY_BUFFER, _buffers[i].vbo);
-			EnsureCapacity(_buffers + i, 512);
+			glBufferData(GL_ARRAY_BUFFER, buffer_bytes, NULL, GL_DYNAMIC_DRAW);
+			_buffers[i].verts = glMapBufferOES(GL_ARRAY_BUFFER, GL_WRITE_ONLY_OES);
+//			EnsureCapacity(_buffers + i, 512);
 			
 			glEnableVertexAttribArray(ATTRIB_VERTEX);
 			glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, vertex));
@@ -298,9 +306,10 @@ EnsureCapacity(VertexBuffer *buffer, NSUInteger count)
 	NSAssert([EAGLContext currentContext], @"No GL context set!");
 	
 	for(int i=0; i<BUFFER_COUNT; i++){
-		free(_buffers[i].verts); _buffers[i].verts = 0;
+//		free(_buffers[i].verts); _buffers[i].verts = 0;
 		
 		glDeleteProgram(_program); _program = 0;
+		NSLog(@"Deleting buffer %d", _buffers[i].vbo);
 		glDeleteBuffers(1, &_buffers[i].vbo); _buffers[i].vbo = 0;
 		glDeleteVertexArraysOES(1, &_buffers[i].vao); _buffers[i].vao = 0;
 	}
@@ -421,13 +430,18 @@ EnsureCapacity(VertexBuffer *buffer, NSUInteger count)
 -(VertexBuffer *)buffer:(void (^)(void))block
 {
 	VertexBuffer *buffer = self.buffer;
-	if(buffer->count){
-		NSLog(@"Buffer not ready. (Has not been cleared)");
+	if(buffer->verts == NULL){
+		NSLog(@"Buffer not mapped.");
 		return NULL;
+	} else {
+//		NSLog(@"Using buffer %d (%p)", buffer->vbo, buffer->verts);
 	}
 	
 	// Buffer the draw calls.
 	block();
+	
+	// invalidate the buffer pointer
+	buffer->verts = NULL;
 	
 	// Switch to the next buffer.
 	_currentBuffer = (_currentBuffer + 1)%BUFFER_COUNT;
@@ -439,19 +453,25 @@ EnsureCapacity(VertexBuffer *buffer, NSUInteger count)
 	NSAssert([EAGLContext currentContext], @"No GL context set!");
 	
 	glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo);
+	glUnmapBufferOES(GL_ARRAY_BUFFER);
+//	NSLog(@"Buffer %d unmapped", buffer->vbo);
 	
-	if(buffer->capacity != buffer->vboCapacity){
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*buffer->capacity, NULL, GL_STREAM_DRAW);
-		buffer->vboCapacity = buffer->capacity;
-	}
-	
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex)*buffer->count, buffer->verts);
+//	if(buffer->capacity != buffer->vboCapacity){
+//		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*buffer->capacity, NULL, GL_STREAM_DRAW);
+//		buffer->vboCapacity = buffer->capacity;
+//	}
+//	
+//	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex)*buffer->count, buffer->verts);
 		
 	glUseProgram(_program);
 	glBindVertexArrayOES(buffer->vao);
 	glDrawArrays(GL_TRIANGLES, 0, buffer->count);
-	
+		
 	buffer->count = 0;
+//	buffer->verts = glMapBufferRangeEXT(GL_ARRAY_BUFFER, 0, buffer->capacity*sizeof(Vertex), GL_MAP_WRITE_BIT_EXT | GL_MAP_INVALIDATE_BUFFER_BIT_EXT);
+//	glBufferData(GL_ARRAY_BUFFER, buffer->capacity*sizeof(Vertex), NULL, GL_STREAM_DRAW);
+	buffer->verts = glMapBufferOES(GL_ARRAY_BUFFER, GL_WRITE_ONLY_OES);
+//	NSLog(@"Buffer %d mapped to %p", buffer->vbo, buffer->verts);
 	PRINT_GL_ERRORS();
 }
 

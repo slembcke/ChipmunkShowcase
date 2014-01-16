@@ -40,16 +40,24 @@
 	bounds.size.height = bounds.size.width;
 	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
 	
+	// BUFFERSUBDATA
 	// Render @60fps
 	// Threads 60 (1831)
 	// Single 56 (1597)
-	
 	// Smooth input
 	// Threads 59 (1771)
 	// Single 46 (1082)
 	
-	NSUInteger height = [self numberForA4:14 A5:60 A6:31];
-	cpFloat size = [self numberForA4:28.0 A5:5.0 A6:18.0];
+	// MAPBUFFER
+	// Render @60fps
+	// Threads 64 (2081)
+	// Single 58 (1716)
+	// Smooth input
+	// Threads 61 (1891)
+	// Single 44 (990)
+	
+	NSUInteger height = 61;//[self numberForA4:14 A5:64 A6:31];
+	cpFloat size = 5.0;//[self numberForA4:28.0 A5:5.0 A6:18.0];
 	
 	for(int i=0; i < height; i++){
 		for(int j=0; j<=i; j++){
@@ -67,7 +75,7 @@
 	}
 	
 	// Add a ball to make things more interesting
-	{
+	if(NO){
 		cpFloat radius = 10.0f;
 		cpFloat mass = 20.0f;
 		
