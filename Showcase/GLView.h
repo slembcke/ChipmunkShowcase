@@ -40,6 +40,6 @@
 
 -(void)sync;
 -(void)runInRenderQueue:(void (^)(void))block sync:(BOOL)sync;
--(void)display:(void (^)(void))block sync:(BOOL)sync;
+-(void)display:(void (^)(void))block;
 
 @end

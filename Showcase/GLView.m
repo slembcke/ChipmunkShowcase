@@ -19,6 +19,8 @@
  * SOFTWARE.
  */
 
+#define THREADS 1
+
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/EAGLDrawable.h>
 
@@ -28,8 +30,10 @@
 	GLuint _framebuffer;
 	GLuint _renderbuffer;
 	
+#if THREADS
 	BOOL _isRendering;
 	dispatch_queue_t _renderQueue;
+#endif
 }
 
 @synthesize isRendering = _isRendering;
@@ -40,13 +44,17 @@
 
 -(void)sync
 {
+#if THREADS
 	dispatch_sync(_renderQueue, ^{});
+#endif
 }
 
 -(void)runInRenderQueue:(void (^)(void))block sync:(BOOL)sync;
 {
+#if THREADS
 	(sync ? dispatch_sync : dispatch_async)(_renderQueue, ^{
 		[EAGLContext setCurrentContext:_context];
+#endif
 		
 		block();
 		
@@ -54,8 +62,10 @@
 		for(err = glGetError(); err; err = glGetError()) NSLog(@"GLError: 0x%04X", err);
 		NSAssert(err == GL_NO_ERROR, @"Aborting due to GL Errors.");
 		
+#if THREADS
 		[EAGLContext setCurrentContext:nil];
 	});
+#endif
 }
 
 //MARK: Framebuffer
@@ -111,10 +121,16 @@
 
 -(void)setContext:(EAGLContext *)context
 {
-	[self runInRenderQueue:^{
+#if THREADS
+	(sync ? dispatch_sync : dispatch_async)(_renderQueue, ^{
+#endif
 		_context = context;
+		[EAGLContext setCurrentContext:_context];
+		
 		NSAssert(_context && [EAGLContext setCurrentContext:_context] && [self createFramebuffer], @"Failed to set up context.");
-	} sync:TRUE];
+#if THREADS
+	});
+#endif
 }
 
 //MARK: Memory methods
@@ -138,7 +154,9 @@
 		
 		layer.contentsScale = [UIScreen mainScreen].scale;
 		
-		_renderQueue = dispatch_queue_create("net.chipmunk-physics.showcase-renderqueue", NULL);
+#if THREADS
+		_renderQueue = dispatch_queue_create("net.chipmunk-physics.showcase-renderqueue", DISPATCH_QUEUE_SERIAL);
+#endif
 	}
 	
 	return self;
@@ -150,28 +168,25 @@
 		[self destroyFramebuffer];
 	} sync:TRUE];
 	
+#if THREADS
 	dispatch_release(_renderQueue);
+#endif
 }
 
 //MARK: Render methods
 
--(void)display:(void (^)(void))block sync:(BOOL)sync;
+-(void)display:(void (^)(void))block
 {
-	// Only queue one frame to render at a time unless synced.
-	if(sync || !_isRendering){
-		_isRendering = TRUE;
+	[self runInRenderQueue:^{
+		glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
 		
-		[self runInRenderQueue:^{
-			glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
-			
-			block();
-			
-			glBindRenderbuffer(GL_RENDERBUFFER, _renderbuffer);
-			[_context presentRenderbuffer:GL_RENDERBUFFER];
-						
-			_isRendering = FALSE;
-		} sync:sync];
-	}
+		block();
+		
+		glBindRenderbuffer(GL_RENDERBUFFER, _renderbuffer);
+		[_context presentRenderbuffer:GL_RENDERBUFFER];
+					
+		_isRendering = FALSE;
+	} sync:FALSE];
 }
 
 @end

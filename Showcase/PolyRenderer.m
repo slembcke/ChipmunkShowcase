@@ -43,23 +43,23 @@ enum {
     NUM_ATTRIBUTES
 };
 
-@interface PolyRenderer(){
+struct VertexBuffer {
+	GLuint vao, vbo;
+	Vertex *verts;
+	
+	NSUInteger vboCapacity;
+	NSUInteger capacity, count;
+};
+
+#define BUFFER_COUNT 2
+
+@implementation PolyRenderer {
 	GLuint _program;
-
-	GLuint _vao;
-	GLuint _vbo;
-	
-	NSUInteger _vboCapacity;
-	NSUInteger _bufferCapacity, _bufferCount;
-	Vertex *_buffer;
-	
 	Transform _projection;
+	
+	VertexBuffer _buffers[BUFFER_COUNT];
+	NSUInteger _currentBuffer;
 }
-
-@end
-
-
-@implementation PolyRenderer
 
 @synthesize projection = _projection;
 
@@ -233,14 +233,32 @@ enum {
 
 //MARK: Memory
 
--(void)ensureCapacity:(NSUInteger)count
+-(VertexBuffer *)buffer
 {
-	if(_bufferCount + count > _bufferCapacity){
-		_bufferCapacity += MAX(_bufferCapacity, count);
-		_buffer = realloc(_buffer, _bufferCapacity*sizeof(Vertex));
-		
-//		NSLog(@"Resized vertex buffer to %d", _bufferCapacity);
+	return (_buffers + _currentBuffer);
+}
+
+static void
+EnsureCapacity(VertexBuffer *buffer, NSUInteger count)
+{
+	if(buffer->count + count > buffer->capacity){
+		NSLog(@"VBO too small. Aborting.");
+		abort();
+//		buffer->capacity += MAX(buffer->capacity, count);
+//		buffer->verts = realloc(buffer->verts, buffer->capacity*sizeof(Vertex));
+////		NSLog(@"Resized vertex buffer to %d", _bufferCapacity);
 	}
+}
+
+-(Vertex *)bufferVertexes:(NSUInteger)count
+{
+	VertexBuffer *buffer = self.buffer;
+	EnsureCapacity(buffer, count);
+	
+	Vertex *verts = (buffer->verts + buffer->count);
+	
+	buffer->count += count;
+	return verts;
 }
 
 -(id)initWithProjection:(Transform)projection;
@@ -252,24 +270,32 @@ enum {
 		glUseProgram(_program);
 		self.projection = projection;
 		
-    glGenVertexArraysOES(1, &_vao);
-    glBindVertexArrayOES(_vao);
-		
-    glGenBuffers(1, &_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-		[self ensureCapacity:512];
-    
-    glEnableVertexAttribArray(ATTRIB_VERTEX);
-    glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, vertex));
-    
-    glEnableVertexAttribArray(ATTRIB_TEXCOORD);
-    glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, texcoord));
-    
-    glEnableVertexAttribArray(ATTRIB_COLOR);
-    glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, color));
-    
-    glBindVertexArrayOES(0);
-		PRINT_GL_ERRORS();
+		for(int i=0; i<BUFFER_COUNT; i++){
+			glGenVertexArraysOES(1, &_buffers[i].vao);
+			glBindVertexArrayOES(_buffers[i].vao);
+			
+			_buffers[i].capacity = 128*1024;
+			GLsizei buffer_bytes = _buffers[i].capacity*sizeof(Vertex);
+			NSLog(@"Allocating %d buffer bytes", buffer_bytes);
+			
+			glGenBuffers(1, &_buffers[i].vbo);
+			glBindBuffer(GL_ARRAY_BUFFER, _buffers[i].vbo);
+			glBufferData(GL_ARRAY_BUFFER, buffer_bytes, NULL, GL_DYNAMIC_DRAW);
+			_buffers[i].verts = glMapBufferOES(GL_ARRAY_BUFFER, GL_WRITE_ONLY_OES);
+//			EnsureCapacity(_buffers + i, 512);
+			
+			glEnableVertexAttribArray(ATTRIB_VERTEX);
+			glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, vertex));
+			
+			glEnableVertexAttribArray(ATTRIB_TEXCOORD);
+			glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, texcoord));
+			
+			glEnableVertexAttribArray(ATTRIB_COLOR);
+			glVertexAttribPointer(ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *)offsetof(Vertex, color));
+			
+			glBindVertexArrayOES(0);
+			PRINT_GL_ERRORS();
+		}
 	}
 	
 	return self;
@@ -279,37 +305,32 @@ enum {
 {
 	NSAssert([EAGLContext currentContext], @"No GL context set!");
 	
-	free(_buffer); _buffer = 0;
-	
-	glDeleteProgram(_program); _program = 0;
-	glDeleteBuffers(1, &_vbo); _vbo = 0;
-	glDeleteVertexArraysOES(1, &_vao); _vao = 0;
+	for(int i=0; i<BUFFER_COUNT; i++){
+//		free(_buffers[i].verts); _buffers[i].verts = 0;
+		
+		glDeleteProgram(_program); _program = 0;
+		NSLog(@"Deleting buffer %d", _buffers[i].vbo);
+		glDeleteBuffers(1, &_buffers[i].vbo); _buffers[i].vbo = 0;
+		glDeleteVertexArraysOES(1, &_buffers[i].vao); _buffers[i].vao = 0;
+	}
 }
 
 //MARK: Immediate Mode
 
 -(void)drawDot:(cpVect)pos radius:(cpFloat)radius color:(Color)color;
 {
-	NSUInteger vertex_count = 2*3;
-	[self ensureCapacity:vertex_count];
-	
 	Vertex a = {{pos.x - radius, pos.y - radius}, {-1.0, -1.0}, color};
 	Vertex b = {{pos.x - radius, pos.y + radius}, {-1.0,  1.0}, color};
 	Vertex c = {{pos.x + radius, pos.y + radius}, { 1.0,  1.0}, color};
 	Vertex d = {{pos.x + radius, pos.y - radius}, { 1.0, -1.0}, color};
 	
-	Triangle *triangles = (Triangle *)(_buffer + _bufferCount);
+	Triangle *triangles = (Triangle *)[self bufferVertexes:2*3];
 	triangles[0] = (Triangle){a, b, c};
 	triangles[1] = (Triangle){a, c, d};
-	
-	_bufferCount += vertex_count;
 }
 
 -(void)drawSegmentFrom:(cpVect)a to:(cpVect)b radius:(cpFloat)radius color:(Color)color;
 {
-	NSUInteger vertex_count = 6*3;
-	[self ensureCapacity:vertex_count];
-	
 	cpVect n = cpvnormalize(cpvperp(cpvsub(b, a)));
 	cpVect t = cpvperp(n);
 	
@@ -324,15 +345,13 @@ enum {
 	cpVect v6 = cpvsub(a, cpvsub(nw, tw));
 	cpVect v7 = cpvadd(a, cpvadd(nw, tw));
 	
-	Triangle *triangles = (Triangle *)(_buffer + _bufferCount);
+	Triangle *triangles = (Triangle *)[self bufferVertexes:6*3];
 	triangles[0] = (Triangle){{v0, cpvneg(cpvadd(n, t)), color}, {v1, cpvsub(n, t), color}, {v2, cpvneg(n), color},};
 	triangles[1] = (Triangle){{v3, n, color}, {v1, cpvsub(n, t), color}, {v2, cpvneg(n), color},};
 	triangles[2] = (Triangle){{v3, n, color}, {v4, cpvneg(n), color}, {v2, cpvneg(n), color},};
 	triangles[3] = (Triangle){{v3, n, color}, {v4, cpvneg(n), color}, {v5, n, color},};
 	triangles[4] = (Triangle){{v6, cpvsub(t, n), color}, {v4, cpvneg(n), color}, {v5, n, color},};
 	triangles[5] = (Triangle){{v6, cpvsub(t, n), color}, {v7, cpvadd(n, t), color}, {v5, n, color},};
-	
-	_bufferCount += vertex_count;
 }
 
 -(void)drawPolyWithVerts:(cpVect *)verts count:(NSUInteger)count width:(cpFloat)width fill:(Color)fill line:(Color)line;
@@ -358,9 +377,8 @@ enum {
 	
 	NSUInteger triangle_count = 3*count - 2;
 	NSUInteger vertex_count = 3*triangle_count;
-	[self ensureCapacity:vertex_count];
 	
-	Triangle *triangles = (Triangle *)(_buffer + _bufferCount);
+	Triangle *triangles = (Triangle *)[self bufferVertexes:vertex_count];
 	Triangle *cursor = triangles;
 	
 	cpFloat inset = (outlined ? 0.5 : 0.0);
@@ -403,29 +421,57 @@ enum {
 		}
 	}
 	
-	_bufferCount += 3*(cursor - triangles);
+	// Hacktastic.
+	self.buffer->count += 3*(cursor - triangles) - vertex_count;
 }
 
 //MARK: Rendering
 
--(void)render
+-(VertexBuffer *)buffer:(void (^)(void))block
+{
+	VertexBuffer *buffer = self.buffer;
+	if(buffer->verts == NULL){
+		NSLog(@"Buffer not mapped.");
+		return NULL;
+	} else {
+//		NSLog(@"Using buffer %d (%p)", buffer->vbo, buffer->verts);
+	}
+	
+	// Buffer the draw calls.
+	block();
+	
+	// invalidate the buffer pointer
+	buffer->verts = NULL;
+	
+	// Switch to the next buffer.
+	_currentBuffer = (_currentBuffer + 1)%BUFFER_COUNT;
+	return buffer;
+}
+
+-(void)execute:(VertexBuffer *)buffer
 {
 	NSAssert([EAGLContext currentContext], @"No GL context set!");
 	
-	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo);
+	glUnmapBufferOES(GL_ARRAY_BUFFER);
+//	NSLog(@"Buffer %d unmapped", buffer->vbo);
 	
-	if(_bufferCapacity != _vboCapacity){
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*_bufferCapacity, NULL, GL_STREAM_DRAW);
-		_vboCapacity = _bufferCapacity;
-	}
-	
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex)*_bufferCount, _buffer);
+//	if(buffer->capacity != buffer->vboCapacity){
+//		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*buffer->capacity, NULL, GL_STREAM_DRAW);
+//		buffer->vboCapacity = buffer->capacity;
+//	}
+//	
+//	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex)*buffer->count, buffer->verts);
 		
 	glUseProgram(_program);
-	glBindVertexArrayOES(_vao);
-	glDrawArrays(GL_TRIANGLES, 0, _bufferCount);
-	
-	_bufferCount = 0;
+	glBindVertexArrayOES(buffer->vao);
+	glDrawArrays(GL_TRIANGLES, 0, buffer->count);
+		
+	buffer->count = 0;
+//	buffer->verts = glMapBufferRangeEXT(GL_ARRAY_BUFFER, 0, buffer->capacity*sizeof(Vertex), GL_MAP_WRITE_BIT_EXT | GL_MAP_INVALIDATE_BUFFER_BIT_EXT);
+//	glBufferData(GL_ARRAY_BUFFER, buffer->capacity*sizeof(Vertex), NULL, GL_STREAM_DRAW);
+	buffer->verts = glMapBufferOES(GL_ARRAY_BUFFER, GL_WRITE_ONLY_OES);
+//	NSLog(@"Buffer %d mapped to %p", buffer->vbo, buffer->verts);
 	PRINT_GL_ERRORS();
 }
 

@@ -464,14 +464,20 @@ enum DemoReveal {
 	
 	BOOL needs_sync = (time - _lastFrameTime > MAX_DT);
 	if(!_glView.isRendering || needs_sync){
+		// This forces the rendering and physics to resynchronize if the rendering gets behind.
 		if(needs_sync) [_glView sync];
-		[_demo render:_renderer showContacts:_drawContacts.on];
 		
-		[_glView display:^{
-			[_glView clear];
-			[_renderer render];
-		} sync:needs_sync];
+		VertexBuffer *buffer = [_renderer buffer:^{
+			[_demo render:_renderer showContacts:_drawContacts.on];
+		}];
 		
+		if(buffer){
+			[_glView display:^{
+				[_glView clear];
+				[_renderer execute:buffer];
+			}];
+		}
+			
 		_renderTicks++;
 		_lastFrameTime = time;
 	}
