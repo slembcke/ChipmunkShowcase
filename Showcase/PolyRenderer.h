@@ -21,8 +21,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ObjectiveChipmunk.h"
-#import "transform.h"
+
+#import "ObjectiveChipmunk/ObjectiveChipmunk.h"
 
 #define PRINT_GL_ERRORS() for(GLenum err = glGetError(); err; err = glGetError()) NSLog(@"GLError(%s:%d) 0x%04X", __FILE__, __LINE__, err);
 
@@ -45,9 +45,9 @@ typedef struct VertexBuffer VertexBuffer;
 
 @interface PolyRenderer : NSObject
 
-@property(nonatomic, assign) Transform projection;
+@property(nonatomic, assign) cpTransform projection;
 
--(id)initWithProjection:(Transform)projection;
+-(id)initWithProjection:(cpTransform)projection;
 
 -(void)drawDot:(cpVect)pos radius:(cpFloat)radius color:(Color)color;
 -(void)drawSegmentFrom:(cpVect)a to:(cpVect)b radius:(cpFloat)radius color:(Color)color;

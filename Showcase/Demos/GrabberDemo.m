@@ -40,19 +40,19 @@ NSString *SCISSOR_GROUP = @"SCISSOR_GROUP";
 	cpFloat mass = 2.0;
 	cpFloat moment = cpMomentForBox(mass, 2.0*SCALE + THICKNESS, THICKNESS);
 	ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:moment]];
-	body.pos = pos;
+	body.position = pos;
 	body.angle = angle;
 	
-	ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:2.0*SCALE + THICKNESS height:THICKNESS]];
+	ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:2.0*SCALE + THICKNESS height:THICKNESS radius:0.0]];
 	shape.friction = 1.0;
-	shape.group = SCISSOR_GROUP;
+	shape.filter = cpShapeFilterNew(SCISSOR_GROUP, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
 	return body;
 }
 
 -(void)addGripperToBody:(ChipmunkBody *)body withBB:(cpBB)bb
 {
-	ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body bb:bb]];
+	ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body bb:bb radius:0.0]];
 	shape.friction = 1.0;
 }
 
@@ -62,7 +62,8 @@ NSString *SCISSOR_GROUP = @"SCISSOR_GROUP";
 	self.space.damping = 0.4;
 	self.space.iterations = 20;
 	
-	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
+	cpShapeFilter filter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
+	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 filter:filter collisionType:nil];
 	
 	ChipmunkBody *scissor1 = [self addScissorAt:cpvzero angle:0.0];
 	ChipmunkBody *scissor2 = [self addScissorAt:cpvzero angle:M_PI_2];
@@ -80,8 +81,8 @@ NSString *SCISSOR_GROUP = @"SCISSOR_GROUP";
 	
 	[self.space add:[ChipmunkRotaryLimitJoint rotaryLimitJointWithBodyA:scissor1 bodyB:scissor2 min:M_PI/2.0 max:0.8*M_PI]];
 	[self.space add:[ChipmunkRotaryLimitJoint rotaryLimitJointWithBodyA:scissor3 bodyB:scissor4 min:M_PI/2.0 max:0.8*M_PI]];
-	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:scissor1 bodyB:scissor2 pivot:scissor1.pos]];
-	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:scissor3 bodyB:scissor4 pivot:scissor3.pos]];
+	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:scissor1 bodyB:scissor2 pivot:scissor1.position]];
+	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:scissor3 bodyB:scissor4 pivot:scissor3.position]];
 	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:scissor1 bodyB:scissor4 pivot:cpv(SCALE, 0)]];
 	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:scissor2 bodyB:scissor3 pivot:cpv(0, SCALE)]];
 	
@@ -90,9 +91,9 @@ NSString *SCISSOR_GROUP = @"SCISSOR_GROUP";
 		cpFloat mass = 4.0f;
 		
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForBox(mass, size, size)]];
-		body.pos = cpv(-200, 0);
+		body.position = cpv(-200, 0);
 		
-		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:size height:size]];
+		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:size height:size radius:0.0]];
 		shape.elasticity = 0.0f;
 		shape.friction = 0.9f;
 	}

@@ -38,7 +38,8 @@
 	
 	CGRect bounds = self.demoBounds;
 	bounds.size.height = bounds.size.width;
-	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
+	cpShapeFilter filter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
+	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 filter:filter collisionType:nil];
 	
 	NSUInteger height = [self numberForA4:14 A5:25 A6:31];
 	cpFloat size = [self numberForA4:28.0 A5:20.0 A6:18.0];
@@ -50,9 +51,9 @@
 			cpFloat spacing = size + 2.0;
 			
 			ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForBox(mass, size, size)]];
-			body.pos = cpv((j - i/2.0)*spacing, -200 + (height - i - 1)*spacing);
+			body.position = cpv((j - i/2.0)*spacing, -200 + (height - i - 1)*spacing);
 			
-			ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:size height:size]];
+			ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:size height:size radius:0.0]];
 			shape.elasticity = 0.0;
 			shape.friction = 0.8f;
 		}
@@ -64,7 +65,7 @@
 		cpFloat mass = 20.0f;
 		
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForCircle(mass, 0.0, radius, cpvzero)]];
-		body.pos = cpv(0, -240 + radius+5);
+		body.position = cpv(0, -240 + radius+5);
 		
 		ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:body radius:radius offset:cpvzero]];
 		shape.elasticity = 0.0f;

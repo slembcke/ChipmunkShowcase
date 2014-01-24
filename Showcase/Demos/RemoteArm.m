@@ -90,7 +90,8 @@
 	self.space.iterations = 25;
 	self.space.gravity = cpv(0, -500);
 	
-	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
+	cpShapeFilter filter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
+	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 filter:filter collisionType:nil];
 	[self.space add:[ChipmunkSegmentShape segmentWithBody:self.staticBody from:cpv(0.0, -1000.0) to:cpv(0.0, 1000.0) radius:10.0]];
 	
 	cpVect offset = cpv(160.0, 160.0);
@@ -101,7 +102,7 @@
 	cpVect armVertB = cpv(0,  armLength/2.0);
 	
 	// Exaggerate the moment to make the simulation more stable.
-	cpFloat armMoment = 10.0*cpMomentForSegment(armMass, armVertA, armVertB);
+	cpFloat armMoment = 10.0*cpMomentForSegment(armMass, armVertA, armVertB, 0.0);
 	
 	cpFloat masterFriction = 1e6;
 	
@@ -109,54 +110,54 @@
 	NSString *masterGroup = @"master";
 	
 	ChipmunkBody *arm1Master = [self.space add:[ChipmunkBody bodyWithMass:armMass andMoment:armMoment]];
-	arm1Master.pos = cpvadd(cpv(0, 0), offset);
+	arm1Master.position = cpvadd(cpv(0, 0), offset);
 	
 	ChipmunkShape *arm1MasterShape = [self.space add:[ChipmunkSegmentShape segmentWithBody:arm1Master from:armVertA to:armVertB radius:10.0]];
-	arm1MasterShape.group = masterGroup;
+	arm1MasterShape.filter = cpShapeFilterNew(masterGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
-	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:self.staticBody bodyB:arm1Master pivot:[arm1Master local2world:armVertB]]];
+	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:self.staticBody bodyB:arm1Master pivot:[arm1Master localToWorld:armVertB]]];
 	ChipmunkGearJoint *arm1MasterFriction = [self.space add:[ChipmunkGearJoint gearJointWithBodyA:self.staticBody bodyB:arm1Master phase:0.0 ratio:1.0]];
 	arm1MasterFriction.maxBias = 0.0;
 	arm1MasterFriction.maxForce = 3.0*masterFriction;
 	
 	ChipmunkBody *arm2Master = [self.space add:[ChipmunkBody bodyWithMass:armMass andMoment:armMoment]];
-	arm2Master.pos = cpvadd(cpv(0, -armLength), offset);
+	arm2Master.position = cpvadd(cpv(0, -armLength), offset);
 	
 	ChipmunkShape *arm2MasterShape = [self.space add:[ChipmunkSegmentShape segmentWithBody:arm2Master from:armVertA to:armVertB radius:10.0]];
-	arm2MasterShape.group = masterGroup;
+	arm2MasterShape.filter = cpShapeFilterNew(masterGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
-	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm1Master bodyB:arm2Master pivot:[arm2Master local2world:armVertB]]];
+	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm1Master bodyB:arm2Master pivot:[arm2Master localToWorld:armVertB]]];
 	ChipmunkGearJoint *arm2MasterFriction = [self.space add:[ChipmunkGearJoint gearJointWithBodyA:arm1Master bodyB:arm2Master phase:0.0 ratio:1.0]];
 	arm2MasterFriction.maxBias = 0.0;
 	arm2MasterFriction.maxForce = 2.0*masterFriction;
 	
 	ChipmunkBody *arm3Master = [self.space add:[ChipmunkBody bodyWithMass:armMass andMoment:armMoment]];
-	arm3Master.pos = cpvadd(cpv(0, -2.0*armLength), offset);
+	arm3Master.position = cpvadd(cpv(0, -2.0*armLength), offset);
 	
 	ChipmunkShape *arm3MasterShape = [self.space add:[ChipmunkSegmentShape segmentWithBody:arm3Master from:armVertA to:armVertB radius:10.0]];
-	arm3MasterShape.group = masterGroup;
+	arm3MasterShape.filter = cpShapeFilterNew(masterGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
-	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm2Master bodyB:arm3Master pivot:[arm3Master local2world:armVertB]]];
+	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm2Master bodyB:arm3Master pivot:[arm3Master localToWorld:armVertB]]];
 	ChipmunkGearJoint *arm3MasterFriction = [self.space add:[ChipmunkGearJoint gearJointWithBodyA:arm2Master bodyB:arm3Master phase:0.0 ratio:1.0]];
 	arm3MasterFriction.maxBias = 0.0;
 	arm3MasterFriction.maxForce = masterFriction;
 	
 	cpFloat pincherMass = armMass;
 	cpFloat pincherOffset = armLength/2.0;
-	cpFloat pincherMoment = 2.0*cpMomentForSegment(pincherMass/2.0, cpv(0.0, -pincherOffset/2.0), cpv(pincherOffset, pincherOffset/2.0));
+	cpFloat pincherMoment = 2.0*cpMomentForSegment(pincherMass/2.0, cpv(0.0, -pincherOffset/2.0), cpv(pincherOffset, pincherOffset/2.0), 0.0);
 	
 	ChipmunkBody *leftPincherMaster = [self.space add:[ChipmunkBody bodyWithMass:pincherMass andMoment:pincherMoment]];
-	leftPincherMaster.pos = cpvadd(cpv(-pincherOffset/2.0, -2.5*armLength - pincherOffset), offset);
+	leftPincherMaster.position = cpvadd(cpv(-pincherOffset/2.0, -2.5*armLength - pincherOffset), offset);
 	
 	ChipmunkShape *leftPincherMasterShape1 = [self.space add:[ChipmunkSegmentShape segmentWithBody:leftPincherMaster from:cpv( pincherOffset/2.0,  pincherOffset) to:cpv(-pincherOffset/2.0, 0.0) radius:10.0]];
-	leftPincherMasterShape1.group = masterGroup;
+	leftPincherMasterShape1.filter = cpShapeFilterNew(masterGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	leftPincherMasterShape1.friction = 0.7;
 	
 	ChipmunkShape *leftPincherMasterShape2 = [self.space add:[ChipmunkSegmentShape segmentWithBody:leftPincherMaster from:cpv( pincherOffset/2.0, -pincherOffset) to:cpv(-pincherOffset/2.0, 0.0) radius:10.0]];
-	leftPincherMasterShape2.group = masterGroup;
+	leftPincherMasterShape2.filter = cpShapeFilterNew(masterGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	leftPincherMasterShape2.friction = 0.7;
 	
-	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm3Master bodyB:leftPincherMaster pivot:[arm3Master local2world:armVertA]]];
+	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm3Master bodyB:leftPincherMaster pivot:[arm3Master localToWorld:armVertA]]];
 	ChipmunkGearJoint *leftPincherMasterFriction = [self.space add:[ChipmunkGearJoint gearJointWithBodyA:arm3Master bodyB:leftPincherMaster phase:0.0 ratio:1.0]];
 	leftPincherMasterFriction.maxBias = 0.0;
 	leftPincherMasterFriction.maxForce = 0.5*masterFriction;
@@ -164,15 +165,15 @@
 	[self.space add:[ChipmunkRotaryLimitJoint rotaryLimitJointWithBodyA:arm3Master bodyB:leftPincherMaster min:-M_PI/2.0 max:M_PI/2.0]];
 	
 	ChipmunkBody *rightPincherMaster = [self.space add:[ChipmunkBody bodyWithMass:pincherMass andMoment:pincherMoment]];
-	rightPincherMaster.pos = cpvadd(cpv( pincherOffset/2.0, -2.5*armLength - pincherOffset), offset);
+	rightPincherMaster.position = cpvadd(cpv( pincherOffset/2.0, -2.5*armLength - pincherOffset), offset);
 	
 	ChipmunkShape *rightPincherMasterShape1 = [self.space add:[ChipmunkSegmentShape segmentWithBody:rightPincherMaster from:cpv(-pincherOffset/2.0,  pincherOffset) to:cpv( pincherOffset/2.0, 0.0) radius:10.0]];
-	rightPincherMasterShape1.group = masterGroup;
+	rightPincherMasterShape1.filter = cpShapeFilterNew(masterGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
 	ChipmunkShape *rightPincherMasterShape2 = [self.space add:[ChipmunkSegmentShape segmentWithBody:rightPincherMaster from:cpv(-pincherOffset/2.0, -pincherOffset) to:cpv( pincherOffset/2.0, 0.0) radius:10.0]];
-	rightPincherMasterShape2.group = masterGroup;
+	rightPincherMasterShape2.filter = cpShapeFilterNew(masterGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
-	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm3Master bodyB:rightPincherMaster pivot:[arm3Master local2world:armVertA]]];
+	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm3Master bodyB:rightPincherMaster pivot:[arm3Master localToWorld:armVertA]]];
 	ChipmunkGearJoint *rightPincherMasterFriction = [self.space add:[ChipmunkGearJoint gearJointWithBodyA:arm3Master bodyB:rightPincherMaster phase:0.0 ratio:1.0]];
 	rightPincherMasterFriction.maxBias = 0.0;
 	rightPincherMasterFriction.maxForce = 0.5*masterFriction;
@@ -186,58 +187,58 @@
 	NSString *remoteGroup = @"remote";
 	
 	ChipmunkBody *arm1Remote = [self.space add:[ChipmunkBody bodyWithMass:armMass andMoment:armMoment]];
-	arm1Remote.pos = cpvadd(cpv(0, 0), offset);
+	arm1Remote.position = cpvadd(cpv(0, 0), offset);
 	
 	ChipmunkShape *arm1RemoteShape = [self.space add:[ChipmunkSegmentShape segmentWithBody:arm1Remote from:armVertA to:armVertB radius:10.0]];
-	arm1RemoteShape.group = remoteGroup;
+	arm1RemoteShape.filter = cpShapeFilterNew(masterGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
-	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:self.staticBody bodyB:arm1Remote pivot:[arm1Remote local2world:armVertB]]];
+	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:self.staticBody bodyB:arm1Remote pivot:[arm1Remote localToWorld:armVertB]]];
 	[self.space add:[RemoteJoint remoteJointWithBodyA:self.staticBody bodyB:arm1Remote master:arm1MasterFriction]];
 	
 	ChipmunkBody *arm2Remote = [self.space add:[ChipmunkBody bodyWithMass:armMass andMoment:armMoment]];
-	arm2Remote.pos = cpvadd(cpv(0, -armLength), offset);
+	arm2Remote.position = cpvadd(cpv(0, -armLength), offset);
 	
 	ChipmunkShape *arm2RemoteShape = [self.space add:[ChipmunkSegmentShape segmentWithBody:arm2Remote from:armVertA to:armVertB radius:10.0]];
-	arm2RemoteShape.group = remoteGroup;
+	arm2RemoteShape.filter = cpShapeFilterNew(masterGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
-	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm1Remote bodyB:arm2Remote pivot:[arm2Remote local2world:armVertB]]];
+	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm1Remote bodyB:arm2Remote pivot:[arm2Remote localToWorld:armVertB]]];
 	[self.space add:[RemoteJoint remoteJointWithBodyA:arm1Remote bodyB:arm2Remote master:arm2MasterFriction]];
 	
 	ChipmunkBody *arm3Remote = [self.space add:[ChipmunkBody bodyWithMass:armMass andMoment:armMoment]];
-	arm3Remote.pos = cpvadd(cpv(0, -2.0*armLength), offset);
+	arm3Remote.position = cpvadd(cpv(0, -2.0*armLength), offset);
 	
 	ChipmunkShape *arm3RemoteShape = [self.space add:[ChipmunkSegmentShape segmentWithBody:arm3Remote from:armVertA to:armVertB radius:10.0]];
-	arm3RemoteShape.group = remoteGroup;
+	arm3RemoteShape.filter = cpShapeFilterNew(masterGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
-	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm2Remote bodyB:arm3Remote pivot:[arm3Remote local2world:armVertB]]];
+	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm2Remote bodyB:arm3Remote pivot:[arm3Remote localToWorld:armVertB]]];
 	[self.space add:[RemoteJoint remoteJointWithBodyA:arm2Remote bodyB:arm3Remote master:arm3MasterFriction]];
 	
 	ChipmunkBody *leftPincherRemote = [self.space add:[ChipmunkBody bodyWithMass:pincherMass andMoment:pincherMoment]];
-	leftPincherRemote.pos = cpvadd(cpv(-pincherOffset/2.0, -2.5*armLength - pincherOffset), offset);
+	leftPincherRemote.position = cpvadd(cpv(-pincherOffset/2.0, -2.5*armLength - pincherOffset), offset);
 	
 	ChipmunkShape *leftPincherRemoteShape1 = [self.space add:[ChipmunkSegmentShape segmentWithBody:leftPincherRemote from:cpv( pincherOffset/2.0,  pincherOffset) to:cpv(-pincherOffset/2.0, 0.0) radius:10.0]];
-	leftPincherRemoteShape1.group = remoteGroup;
+	leftPincherRemoteShape1.filter = cpShapeFilterNew(remoteGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	leftPincherRemoteShape1.friction = 0.7;
 	
 	ChipmunkShape *leftPincherRemoteShape2 = [self.space add:[ChipmunkSegmentShape segmentWithBody:leftPincherRemote from:cpv( pincherOffset/2.0, -pincherOffset) to:cpv(-pincherOffset/2.0, 0.0) radius:10.0]];
-	leftPincherRemoteShape2.group = remoteGroup;
+	leftPincherRemoteShape2.filter = cpShapeFilterNew(remoteGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	leftPincherRemoteShape2.friction = 0.7;
 	
-	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm3Remote bodyB:leftPincherRemote pivot:[arm3Remote local2world:armVertA]]];
+	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm3Remote bodyB:leftPincherRemote pivot:[arm3Remote localToWorld:armVertA]]];
 	[self.space add:[RemoteJoint remoteJointWithBodyA:arm3Remote bodyB:leftPincherRemote master:leftPincherMasterFriction]];
 	
 	[self.space add:[ChipmunkRotaryLimitJoint rotaryLimitJointWithBodyA:arm3Remote bodyB:leftPincherRemote min:-M_PI/2.0 max:M_PI/2.0]];
 	
 	ChipmunkBody *rightPincherRemote = [self.space add:[ChipmunkBody bodyWithMass:pincherMass andMoment:pincherMoment]];
-	rightPincherRemote.pos = cpvadd(cpv( pincherOffset/2.0, -2.5*armLength - pincherOffset), offset);
+	rightPincherRemote.position = cpvadd(cpv( pincherOffset/2.0, -2.5*armLength - pincherOffset), offset);
 	
 	ChipmunkShape *rightPincherRemoteShape1 = [self.space add:[ChipmunkSegmentShape segmentWithBody:rightPincherRemote from:cpv(-pincherOffset/2.0,  pincherOffset) to:cpv( pincherOffset/2.0, 0.0) radius:10.0]];
-	rightPincherRemoteShape1.group = remoteGroup;
+	rightPincherRemoteShape1.filter = cpShapeFilterNew(remoteGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
 	ChipmunkShape *rightPincherRemoteShape2 = [self.space add:[ChipmunkSegmentShape segmentWithBody:rightPincherRemote from:cpv(-pincherOffset/2.0, -pincherOffset) to:cpv( pincherOffset/2.0, 0.0) radius:10.0]];
-	rightPincherRemoteShape2.group = remoteGroup;
+	rightPincherRemoteShape2.filter = cpShapeFilterNew(remoteGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
-	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm3Remote bodyB:rightPincherRemote pivot:[arm3Remote local2world:armVertA]]];
+	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm3Remote bodyB:rightPincherRemote pivot:[arm3Remote localToWorld:armVertA]]];
 	[self.space add:[RemoteJoint remoteJointWithBodyA:arm3Remote bodyB:rightPincherRemote master:rightPincherMasterFriction]];
 	
 	[self.space add:[ChipmunkRotaryLimitJoint rotaryLimitJointWithBodyA:arm3Remote bodyB:rightPincherRemote min:-M_PI/2.0 max:M_PI/2.0]];
@@ -250,7 +251,7 @@
 		cpFloat radius = 50.0;
 		
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForCircle(mass, 0.0, radius, cpvzero)]];
-		body.pos = cpv(-80, -100);
+		body.position = cpv(-80, -100);
 		
 		ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:body radius:radius offset:cpvzero]];
 		shape.friction = 0.7;

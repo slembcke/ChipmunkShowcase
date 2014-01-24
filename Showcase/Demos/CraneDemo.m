@@ -55,7 +55,7 @@ static NSString *CRATE = @"CRATE";
 		// Regular additions/removals can't be done in a collision callback.
 		// You can either create a post-step callback (different than a post-solve callback) to schedule the change
 		// or you can use the smartAdd/smartRemove methods which will create a callback if required.
-		_hookJoint = [ChipmunkPivotJoint pivotJointWithBodyA:hook bodyB:crate pivot:hook.pos];
+		_hookJoint = [ChipmunkPivotJoint pivotJointWithBodyA:hook bodyB:crate pivot:hook.position];
 		[space smartAdd:_hookJoint];
 	}
 	
@@ -68,21 +68,22 @@ static NSString *CRATE = @"CRATE";
 	self.space.gravity = cpv(0, -100);
 	self.space.damping = 0.8;
 	
-	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
+	cpShapeFilter filter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
+	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 filter:filter collisionType:nil];
 	
 	// Add a body for the dolly.
 	_dollyBody = [self.space add:[ChipmunkBody bodyWithMass:10 andMoment:INFINITY]];
-	_dollyBody.pos = cpv(0, 100);
+	_dollyBody.position = cpv(0, 100);
 	
 	// Add a block so you can see it.
-	[self.space add:[ChipmunkPolyShape boxWithBody:_dollyBody width:30 height:30]];
+	[self.space add:[ChipmunkPolyShape boxWithBody:_dollyBody width:30 height:30 radius:0.0]];
 	
 	// Add a groove joint for it to move back and forth on.
-	[self.space add:[ChipmunkGrooveJoint grooveJointWithBodyA:self.space.staticBody bodyB:_dollyBody groove_a:cpv(-250, 100) groove_b:cpv(250, 100) anchr2:cpvzero]];
+	[self.space add:[ChipmunkGrooveJoint grooveJointWithBodyA:self.space.staticBody bodyB:_dollyBody grooveA:cpv(-250, 100) grooveB:cpv(250, 100) anchorB:cpvzero]];
 	
 	// Add a pivot joint to act as a servo motor controlling it's position
 	// By updating the anchor points of the pivot joint, you can move the dolly.
-	_dollyServo = [self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:self.space.staticBody bodyB:_dollyBody pivot:_dollyBody.pos]];
+	_dollyServo = [self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:self.space.staticBody bodyB:_dollyBody pivot:_dollyBody.position]];
 	// Max force the dolly servo can generate.
 	_dollyServo.maxForce = 1e4;
 	// Max speed of the dolly servo
@@ -92,7 +93,7 @@ static NSString *CRATE = @"CRATE";
 	
 	// Add the crane hook.
 	ChipmunkBody *hookBody = [self.space add:[ChipmunkBody bodyWithMass:1.0 andMoment:INFINITY]];
-	hookBody.pos = cpv(0, 50);
+	hookBody.position = cpv(0, 50);
 	
 	// Add a sensor shape for it. This will be used to figure out when the hook touches a box.
 	ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:hookBody radius:10 offset:cpvzero]];
@@ -101,7 +102,7 @@ static NSString *CRATE = @"CRATE";
 	
 	// Add a slide joint to act as a winch motor
 	// By updating the max length of the joint you can make it pull up the load.
-	_winchServo = [self.space add:[ChipmunkSlideJoint slideJointWithBodyA:_dollyBody bodyB:hookBody anchr1:cpvzero anchr2:cpvzero min:0 max:INFINITY]];
+	_winchServo = [self.space add:[ChipmunkSlideJoint slideJointWithBodyA:_dollyBody bodyB:hookBody anchorA:cpvzero anchorB:cpvzero min:0 max:INFINITY]];
 	// Max force the dolly servo can generate.
 	_winchServo.maxForce = 3e4;
 	// Max speed of the dolly servo
@@ -113,9 +114,9 @@ static NSString *CRATE = @"CRATE";
 		cpFloat mass = 30;
 		
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForBox(mass, size, size)]];
-		body.pos = cpv(200, -200);
+		body.position = cpv(200, -200);
 		
-		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:size height:size]];
+		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:size height:size radius:0.0]];
 		shape.friction = 0.7;
 		shape.collisionType = CRATE;
 	}
@@ -126,7 +127,7 @@ static NSString *CRATE = @"CRATE";
 -(void)tick:(cpFloat)dt;
 {
 	// Set the first anchor point (the one attached to the static body) of the dolly servo to the mouse's x position.
-	_dollyServo.anchr1 = cpv(_touchTarget.x, 100);
+	_dollyServo.anchorA = cpv(_touchTarget.x, 100);
 	
 	// Set the max length of the winch servo to match the mouse's height.
 	_winchServo.max = cpfmax(100 - _touchTarget.y, 50);

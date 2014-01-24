@@ -40,34 +40,34 @@ static NSString *GROUP = @"group";
 	cpVect a, b;
 	
 	a = cpvzero, b = cpv(0.0f, side);
-	ChipmunkBody *upper_leg = [self.space add:[ChipmunkBody bodyWithMass:leg_mass andMoment:cpMomentForSegment(leg_mass, a, b)]];
-	upper_leg.pos = cpv(offset, 0.0);
+	ChipmunkBody *upper_leg = [self.space add:[ChipmunkBody bodyWithMass:leg_mass andMoment:cpMomentForSegment(leg_mass, a, b, 0.0)]];
+	upper_leg.position = cpv(offset, 0.0);
 	
 	[self.space add:[ChipmunkSegmentShape segmentWithBody:upper_leg from:a to:b radius:SEG_RADIUS]];
-	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:chassis bodyB:upper_leg anchr1:cpv(offset, 0) anchr2:cpvzero]];
+	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:chassis bodyB:upper_leg anchorA:cpv(offset, 0) anchorB:cpvzero]];
 	
 	a = cpvzero, b = cpv(0.0f, -1.0f*side);
-	ChipmunkBody *lower_leg = [self.space add:[ChipmunkBody bodyWithMass:leg_mass andMoment:cpMomentForSegment(leg_mass, a, b)]];
-	lower_leg.pos = cpv(offset, -side);
+	ChipmunkBody *lower_leg = [self.space add:[ChipmunkBody bodyWithMass:leg_mass andMoment:cpMomentForSegment(leg_mass, a, b, 0.0)]];
+	lower_leg.position = cpv(offset, -side);
 	
 	ChipmunkShape *shape;
 	shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:lower_leg from:a to:b radius:SEG_RADIUS]];
-	shape.group = GROUP;
+	shape.filter = cpShapeFilterNew(GROUP, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
 	shape = [self.space add:[ChipmunkCircleShape circleWithBody:lower_leg radius:SEG_RADIUS*2.0f offset:b]];
-	shape.group = GROUP;
+	shape.filter = cpShapeFilterNew(GROUP, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	shape.elasticity = 0.0;
 	shape.friction = 1.0;
 	
-	[self.space add:[ChipmunkPinJoint pinJointWithBodyA:chassis bodyB:lower_leg anchr1:cpv(offset, 0.0f) anchr2:cpvzero]];
+	[self.space add:[ChipmunkPinJoint pinJointWithBodyA:chassis bodyB:lower_leg anchorA:cpv(offset, 0.0f) anchorB:cpvzero]];
 	[self.space add:[ChipmunkGearJoint gearJointWithBodyA:upper_leg bodyB:lower_leg phase:0.0f ratio:1.0f]];
 	
 	cpFloat diag = cpfsqrt(side*side + offset*offset);
 	
-	ChipmunkPinJoint *pin1 = [self.space add:[ChipmunkPinJoint pinJointWithBodyA:crank bodyB:upper_leg anchr1:anchor anchr2:cpv(0.0f, side)]];
+	ChipmunkPinJoint *pin1 = [self.space add:[ChipmunkPinJoint pinJointWithBodyA:crank bodyB:upper_leg anchorA:anchor anchorB:cpv(0.0f, side)]];
 	pin1.dist = diag;
 	
-	ChipmunkPinJoint *pin2 = [self.space add:[ChipmunkPinJoint pinJointWithBodyA:crank bodyB:lower_leg anchr1:anchor anchr2:cpvzero]];
+	ChipmunkPinJoint *pin2 = [self.space add:[ChipmunkPinJoint pinJointWithBodyA:crank bodyB:lower_leg anchorA:anchor anchorB:cpvzero]];
 	pin2.dist = diag;
 }
 
@@ -75,7 +75,8 @@ static NSString *GROUP = @"group";
 {
 	self.space.iterations = 20;
 	
-	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
+	cpShapeFilter filter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
+	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 filter:filter collisionType:nil];
 	
 	cpFloat offset = 30.0f;
 	ChipmunkShape *shape;
@@ -84,10 +85,10 @@ static NSString *GROUP = @"group";
 	cpFloat chassis_mass = 2.0f;
 	cpVect a = cpv(-offset, 0.0f);
 	cpVect b = cpv(offset, 0.0f);
-	ChipmunkBody *chassis = [self.space add:[ChipmunkBody bodyWithMass:chassis_mass andMoment:cpMomentForSegment(chassis_mass, a, b)]];
+	ChipmunkBody *chassis = [self.space add:[ChipmunkBody bodyWithMass:chassis_mass andMoment:cpMomentForSegment(chassis_mass, a, b, 0.0)]];
 	
 	shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:chassis from:a to:b radius:SEG_RADIUS]];
-	shape.group = GROUP;
+	shape.filter = cpShapeFilterNew(GROUP, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
 	// make crank
 	cpFloat crank_mass = 1.0f;
@@ -95,9 +96,9 @@ static NSString *GROUP = @"group";
 	ChipmunkBody *crank = [self.space add:[ChipmunkBody bodyWithMass:crank_mass andMoment:cpMomentForCircle(crank_mass, crank_radius, 0.0f, cpvzero)]];
 	
 	shape = [self.space add:[ChipmunkCircleShape circleWithBody:crank radius:crank_radius offset:cpvzero]];
-	shape.group = GROUP;
+	shape.filter = cpShapeFilterNew(GROUP, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
-	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:chassis bodyB:crank anchr1:cpvzero anchr2:cpvzero]];
+	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:chassis bodyB:crank anchorA:cpvzero anchorB:cpvzero]];
 	
 	cpFloat side = 30.0f;
 	

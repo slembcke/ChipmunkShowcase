@@ -1,8 +1,11 @@
-#import "ObjectiveChipmunk.h"
+// Copyright 2013 Howling Moon Software. All rights reserved.
+// See http://chipmunk2d.net/legal.php for more information.
+
+#import "ObjectiveChipmunk/ObjectiveChipmunk.h"
 #import "ChipmunkAutoGeometry.h"
 
 /**
-	A point cloud sampler allows you to perform deformable terrain like with a bitmap backed sampler,
+	PRO: A point cloud sampler allows you to perform deformable terrain like with a bitmap backed sampler,
 	but without any bounds. It only requires memory for the points you add instead of large RAM chewing bitmap.
 	However, unlike a bitmap, the deformation can only go one way. (i.e. You can add or remove terrain, but not both).
 	Without any points, the sampler will return 1.0. Adding points will put "holes" in it causing it to return lower values.

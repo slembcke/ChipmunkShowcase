@@ -39,7 +39,7 @@
 @property(nonatomic, strong) ChipmunkSpace *space;
 @property(nonatomic, readonly) ChipmunkBody *staticBody;
 
-@property(nonatomic, assign) Transform touchTransform;
+@property(nonatomic, assign) cpTransform touchTransform;
 
 @property(nonatomic, readonly) NSUInteger ticks;
 @property(nonatomic, readonly) NSTimeInterval fixedTime;

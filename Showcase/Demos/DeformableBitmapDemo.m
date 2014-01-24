@@ -61,7 +61,7 @@
 	_tiles.tileOffset = cpv(-0.5*PIXEL_SIZE, -0.5*PIXEL_SIZE); // See above
 	_tiles.segmentRadius = 1;
 	_tiles.simplifyThreshold = 2;
-	_tiles.segmentLayers = NOT_GRABABLE_MASK;
+	_tiles.segmentFilter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
 	
 	// Set the CGContext's transform to match it's Chipmunk coords.
 	CGContextConcatCTM(_sampler.context, CGAffineTransformMake(1.0/PIXEL_SIZE, 0.0, 0.0, 1.0/PIXEL_SIZE, width/2.0/PIXEL_SIZE, height/2.0/PIXEL_SIZE));
@@ -79,7 +79,7 @@
 		cpFloat mass = 1.0;
 		
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForCircle(mass, 0.0, radius, cpvzero)]];
-		body.pos = cpvadd(cpv(-150, -10), cpv(300.0*frand(), 220.0*frand()));
+		body.position = cpvadd(cpv(-150, -10), cpv(300.0*frand(), 220.0*frand()));
 
 		ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:body radius:radius offset:cpvzero]];
 		shape.elasticity = 0.0f;

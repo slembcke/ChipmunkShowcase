@@ -33,10 +33,10 @@
 {
 	cpFloat mass = 1.0f;
 	ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForBox(mass, width, height)]];
-	body.pos = pos;
+	body.position = pos;
 	
 	
-	ChipmunkShape *shape = (flipped ? [ChipmunkPolyShape boxWithBody:body width:height height:width] : [ChipmunkPolyShape boxWithBody:body width:width height:height]);
+	ChipmunkShape *shape = (flipped ? [ChipmunkPolyShape boxWithBody:body width:height height:width radius:0.0] : [ChipmunkPolyShape boxWithBody:body width:width height:height radius:0.0]);
 	[self.space add:shape];
 	shape.elasticity = 0.0f;
 	shape.friction = 0.6f;
@@ -53,7 +53,7 @@
 	ChipmunkShape *shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:self.space.staticBody from:cpv(-600, -240) to:cpv(600, -240) radius:0]];
 	shape.elasticity = 1.0;
 	shape.friction = 1.0;
-//	shape.layers = NOT_GRABABLE_MASK;
+//	shapefilter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
 	
 	int rows = [self numberForA4:10 A5:15 A6:18];
 	cpFloat height = [self numberForA4:30.0 A5:20.0 A6:20.0];
@@ -83,8 +83,8 @@
 		cpFloat mass = 5.0f;
 		
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForCircle(mass, 0.0, radius, cpvzero)]];
-		body.pos = cpv(520, -180);
-		body.vel = cpv(-400, 100);
+		body.position = cpv(520, -180);
+		body.velocity = cpv(-400, 100);
 		
 		ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:body radius:radius offset:cpvzero]];
 		shape.elasticity = 0.0f;

@@ -1,4 +1,4 @@
-/* Copyright (c) 2010 Scott Lembcke
+/* Copyright (c) 2013 Scott Lembcke and Howling Moon Software
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -46,7 +46,7 @@ typedef cpBB (*cpSpatialIndexBBFunc)(void *obj);
 /// Spatial index/object iterator callback function type.
 typedef void (*cpSpatialIndexIteratorFunc)(void *obj, void *data);
 /// Spatial query callback function type.
-typedef void (*cpSpatialIndexQueryFunc)(void *obj1, void *obj2, void *data);
+typedef cpCollisionID (*cpSpatialIndexQueryFunc)(void *obj1, void *obj2, cpCollisionID id, void *data);
 /// Spatial segment query callback function type.
 typedef cpFloat (*cpSpatialIndexSegmentQueryFunc)(void *obj1, void *obj2, void *data);
 

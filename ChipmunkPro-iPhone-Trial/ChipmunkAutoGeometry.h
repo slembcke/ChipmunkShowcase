@@ -1,11 +1,14 @@
-#import "ObjectiveChipmunk.h"
+// Copyright 2013 Howling Moon Software. All rights reserved.
+// See http://chipmunk2d.net/legal.php for more information.
+
+#import "ObjectiveChipmunk/ObjectiveChipmunk.h"
 
 #import "cpMarch.h"
 #import "cpPolyline.h"
 
 @class ChipmunkPolylineSet;
 
-/// Wrapper for the cpPolyline type.
+/// PRO: Wrapper for the cpPolyline type.
 @interface ChipmunkPolyline : NSObject {
 @private
 	cpPolyline _line;
@@ -62,12 +65,12 @@
 -(NSArray *)asChipmunkSegmentsWithBody:(ChipmunkBody *)body radius:(cpFloat)radius offset:(cpVect)offset;
 
 /// Create a ChipmunkPolyShape from this polyline. (Must be convex!)
--(ChipmunkPolyShape *)asChipmunkPolyShapeWithBody:(ChipmunkBody *)body offset:(cpVect)offset;
+-(ChipmunkPolyShape *)asChipmunkPolyShapeWithBody:(ChipmunkBody *)body transform:(cpTransform)transform radius:(cpFloat)radius;
 
 @end
 
 
-/// Wrapper for the cpPolylineSet type.
+/// PRO: Wrapper for the cpPolylineSet type.
 @interface ChipmunkPolylineSet : NSObject<NSFastEnumeration> {
 @private
 	NSMutableArray *_lines;
@@ -84,7 +87,7 @@
 
 
 /**
-	A sampler is an object that provides a basis function to build shapes from.
+	PRO: A sampler is an object that provides a basis function to build shapes from.
 	This can be from a block of pixel data (loaded from a file, or dumped from the screen), or even a mathematical function such as Perlin noise.
 */
 @interface ChipmunkAbstractSampler : NSObject {
@@ -113,7 +116,7 @@
 
 
 
-/// A simple sampler type that wraps a block as it's sampling function.
+/// PRO: A simple sampler type that wraps a block as it's sampling function.
 typedef cpFloat (^ChipmunkMarchSampleBlock)(cpVect point);
 
 @interface ChipmunkBlockSampler : ChipmunkAbstractSampler {

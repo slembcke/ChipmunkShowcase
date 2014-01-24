@@ -49,7 +49,7 @@
 	cpFloat mass = length/160.0f;
 	
 	ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:mass*length*length/12.0]];
-	body.pos = center;
+	body.position = center;
 	
 	[self.space add:[ChipmunkSegmentShape segmentWithBody:body from:cpvsub(a, center) to:cpvsub(b, center) radius:10.0]];
 	
@@ -77,64 +77,64 @@
 	
 	ChipmunkSpace *space = self.space;
 	
-	[space add:[ChipmunkPivotJoint pivotJointWithBodyA: body1 bodyB: body2 anchr1:cpv( 40,-40) anchr2:cpv(-40,-40)]];
-	[space add:[ChipmunkPivotJoint pivotJointWithBodyA: body5 bodyB: body6 anchr1:cpv( 40,-40) anchr2:cpv(-40,-40)]];
-	[space add:[ChipmunkPivotJoint pivotJointWithBodyA: body6 bodyB: body7 anchr1:cpv( 40, 40) anchr2:cpv(-40,  0)]];
-	[space add:[ChipmunkPivotJoint pivotJointWithBodyA: body9 bodyB:body10 anchr1:cpv(-40,-40) anchr2:cpv(-40, 40)]];
-	[space add:[ChipmunkPivotJoint pivotJointWithBodyA:body11 bodyB:body12 anchr1:cpv( 40,-40) anchr2:cpv(-40,  0)]];
+	[space add:[ChipmunkPivotJoint pivotJointWithBodyA: body1 bodyB: body2 anchorA:cpv( 40,-40) anchorB:cpv(-40,-40)]];
+	[space add:[ChipmunkPivotJoint pivotJointWithBodyA: body5 bodyB: body6 anchorA:cpv( 40,-40) anchorB:cpv(-40,-40)]];
+	[space add:[ChipmunkPivotJoint pivotJointWithBodyA: body6 bodyB: body7 anchorA:cpv( 40, 40) anchorB:cpv(-40,  0)]];
+	[space add:[ChipmunkPivotJoint pivotJointWithBodyA: body9 bodyB:body10 anchorA:cpv(-40,-40) anchorB:cpv(-40, 40)]];
+	[space add:[ChipmunkPivotJoint pivotJointWithBodyA:body11 bodyB:body12 anchorA:cpv( 40,-40) anchorB:cpv(-40,  0)]];
 	
 	cpFloat stiff = 30.0f;
 	cpFloat damp = 1.0f;
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body1 anchr1:cpv(-320, 240) anchr2:cpv(-40, 40) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body1 anchr1:cpv(-320,  80) anchr2:cpv(-40, 40) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body1 anchr1:cpv(-160, 240) anchr2:cpv(-40, 40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body1 anchorA:cpv(-320, 240) anchorB:cpv(-40, 40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body1 anchorA:cpv(-320,  80) anchorB:cpv(-40, 40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body1 anchorA:cpv(-160, 240) anchorB:cpv(-40, 40) restLength:0.0 stiffness:stiff damping:damp]];
 
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body2 anchr1:cpv(-160, 240) anchr2:cpv( 40, 40) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body2 anchr1:cpv(   0, 240) anchr2:cpv( 40, 40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body2 anchorA:cpv(-160, 240) anchorB:cpv( 40, 40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body2 anchorA:cpv(   0, 240) anchorB:cpv( 40, 40) restLength:0.0 stiffness:stiff damping:damp]];
 
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body3 anchr1:cpv(  80, 240) anchr2:cpv(-40, 80) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body3 anchorA:cpv(  80, 240) anchorB:cpv(-40, 80) restLength:0.0 stiffness:stiff damping:damp]];
 
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body4 anchr1:cpv(  80, 240) anchr2:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body4 anchr1:cpv( 320, 240) anchr2:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body4 anchorA:cpv(  80, 240) anchorB:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body4 anchorA:cpv( 320, 240) anchorB:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
 
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body5 anchr1:cpv(-320,  80) anchr2:cpv(-40, 40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body5 anchorA:cpv(-320,  80) anchorB:cpv(-40, 40) restLength:0.0 stiffness:stiff damping:damp]];
 	
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body9 anchr1:cpv( 320,  80) anchr2:cpv( 40, 40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB: body9 anchorA:cpv( 320,  80) anchorB:cpv( 40, 40) restLength:0.0 stiffness:stiff damping:damp]];
 
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body10 anchr1:cpv( 320,   0) anchr2:cpv( 40,-40) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body10 anchr1:cpv( 320,-160) anchr2:cpv( 40,-40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body10 anchorA:cpv( 320,   0) anchorB:cpv( 40,-40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body10 anchorA:cpv( 320,-160) anchorB:cpv( 40,-40) restLength:0.0 stiffness:stiff damping:damp]];
 
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body11 anchr1:cpv(-320,-160) anchr2:cpv(-40, 40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body11 anchorA:cpv(-320,-160) anchorB:cpv(-40, 40) restLength:0.0 stiffness:stiff damping:damp]];
 
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body12 anchr1:cpv(-240,-240) anchr2:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body12 anchr1:cpv(   0,-240) anchr2:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body12 anchorA:cpv(-240,-240) anchorB:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body12 anchorA:cpv(   0,-240) anchorB:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
 
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body13 anchr1:cpv(   0,-240) anchr2:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body13 anchr1:cpv(  80,-240) anchr2:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body13 anchorA:cpv(   0,-240) anchorB:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body13 anchorA:cpv(  80,-240) anchorB:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
 
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body14 anchr1:cpv(  80,-240) anchr2:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body14 anchr1:cpv( 240,-240) anchr2:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body14 anchr1:cpv( 320,-160) anchr2:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body14 anchorA:cpv(  80,-240) anchorB:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body14 anchorA:cpv( 240,-240) anchorB:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:staticBody bodyB:body14 anchorA:cpv( 320,-160) anchorB:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
 
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body1 bodyB: body5 anchr1:cpv( 40,-40) anchr2:cpv(-40, 40) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body1 bodyB: body6 anchr1:cpv( 40,-40) anchr2:cpv( 40, 40) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body2 bodyB: body3 anchr1:cpv( 40, 40) anchr2:cpv(-40, 80) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body3 bodyB: body4 anchr1:cpv(-40, 80) anchr2:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body3 bodyB: body4 anchr1:cpv( 40,-80) anchr2:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body3 bodyB: body7 anchr1:cpv( 40,-80) anchr2:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body3 bodyB: body7 anchr1:cpv(-40, 80) anchr2:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body3 bodyB: body8 anchr1:cpv( 40,-80) anchr2:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body3 bodyB: body9 anchr1:cpv( 40,-80) anchr2:cpv(-40,-40) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body4 bodyB: body9 anchr1:cpv( 40,  0) anchr2:cpv( 40, 40) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body5 bodyB:body11 anchr1:cpv(-40, 40) anchr2:cpv(-40, 40) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body5 bodyB:body11 anchr1:cpv( 40,-40) anchr2:cpv( 40,-40) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body7 bodyB: body8 anchr1:cpv( 40,  0) anchr2:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body8 bodyB:body12 anchr1:cpv(-40,  0) anchr2:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body8 bodyB:body13 anchr1:cpv(-40,  0) anchr2:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body8 bodyB:body13 anchr1:cpv( 40,  0) anchr2:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body8 bodyB:body14 anchr1:cpv( 40,  0) anchr2:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:body10 bodyB:body14 anchr1:cpv( 40,-40) anchr2:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
-	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:body10 bodyB:body14 anchr1:cpv( 40,-40) anchr2:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body1 bodyB: body5 anchorA:cpv( 40,-40) anchorB:cpv(-40, 40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body1 bodyB: body6 anchorA:cpv( 40,-40) anchorB:cpv( 40, 40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body2 bodyB: body3 anchorA:cpv( 40, 40) anchorB:cpv(-40, 80) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body3 bodyB: body4 anchorA:cpv(-40, 80) anchorB:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body3 bodyB: body4 anchorA:cpv( 40,-80) anchorB:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body3 bodyB: body7 anchorA:cpv( 40,-80) anchorB:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body3 bodyB: body7 anchorA:cpv(-40, 80) anchorB:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body3 bodyB: body8 anchorA:cpv( 40,-80) anchorB:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body3 bodyB: body9 anchorA:cpv( 40,-80) anchorB:cpv(-40,-40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body4 bodyB: body9 anchorA:cpv( 40,  0) anchorB:cpv( 40, 40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body5 bodyB:body11 anchorA:cpv(-40, 40) anchorB:cpv(-40, 40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body5 bodyB:body11 anchorA:cpv( 40,-40) anchorB:cpv( 40,-40) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body7 bodyB: body8 anchorA:cpv( 40,  0) anchorB:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body8 bodyB:body12 anchorA:cpv(-40,  0) anchorB:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body8 bodyB:body13 anchorA:cpv(-40,  0) anchorB:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body8 bodyB:body13 anchorA:cpv( 40,  0) anchorB:cpv( 40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA: body8 bodyB:body14 anchorA:cpv( 40,  0) anchorB:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:body10 bodyB:body14 anchorA:cpv( 40,-40) anchorB:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
+	[space add:[ChipmunkDampedSpring dampedSpringWithBodyA:body10 bodyB:body14 anchorA:cpv( 40,-40) anchorB:cpv(-40,  0) restLength:0.0 stiffness:stiff damping:damp]];
 }
 
 @end

@@ -34,7 +34,7 @@ static const cpFloat GRAVITY_STRENGTH = 5.0e6f;
 	// Gravitational acceleration is proportional to the inverse square of
 	// distance, and directed toward the origin. The central planet is assumed
 	// to be massive enough that it affects the satellites but not vice versa.
-	cpVect pos = self.pos;
+	cpVect pos = self.position;
 	cpFloat sqdist = cpvlengthsq(pos);
 	cpVect g = cpvmult(pos, -GRAVITY_STRENGTH/(sqdist*cpfsqrt(sqdist)));
 	
@@ -73,28 +73,28 @@ rand_pos()
 	cpVect pos = rand_pos();
 	
 	ChipmunkBody *body = [self.space add:[PlanetDemoBody bodyWithMass:mass andMoment:cpMomentForBox(mass, size, size)]];
-	body.pos = pos;
+	body.position = pos;
 	
 	// Set the box's velocity to put it into a circular orbit from its
 	// starting position.
 	cpFloat r = cpvlength(pos);
 	cpFloat v = 0.99*cpfsqrt(GRAVITY_STRENGTH/r)/r;
-	body.vel = cpvmult(cpvperp(pos), v);
+	body.velocity = cpvmult(cpvperp(pos), v);
 	
 	// Set the box's angular velocity to match its orbital period and
 	// align its initial angle with its position.
-	body.angVel = v;
+	body.angularVelocity = v;
 	body.angle = cpfatan2(pos.y, pos.x);
 	
-	ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:size height:size]];
+	ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:size height:size radius:0.0]];
 	shape.elasticity = 0.0f;
 	shape.friction = 0.7f;
 }
 
 -(void)setup
 {
-	_planetBody = [self.space add:[ChipmunkBody bodyWithMass:INFINITY andMoment:INFINITY]];
-	_planetBody.angVel = -4.0f;
+	_planetBody = [self.space add:[ChipmunkBody kinematicBody]];
+	_planetBody.angularVelocity = -4.0f;
 	
 	NSUInteger count = [self numberForA4:250 A5:700 A6:1100];
 	for(int i=0; i < count; i++) [self addBox];
@@ -102,7 +102,7 @@ rand_pos()
 	ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:_planetBody radius:70.0f offset:cpvzero]];
 	shape.elasticity = 1.0f;
 	shape.friction = 1.0f;
-	shape.layers = NOT_GRABABLE_MASK;
+	shape.filter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
 }
 
 @end

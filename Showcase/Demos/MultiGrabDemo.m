@@ -31,7 +31,8 @@
 
 -(void)setup
 {
-	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
+	cpShapeFilter filter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
+	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 filter:filter collisionType:nil];
 	
 	{
 		cpFloat mass = 10.0;
@@ -39,9 +40,9 @@
 		cpFloat height = 150.0;
 		
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForBox(mass, width, height)]];
-		body.pos = cpv(0, 100);
+		body.position = cpv(0, 100);
 		
-		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:width height:height]];
+		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:width height:height radius:0.0]];
 		shape.elasticity = 0.3;
 		shape.friction = 0.7;
 	}
@@ -51,7 +52,7 @@
 		cpFloat radius = 75.0;
 		
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForCircle(mass, 0.0, radius, cpvzero)]];
-		body.pos = cpv(0, -100);
+		body.position = cpv(0, -100);
 		
 		ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:body radius:radius offset:cpvzero]];
 		shape.elasticity = 0.3;

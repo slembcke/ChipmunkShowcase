@@ -25,22 +25,22 @@
 
 #import "ShowcaseDemo.h"
 
-#import "ObjectiveChipmunk.h"
+#import "ObjectiveChipmunk/ObjectiveChipmunk.h"
 #import "ChipmunkHastySpace.h"
 #import "PolyRenderer.h"
 
 @implementation ChipmunkBody(DemoRenderer)
 
--(Transform)extrapolatedTransform:(NSTimeInterval)dt
+-(cpTransform)extrapolatedTransform:(NSTimeInterval)dt
 {
 	cpBody *body = self.body;
 	cpVect pos = cpvadd(body->p, cpvmult(body->v, dt));;
 	cpVect rot = cpvforangle(body->a + body->w*dt);
 	
-	return (Transform){
+	return cpTransformNewTranspose(
 		rot.x, -rot.y, pos.x,
-		rot.y,  rot.x, pos.y,
-	};
+		rot.y,  rot.x, pos.y
+	);
 }
 
 @end
@@ -97,9 +97,9 @@ ColorFromHash(cpHashValue hash, float alpha)
 	} else {
 		ChipmunkBody *body = self.body;
 		
-		if(body.isStatic || body.isSleeping){
+		if(body.type == CP_BODY_TYPE_STATIC || body.isSleeping){
 			return LAColor(0.5, 1.0);
-		} else if(body.body->node.idleTime > self.shape->space->sleepTimeThreshold) {
+		} else if(body.body->sleeping.idleTime > self.space.sleepTimeThreshold) {
 			return LAColor(0.33, 1.0);
 		} else {
 			return ColorFromHash(self.shape->hashid, 1.0);
@@ -118,9 +118,9 @@ ColorFromHash(cpHashValue hash, float alpha)
 	cpFloat r1 = MAX(self.radius, SHAPE_OUTLINE_WIDTH);
 	cpFloat r2 = r1 - SHAPE_OUTLINE_WIDTH;
 	
-	Transform t = [self.body extrapolatedTransform:dt];
-	cpVect pos = t_point(t, offset);
-	cpVect end = t_point(t, cpv(offset.x, offset.y + r2));
+	cpTransform t = [self.body extrapolatedTransform:dt];
+	cpVect pos = cpTransformPoint(t, offset);
+	cpVect end = cpTransformPoint(t, cpv(offset.x, offset.y + r2));
 	
 	[renderer drawDot:pos radius:r1 color:SHAPE_OUTLINE_COLOR];
 	if(r2 > 0.0) [renderer drawDot:pos radius:r2 color:self.color];
@@ -134,9 +134,9 @@ ColorFromHash(cpHashValue hash, float alpha)
 
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
-	Transform t = [self.body extrapolatedTransform:dt];
-	cpVect a = t_point(t, self.a);
-	cpVect b = t_point(t, self.b);
+	cpTransform t = [self.body extrapolatedTransform:dt];
+	cpVect a = cpTransformPoint(t, self.a);
+	cpVect b = cpTransformPoint(t, self.b);
 	
 	cpFloat r1 = MAX(self.radius, SHAPE_OUTLINE_WIDTH);
 	cpFloat r2 = r1 - SHAPE_OUTLINE_WIDTH;
@@ -154,13 +154,13 @@ ColorFromHash(cpHashValue hash, float alpha)
 {
 	cpPolyShape *poly = (cpPolyShape *)self.shape;
 	
-	cpVect *verts = poly->verts;
-	NSUInteger count = poly->numVerts;
+	NSUInteger count = poly->count;
+	struct cpSplittingPlane *planes = poly->planes + count;
 	
-	Transform t = [self.body extrapolatedTransform:dt];
+	cpTransform t = [self.body extrapolatedTransform:dt];
 	cpVect tverts[count];
 	for(int i=0; i<count; i++){
-		tverts[i] = t_point(t, verts[i]);
+		tverts[i] = cpTransformPoint(t, planes[i].v0);
 	}
 	
 	[renderer drawPolyWithVerts:tverts count:count width:1.0 fill:self.color line:SHAPE_OUTLINE_COLOR];
@@ -187,8 +187,8 @@ ColorFromHash(cpHashValue hash, float alpha)
 
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
-	cpVect a = [self.bodyA local2world:self.anchr1];
-	cpVect b = [self.bodyB local2world:self.anchr2];
+	cpVect a = [self.bodyA localToWorld:self.anchorA];
+	cpVect b = [self.bodyB localToWorld:self.anchorB];
 	
 	[renderer drawDot:a radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
 	[renderer drawDot:b radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
@@ -202,8 +202,8 @@ ColorFromHash(cpHashValue hash, float alpha)
 
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
-	cpVect a = t_point([self.bodyA extrapolatedTransform:dt], self.anchr1);
-	cpVect b = t_point([self.bodyB extrapolatedTransform:dt], self.anchr2);
+	cpVect a = cpTransformPoint([self.bodyA extrapolatedTransform:dt], self.anchorA);
+	cpVect b = cpTransformPoint([self.bodyB extrapolatedTransform:dt], self.anchorB);
 	
 	[renderer drawDot:a radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
 	[renderer drawDot:b radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
@@ -217,8 +217,8 @@ ColorFromHash(cpHashValue hash, float alpha)
 
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
-	cpVect a = t_point([self.bodyA extrapolatedTransform:dt], self.anchr1);
-	cpVect b = t_point([self.bodyB extrapolatedTransform:dt], self.anchr2);
+	cpVect a = cpTransformPoint([self.bodyA extrapolatedTransform:dt], self.anchorA);
+	cpVect b = cpTransformPoint([self.bodyB extrapolatedTransform:dt], self.anchorB);
 	
 	[renderer drawDot:a radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
 	[renderer drawDot:b radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
@@ -232,9 +232,9 @@ ColorFromHash(cpHashValue hash, float alpha)
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
 	// Hmm apparently I never made the groove joint properties...
-	cpVect a = t_point([self.bodyA extrapolatedTransform:dt], cpGrooveJointGetGrooveA(self.constraint));
-	cpVect b = t_point([self.bodyA extrapolatedTransform:dt], cpGrooveJointGetGrooveB(self.constraint));
-	cpVect c = t_point([self.bodyB extrapolatedTransform:dt], cpGrooveJointGetAnchr2(self.constraint));
+	cpVect a = cpTransformPoint([self.bodyA extrapolatedTransform:dt], self.grooveA);
+	cpVect b = cpTransformPoint([self.bodyA extrapolatedTransform:dt], self.grooveB);
+	cpVect c = cpTransformPoint([self.bodyB extrapolatedTransform:dt], self.anchorB);
 	
 	[renderer drawSegmentFrom:a to:b radius:CONSTRAINT_LINE_RADIUS color:CONSTRAINT_COLOR];
 	[renderer drawDot:c radius:CONSTRAINT_DOT_RADIUS color:CONSTRAINT_COLOR];
@@ -266,13 +266,13 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 
 -(void)drawWithRenderer:(PolyRenderer *)renderer dt:(cpFloat)dt;
 {
-	cpVect a = t_point([self.bodyA extrapolatedTransform:dt], self.anchr1);
-	cpVect b = t_point([self.bodyB extrapolatedTransform:dt], self.anchr2);
-	Transform t = t_mult(t_boneScale(a, b), t_scale(1.0, 1.0/cpvdist(a, b)));
+	cpVect a = cpTransformPoint([self.bodyA extrapolatedTransform:dt], self.anchorA);
+	cpVect b = cpTransformPoint([self.bodyB extrapolatedTransform:dt], self.anchorB);
+	cpTransform t = cpTransformMult(cpTransformBoneScale(a, b), cpTransformScale(1.0, 1.0/cpvdist(a, b)));
 	
 	cpVect verts[SPRING_COUNT];
 	for(int i=0; i<SPRING_COUNT; i++){
-		verts[i] = t_point(t, SPRING_VERTS[i]);
+		verts[i] = cpTransformPoint(t, SPRING_VERTS[i]);
 	}
 	
 	for(int i=1; i<SPRING_COUNT; i++){
@@ -291,7 +291,7 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 	ChipmunkMultiGrab *_multiGrab;
 	
 	// Convert touches to absolute coords.
-	Transform _touchTransform;
+	cpTransform _touchTransform;
 	
 	NSTimeInterval _accumulator;
 	NSTimeInterval _fixedTime;
@@ -380,7 +380,7 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 		
 		cpFloat grabForce = 1e5;
 		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:self.space withSmoothing:cpfpow(0.3, 60) withGrabForce:grabForce];
-		_multiGrab.layers = GRABABLE_MASK_BIT;
+		_multiGrab.filter = cpShapeFilterNew(CP_NO_GROUP, GRABABLE_MASK_BIT, GRABABLE_MASK_BIT);
 		_multiGrab.grabFriction = grabForce*0.1;
 		_multiGrab.grabRotaryFriction = 1e3;
 		_multiGrab.grabRadius = 20.0;
@@ -438,8 +438,9 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 		for(int i=0; i<arbiters->num; i++){
 			cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
 			
-			for(int i=0; i<arb->numContacts; i++){
-				[renderer drawDot:arb->contacts[i].p radius:2.5 color:CONTACT_COLOR];
+			for(int i=0; i<arb->count; i++){
+#warning TODO
+//				[renderer drawDot:arb->contacts[i].p radius:2.5 color:CONTACT_COLOR];
 			}
 		}
 	}
@@ -449,7 +450,7 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 
 -(cpVect)convertTouch:(UITouch *)touch;
 {
-	return t_point(_touchTransform, [touch locationInView:touch.view]);
+	return cpTransformPoint(_touchTransform, [touch locationInView:touch.view]);
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;

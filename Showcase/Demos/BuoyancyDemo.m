@@ -19,6 +19,8 @@
  * SOFTWARE.
  */
 
+#define CP_ALLOW_PRIVATE_ACCESS 1
+
 #import "ShowcaseDemo.h"
 #import "util.h"
 
@@ -42,12 +44,13 @@
 {
 	self.space.gravity = cpv(0, -500);
 	
-	[self.space addBounds:self.demoBounds thickness:100.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
+	cpShapeFilter filter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
+	[self.space addBounds:self.demoBounds thickness:100.0 elasticity:1.0 friction:1.0 filter:filter collisionType:nil];
 	
 	id waterID = @"water";
 	id floatID = @"float";
 	
-	ChipmunkShape *sensor = [self.space add:[ChipmunkPolyShape boxWithBody:self.staticBody bb:cpBBNew(-1000, -1000, 1000, 0)]];
+	ChipmunkShape *sensor = [self.space add:[ChipmunkPolyShape boxWithBody:self.staticBody bb:cpBBNew(-1000, -1000, 1000, 0) radius:0.0]];
 	sensor.sensor = TRUE;
 	sensor.collisionType = waterID;
 
@@ -58,9 +61,9 @@
 		cpFloat moment = cpMomentForBox(mass, width, height);
 		
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:moment]];
-		body.pos = cpv(-200, 200);
+		body.position = cpv(-200, 200);
 		
-		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:width height:height]];
+		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:width height:height radius:0.0]];
 		shape.friction = 0.8;
 		shape.collisionType = floatID;
 	}
@@ -72,9 +75,9 @@
 		cpFloat moment = cpMomentForBox(mass, width, height);
 		
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:moment]];
-		body.pos = cpv(0, 200);
+		body.position = cpv(0, 200);
 		
-		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:width height:height]];
+		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:width height:height radius:0.0]];
 		shape.friction = 0.8;
 		shape.collisionType = floatID;
 	}
@@ -86,16 +89,17 @@
 		cpFloat moment = cpMomentForBox(mass, width, height);
 		
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:moment]];
-		body.pos = cpv(200, 200);
+		body.position = cpv(200, 200);
 		
-		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:width height:height]];
+		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:width height:height radius:0.0]];
 		shape.friction = 0.8;
 		shape.collisionType = floatID;
 	}
 	
 	// It's possible to mix C and Obj-C Chipmunk code.
 	// In this case, a C callback is simpler.
-	cpSpaceAddCollisionHandler(self.space.space, waterID, floatID, NULL, WaterPreSolve, NULL, NULL, NULL);
+	cpCollisionHandler *handler = cpSpaceAddCollisionHandler(self.space.space, waterID, floatID);
+	handler->preSolveFunc = (cpCollisionPreSolveFunc)WaterPreSolve;
 }
 
 -(void)render:(PolyRenderer *)renderer showContacts:(BOOL)showContacts
@@ -117,13 +121,13 @@ WaterPreSolve(cpArbiter *arb, cpSpace *space, void *ptr)
 	cpFloat level = cpShapeGetBB(water).t;
 	
 	// Clip the polygon against the water level
-	int count = cpPolyShapeGetNumVerts(poly);
+	int count = cpPolyShapeGetCount(poly);
 	int clippedCount = 0;
 	cpVect clipped[count + 1];
 
 	for(int i=0, j=count-1; i<count; j=i, i++){
-		cpVect a = cpBodyLocal2World(body, cpPolyShapeGetVert(poly, j));
-		cpVect b = cpBodyLocal2World(body, cpPolyShapeGetVert(poly, i));
+		cpVect a = cpBodyLocalToWorld(body, cpPolyShapeGetVert(poly, j));
+		cpVect b = cpBodyLocalToWorld(body, cpPolyShapeGetVert(poly, i));
 		
 		if(a.y < level){
 			clipped[clippedCount] = a;
@@ -142,10 +146,10 @@ WaterPreSolve(cpArbiter *arb, cpSpace *space, void *ptr)
 	}
 	
 	// Calculate buoyancy from the clipped polygon area
-	cpFloat clippedArea = cpAreaForPoly(clippedCount, clipped);
+	cpFloat clippedArea = cpAreaForPoly(clippedCount, clipped, 0.0);
 	cpFloat displacedMass = clippedArea*FLUID_DENSITY;
 	cpVect centroid = cpCentroidForPoly(clippedCount, clipped);
-	cpVect r = cpvsub(centroid, cpBodyGetPos(body));
+	cpVect r = cpvsub(centroid, cpBodyGetPosition(body));
 	
 	cpFloat dt = cpSpaceGetCurrentTimeStep(space);
 	cpVect g = cpSpaceGetGravity(space);
@@ -155,14 +159,14 @@ WaterPreSolve(cpArbiter *arb, cpSpace *space, void *ptr)
 	
 	// Apply linear damping for the fluid drag.
 	cpVect v_centroid = cpvadd(body->v, cpvmult(cpvperp(r), body->w));
-	cpFloat k = k_scalar_body(body, r, cpvnormalize_safe(v_centroid));
+	cpFloat k = k_scalar_body(body, r, cpvnormalize(v_centroid));
 	cpFloat damping = clippedArea*FLUID_DRAG*FLUID_DENSITY;
 	cpFloat v_coef = cpfexp(-damping*dt*k); // linear drag
 //	cpFloat v_coef = 1.0/(1.0 + damping*dt*cpvlength(v_centroid)*k); // quadratic drag
 	apply_impulse(body, cpvmult(cpvsub(cpvmult(v_centroid, v_coef), v_centroid), 1.0/k), r);
 	
 	// Apply angular damping for the fluid drag.
-	cpFloat w_damping = cpMomentForPoly(FLUID_DRAG*FLUID_DENSITY*clippedArea, clippedCount, clipped, cpvneg(body->p));
+	cpFloat w_damping = cpMomentForPoly(FLUID_DRAG*FLUID_DENSITY*clippedArea, clippedCount, clipped, cpvneg(body->p), 0.0);
 	body->w *= cpfexp(-w_damping*dt*body->i_inv);
 	
 	return TRUE;

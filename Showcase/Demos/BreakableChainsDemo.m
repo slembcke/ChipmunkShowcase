@@ -58,7 +58,8 @@
 {
 	self.space.iterations = 30;
 	
-	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
+	cpShapeFilter filter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
+	[self.space addBounds:self.demoBounds thickness:10.0 elasticity:1.0 friction:1.0 filter:filter collisionType:nil];
 	
 	cpFloat mass = 1;
 	cpFloat width = 20;
@@ -74,16 +75,16 @@
 			cpVect pos = cpv(40*(i - (CHAIN_COUNT - 1)/2.0), 240 - (j + 0.5)*height - (j + 1)*spacing);
 			
 			ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForBox(mass, width, height)]];
-			body.pos = pos;
+			body.position = pos;
 			
-			ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:width height:height]];
+			ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape boxWithBody:body width:width height:height radius:0.0]];
 			shape.friction = 0.8f;
 			
 			ChipmunkConstraint *constraint = nil;
 			if(prev == nil){
-				constraint = [self.space add:[BreakableSlideJoint slideJointWithBodyA:body bodyB:self.space.staticBody anchr1:cpv(0, height/2) anchr2:cpv(pos.x, 240) min:0.0 max:spacing]];
+				constraint = [self.space add:[BreakableSlideJoint slideJointWithBodyA:body bodyB:self.space.staticBody anchorA:cpv(0, height/2) anchorB:cpv(pos.x, 240) min:0.0 max:spacing]];
 			} else {
-				constraint = [self.space add:[BreakableSlideJoint slideJointWithBodyA:body bodyB:prev anchr1:cpv(0, height/2) anchr2:cpv(0, -height/2) min:0.0 max:spacing]];
+				constraint = [self.space add:[BreakableSlideJoint slideJointWithBodyA:body bodyB:prev anchorA:cpv(0, height/2) anchorB:cpv(0, -height/2) min:0.0 max:spacing]];
 			}
 			
 			constraint.maxForce = 8.0e4;
@@ -97,8 +98,8 @@
 		cpFloat mass = 10.0;
 		
 		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForCircle(mass, 0.0, radius, cpvzero)]];
-		body.pos = cpv(0, -240 + radius + 5);
-		body.vel = cpv(0, 300);
+		body.position = cpv(0, -240 + radius + 5);
+		body.velocity = cpv(0, 300);
 
 		ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:body radius:radius offset:cpvzero]];
 		shape.elasticity = 0.0f;

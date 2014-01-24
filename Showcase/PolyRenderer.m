@@ -23,8 +23,7 @@
 
 #import <GLKit/GLKit.h>
 
-#import "ObjectiveChipmunk.h"
-#import "transform.h"
+#import "ObjectiveChipmunk/ObjectiveChipmunk.h"
 
 #if __ARM_NEON__
 #import "arm_neon.h"
@@ -55,7 +54,7 @@ struct VertexBuffer {
 
 @implementation PolyRenderer {
 	GLuint _program;
-	Transform _projection;
+	cpTransform _projection;
 	
 	VertexBuffer _buffers[BUFFER_COUNT];
 	NSUInteger _currentBuffer;
@@ -63,15 +62,20 @@ struct VertexBuffer {
 
 @synthesize projection = _projection;
 
--(void)setProjection:(Transform)projection
+-(void)setProjection:(cpTransform)p
 {
 	NSAssert([EAGLContext currentContext], @"No GL context set!");
 	
-	_projection = projection;
-	
+	_projection = p;
+
 	glUseProgram(_program);
-	Matrix mat = t_matrix(_projection);
-	glUniformMatrix4fv(uniforms[UNIFORM_PROJECTION_MATRIX], 1, GL_FALSE, mat.m);
+	float mat[] = {
+		p.a , p.b , 0.0, 0.0,
+		p.c , p.d , 0.0, 0.0,
+		0.0 , 0.0 , 1.0, 0.0,
+    p.tx, p.ty, 0.0, 1.0,
+  };
+	glUniformMatrix4fv(uniforms[UNIFORM_PROJECTION_MATRIX], 1, GL_FALSE, mat);
 }
 
 //MARK: Shaders
@@ -261,7 +265,7 @@ EnsureCapacity(VertexBuffer *buffer, NSUInteger count)
 	return verts;
 }
 
--(id)initWithProjection:(Transform)projection;
+-(id)initWithProjection:(cpTransform)projection;
 {
 	if((self = [super init])){
 		NSAssert([EAGLContext currentContext], @"No GL context set!");
@@ -431,10 +435,8 @@ EnsureCapacity(VertexBuffer *buffer, NSUInteger count)
 {
 	VertexBuffer *buffer = self.buffer;
 	if(buffer->verts == NULL){
-		NSLog(@"Buffer not mapped.");
+//		NSLog(@"Buffer not ready.");
 		return NULL;
-	} else {
-//		NSLog(@"Using buffer %d (%p)", buffer->vbo, buffer->verts);
 	}
 	
 	// Buffer the draw calls.
@@ -454,24 +456,13 @@ EnsureCapacity(VertexBuffer *buffer, NSUInteger count)
 	
 	glBindBuffer(GL_ARRAY_BUFFER, buffer->vbo);
 	glUnmapBufferOES(GL_ARRAY_BUFFER);
-//	NSLog(@"Buffer %d unmapped", buffer->vbo);
-	
-//	if(buffer->capacity != buffer->vboCapacity){
-//		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex)*buffer->capacity, NULL, GL_STREAM_DRAW);
-//		buffer->vboCapacity = buffer->capacity;
-//	}
-//	
-//	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex)*buffer->count, buffer->verts);
 		
 	glUseProgram(_program);
 	glBindVertexArrayOES(buffer->vao);
 	glDrawArrays(GL_TRIANGLES, 0, buffer->count);
 		
 	buffer->count = 0;
-//	buffer->verts = glMapBufferRangeEXT(GL_ARRAY_BUFFER, 0, buffer->capacity*sizeof(Vertex), GL_MAP_WRITE_BIT_EXT | GL_MAP_INVALIDATE_BUFFER_BIT_EXT);
-//	glBufferData(GL_ARRAY_BUFFER, buffer->capacity*sizeof(Vertex), NULL, GL_STREAM_DRAW);
 	buffer->verts = glMapBufferOES(GL_ARRAY_BUFFER, GL_WRITE_ONLY_OES);
-//	NSLog(@"Buffer %d mapped to %p", buffer->vbo, buffer->verts);
 	PRINT_GL_ERRORS();
 }
 

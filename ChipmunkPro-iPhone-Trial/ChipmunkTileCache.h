@@ -1,10 +1,13 @@
-#import "ObjectiveChipmunk.h"
+// Copyright 2013 Howling Moon Software. All rights reserved.
+// See http://chipmunk2d.net/legal.php for more information.
+
+#import "ObjectiveChipmunk/ObjectiveChipmunk.h"
 #import "ChipmunkAutoGeometry.h"
 
 
 @class ChipmunkCachedTile;
 
-/// A tile cache enables an efficient means of updating a large deformable terrain.
+/// PRO: A tile cache enables an efficient means of updating a large deformable terrain.
 /// General usage would be to pass a rectangle covering the viewport to ensureRect:
 /// and calling markDirtyRect: each time a change is made that requires an area to be resampled.
 @interface ChipmunkAbstractTileCache : NSObject {
@@ -61,7 +64,7 @@
 @end
 
 
-/// Generic tile cache. Configurable enough to be useful for most uses.
+/// PRO: Generic tile cache. Configurable enough to be useful for most uses.
 @interface ChipmunkBasicTileCache : ChipmunkAbstractTileCache {
 @private
 	cpFloat _simplifyThreshold;
@@ -71,8 +74,7 @@
 	cpFloat _segmentFriction;
 	cpFloat _segmentElasticity;
 	
-	cpGroup _segmentGroup;
-	cpLayers _segmentLayers;
+	cpShapeFilter _segmentFilter;
 	
 	cpCollisionType _segmentCollisionType;
 }
@@ -89,11 +91,8 @@
 /// Elasticity of the generated segments.
 @property(nonatomic, assign) cpFloat segmentElasticity;
 
-/// Collision group of the generated segemnts.
-@property(nonatomic, assign) cpGroup segmentGroup;
-
-/// Collision layers of the generated segments.
-@property(nonatomic, assign) cpLayers segmentLayers;
+/// Collision filter of the generated segments.
+@property(nonatomic, assign) cpShapeFilter segmentFilter;
 
 /// Collision type of the generated segments.
 @property(nonatomic, assign) cpCollisionType segmentCollisionType;

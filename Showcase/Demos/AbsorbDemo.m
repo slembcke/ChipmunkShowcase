@@ -53,7 +53,7 @@ NSString *COLLISION_ID = @"COLLISION_ID";
 	cpFloat r1 = bigger.radius;
 	cpFloat r2 = smaller.radius;
 	cpFloat area = r1*r1 + r2*r2;
-	cpFloat dist = cpfmax(cpvdist(bigger.body.pos, smaller.body.pos), cpfsqrt(area));
+	cpFloat dist = cpfmax(cpvdist(bigger.body.position, smaller.body.position), cpfsqrt(area));
 	
 	cpFloat r1_new = (2.0*dist + cpfsqrt(8.0*area - 4.0*dist*dist))/4.0;
 	
@@ -61,7 +61,7 @@ NSString *COLLISION_ID = @"COLLISION_ID";
 	cpFloat old_mass = bigger.body.mass;
 	cpFloat new_mass = r1_new*r1_new*DENSITY;
 	cpFloat gained_mass = new_mass - old_mass;
-	bigger.body.vel = cpvmult(cpvadd(cpvmult(bigger.body.vel, old_mass), cpvmult(smaller.body.vel, gained_mass)), 1.0/new_mass);
+	bigger.body.velocity = cpvmult(cpvadd(cpvmult(bigger.body.velocity, old_mass), cpvmult(smaller.body.velocity, gained_mass)), 1.0/new_mass);
 	
 	bigger.body.mass = new_mass;
 	cpCircleShapeSetRadius(bigger.shape, r1_new);
@@ -85,15 +85,16 @@ NSString *COLLISION_ID = @"COLLISION_ID";
 -(void)setup
 {
 	CGRect bounds = self.demoBounds;
-	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 layers:NOT_GRABABLE_MASK group:nil collisionType:nil];
+	cpShapeFilter filter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
+	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 filter:filter collisionType:nil];
 	
 	for(int i=0; i<5000; i++){
 		cpFloat radius = cpflerp(5.0, 20.0, frand());
 		cpFloat mass = DENSITY*radius*radius;
 		
 		ChipmunkBody *body = [ChipmunkBody bodyWithMass:mass andMoment:INFINITY];
-		body.pos = cpv(frand()*(bounds.size.width - 2.0*radius) + bounds.origin.x, frand()*(bounds.size.height - 2.0*radius) + bounds.origin.y);
-		body.vel = cpvmult(frand_unit_circle(), 2.0);
+		body.position = cpv(frand()*(bounds.size.width - 2.0*radius) + bounds.origin.x, frand()*(bounds.size.height - 2.0*radius) + bounds.origin.y);
+		body.velocity = cpvmult(frand_unit_circle(), 2.0);
 		
 		ChipmunkShape *shape = [ChipmunkCircleShape circleWithBody:body radius:radius offset:cpvzero];
 		shape.elasticity = 1.0;
@@ -116,7 +117,7 @@ NSString *COLLISION_ID = @"COLLISION_ID";
 	for(ChipmunkShape *shape in self.space.shapes){
 		if([shape isKindOfClass:circle_class]){
 			ChipmunkCircleShape *circle = (id)shape;
-			[renderer drawDot:circle.body.pos radius:circle.radius color:circle.color];
+			[renderer drawDot:circle.body.position radius:circle.radius color:circle.color];
 		}
 	}
 }

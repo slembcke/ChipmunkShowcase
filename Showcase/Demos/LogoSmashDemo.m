@@ -62,7 +62,7 @@ get_pixel(int x, int y)
 -(void)addBall:(cpVect)pos
 {
 	ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:1.0 andMoment:INFINITY]];
-	body.pos = pos;
+	body.position = pos;
 	
 	ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:body radius:1.9 offset:cpvzero]];
 	shape.elasticity = 0.0;
@@ -84,14 +84,14 @@ get_pixel(int x, int y)
 		}
 	}
 	
-	ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:INFINITY andMoment:INFINITY]];
-	body.pos = cpv(-1000, -10);
-	body.vel = cpv(400, 0);
+	ChipmunkBody *body = [self.space add:[ChipmunkBody kinematicBody]];
+	body.position = cpv(-1000, -10);
+	body.velocity = cpv(400, 0);
 	
 	ChipmunkShape *shape = [self.space add:[ChipmunkCircleShape circleWithBody:body radius:8.0 offset:cpvzero]];
 	shape.elasticity = 0.0;
 	shape.friction = 0.0;
-	shape.layers = NOT_GRABABLE_MASK;
+	shape.filter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
 }
 
 -(void)prepareStaticRenderer:(PolyRenderer *)renderer {}
@@ -120,8 +120,9 @@ RenderDot(cpBody *body, struct RenderContext *context)
 		for(int i=0; i < arbiters->num; i++){
 			cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
 			
-			for(int i=0; i < arb->numContacts; i++){
-				[renderer drawDot:arb->contacts[i].p radius:2.0 color:CONTACT_COLOR];
+			for(int i=0; i < arb->count; i++){
+#warning TODO
+//				[renderer drawDot:arb->contacts[i]. radius:2.0 color:CONTACT_COLOR];
 			}
 		}
 	}

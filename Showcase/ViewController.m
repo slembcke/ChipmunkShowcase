@@ -275,15 +275,15 @@ enum DemoReveal {
 	cpSpace *space = _demo.space.space;
 	
 	// Dig out these numbers using the private API to avoid generating full lists.
-	NSUInteger bodies = space->bodies->num;
-	NSUInteger activeShapes = cpSpatialIndexCount(space->activeShapes);
+	NSUInteger bodies = space->dynamicBodies->num;
+	NSUInteger activeShapes = cpSpatialIndexCount(space->dynamicShapes);
 	NSUInteger staticShapes = activeShapes + cpSpatialIndexCount(space->staticShapes);
 	NSUInteger constraints = space->constraints->num;
 	
 	NSUInteger contacts = 0;
 	cpArray *arbiters = space->arbiters;
 	for(int i=0; i<arbiters->num; i++){
-		contacts += ((cpArbiter *)arbiters->arr[i])->numContacts;
+		contacts += ((cpArbiter *)arbiters->arr[i])->count;
 	}
 	
 	float duration = -[(NSDate *)[timer userInfo] timeIntervalSinceNow];
@@ -319,8 +319,8 @@ enum DemoReveal {
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 		
 		CGSize viewSize = self.glView.bounds.size;
-		Transform proj = t_mult(t_scale((viewSize.height/viewSize.width)*(4.0/3.0), 1.0), t_ortho(cpBBNew(-320, -240, 320, 240)));
-		_demo.touchTransform = t_mult(t_inverse(proj), t_ortho(cpBBNew(0, viewSize.height, viewSize.width, 0)));
+		cpTransform proj = cpTransformMult(cpTransformScale((viewSize.height/viewSize.width)*(4.0/3.0), 1.0), cpTransformOrtho(cpBBNew(-320, -240, 320, 240)));
+		_demo.touchTransform = cpTransformMult(cpTransformInverse(proj), cpTransformOrtho(cpBBNew(0, viewSize.height, viewSize.width, 0)));
 		
 		_renderer = [[PolyRenderer alloc] initWithProjection:proj];
 	} sync:TRUE];

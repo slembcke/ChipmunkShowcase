@@ -1,4 +1,7 @@
-#import "ObjectiveChipmunk.h"
+// Copyright 2013 Howling Moon Software. All rights reserved.
+// See http://chipmunk2d.net/legal.php for more information.
+
+#import "ObjectiveChipmunk/ObjectiveChipmunk.h"
 #import "ChipmunkAutoGeometry.h"
 
 #import <TargetConditionals.h>
@@ -9,7 +12,7 @@
 
 
 /**
-	Generic sampler used with bitmap data.
+	PRO: Generic sampler used with bitmap data.
 	Currently limited to 8 bit per component data.
 	Bitmap samplers currently provide no filtering, but could be easily extended to do so.
 */
@@ -69,7 +72,7 @@
 
 
 
-/// Sampler built on top of a CGBitmapContext to allow deformable geometry.
+/// PRO: Sampler built on top of a CGBitmapContext to allow deformable geometry.
 /// Very efficient when paired with a ChipmunkTileCache.
 @interface ChipmunkCGContextSampler : ChipmunkBitmapSampler {
 @private
@@ -90,7 +93,7 @@
 
 
 
-/// A CGBitmapContext sampler initialized with an CGImage.
+/// PRO: A CGBitmapContext sampler initialized with an CGImage.
 @interface ChipmunkImageSampler : ChipmunkCGContextSampler
 
 /// Helper method to easily load CGImageRefs by path. You are responsible for releasing the CGImage.

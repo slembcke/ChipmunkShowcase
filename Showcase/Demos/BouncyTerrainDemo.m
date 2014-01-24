@@ -83,7 +83,7 @@ static int bouncy_terrain_count = sizeof(bouncy_terrain_verts)/sizeof(cpVect);
 		cpVect a = bouncy_terrain_verts[i], b = bouncy_terrain_verts[i+1];
 		ChipmunkShape *shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:self.staticBody from:cpvadd(a, offset) to:cpvadd(b, offset) radius:1.0]];
 		shape.elasticity = 1.0f;
-		shape.layers = NOT_GRABABLE_MASK;
+		shape.filter = cpShapeFilterNew(CP_NO_GROUP, GRABABLE_MASK_BIT, GRABABLE_MASK_BIT);
 	}
 	
 	cpFloat radius = 5.0f;
@@ -97,11 +97,11 @@ static int bouncy_terrain_count = sizeof(bouncy_terrain_verts)/sizeof(cpVect);
 	
 	for(int i=0; i < count; i++){
 		cpFloat mass = radius*radius;
-		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForPoly(mass, 6, hexagon, cpvzero)]];
-		body.pos = cpvadd(cpvmult(frand_unit_circle(), 140.0f), cpvzero);
-		body.vel = cpvmult(frand_unit_circle(), 50.0f);
+		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:cpMomentForPoly(mass, 6, hexagon, cpvzero, 0.0)]];
+		body.position = cpvadd(cpvmult(frand_unit_circle(), 140.0f), cpvzero);
+		body.velocity = cpvmult(frand_unit_circle(), 50.0f);
 		
-		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape polyWithBody:body count:6 verts:hexagon offset:cpvzero]];
+		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape polyWithBody:body count:6 verts:hexagon transform:cpTransformIdentity radius:0.0]];
 		shape.elasticity = 1.0f;
 	}
 }

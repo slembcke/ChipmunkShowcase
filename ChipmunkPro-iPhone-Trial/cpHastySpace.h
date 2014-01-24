@@ -1,3 +1,6 @@
+// Copyright 2013 Howling Moon Software. All rights reserved.
+// See http://chipmunk2d.net/legal.php for more information.
+
 /// cpHastySpace is exclusive to Chipmunk Pro
 /// Currently it enables ARM NEON optimizations in the solver, but in the future will include other optimizations such as
 /// a multi-threaded solver and multi-threaded collision broadphases.

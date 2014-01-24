@@ -21,7 +21,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "ObjectiveChipmunk.h"
+#import "ObjectiveChipmunk/ObjectiveChipmunk.h"
 
 @interface Accelerometer : NSObject <UIAccelerometerDelegate>
 

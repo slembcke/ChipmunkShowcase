@@ -47,10 +47,10 @@
 		int columns = (j%2 == 0 ? 9 : 8);
 		for(int i=0; i < columns; i++){
 			cpFloat stagger = (j%2)*40;
-			cpVect offset = cpv(i*80 - 320 + stagger, j*70 - 240);
-			ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape polyWithBody:self.staticBody count:3 verts:verts offset:offset]];
+			cpTransform transform = cpTransformTranslate(cpv(i*80 - 320 + stagger, j*70 - 240));
+			ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape polyWithBody:self.staticBody count:3 verts:verts transform:transform radius:0.0]];
 			shape.elasticity = 1.0; shape.friction = 1.0;
-			shape.layers = NOT_GRABABLE_MASK;
+			shape.filter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
 		}
 	}
 	
@@ -72,19 +72,19 @@
 			pentagon[i] = cpv(size*cos(angle), size*sin(angle));
 		}
 		
-		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:1.0 andMoment:cpMomentForPoly(1.0, 5, pentagon, cpvzero)]];
+		ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:1.0 andMoment:cpMomentForPoly(1.0, 5, pentagon, cpvzero, 0.0)]];
 		cpFloat x = rand()/(cpFloat)RAND_MAX*640 - 320;
 		cpFloat y = rand()/(cpFloat)RAND_MAX*300 + 350;
-		body.pos = cpv(x, y);
+		body.position = cpv(x, y);
 		
-		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape polyWithBody:body count:5 verts:pentagon offset:cpvzero]];
+		ChipmunkShape *shape = [self.space add:[ChipmunkPolyShape polyWithBody:body count:5 verts:pentagon transform:cpTransformIdentity radius:0.0]];
 		shape.elasticity = 0.0; shape.friction = 0.4;
 	}
 	
 	for(ChipmunkBody *body in bodies){
-		cpVect pos = body.pos;
+		cpVect pos = body.position;
 		if(pos.y < -260 || fabsf(pos.x) > 400){
-			body.pos = cpv(((cpFloat)rand()/(cpFloat)RAND_MAX)*640.0 - 320.0, 260);
+			body.position = cpv(((cpFloat)rand()/(cpFloat)RAND_MAX)*640.0 - 320.0, 260);
 		}
 	}
 	
