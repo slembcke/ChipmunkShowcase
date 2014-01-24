@@ -38,19 +38,21 @@ static NSString *GROUP = @"group";
 {
 	cpFloat leg_mass = 1.0f;
 	cpVect a, b;
+	ChipmunkShape *shape;
 	
 	a = cpvzero, b = cpv(0.0f, side);
 	ChipmunkBody *upper_leg = [self.space add:[ChipmunkBody bodyWithMass:leg_mass andMoment:cpMomentForSegment(leg_mass, a, b, 0.0)]];
 	upper_leg.position = cpv(offset, 0.0);
 	
-	[self.space add:[ChipmunkSegmentShape segmentWithBody:upper_leg from:a to:b radius:SEG_RADIUS]];
+	shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:upper_leg from:a to:b radius:SEG_RADIUS]];
+	shape.filter = CP_SHAPE_FILTER_NONE;
+	
 	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:chassis bodyB:upper_leg anchorA:cpv(offset, 0) anchorB:cpvzero]];
 	
 	a = cpvzero, b = cpv(0.0f, -1.0f*side);
 	ChipmunkBody *lower_leg = [self.space add:[ChipmunkBody bodyWithMass:leg_mass andMoment:cpMomentForSegment(leg_mass, a, b, 0.0)]];
 	lower_leg.position = cpv(offset, -side);
 	
-	ChipmunkShape *shape;
 	shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:lower_leg from:a to:b radius:SEG_RADIUS]];
 	shape.filter = cpShapeFilterNew(GROUP, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	

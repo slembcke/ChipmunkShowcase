@@ -42,7 +42,7 @@
 	[super tick:dt];
 }
 
-- (ChipmunkBody *)addBar:(cpVect)a to:(cpVect)b group:(int)group
+- (ChipmunkBody *)addBar:(cpVect)a to:(cpVect)b group:(id)group
 {
 	cpVect center = cpvmult(cpvadd(a, b), 1.0f/2.0f);
 	cpFloat length = cpvlength(cpvsub(b, a));
@@ -51,7 +51,8 @@
 	ChipmunkBody *body = [self.space add:[ChipmunkBody bodyWithMass:mass andMoment:mass*length*length/12.0]];
 	body.position = center;
 	
-	[self.space add:[ChipmunkSegmentShape segmentWithBody:body from:cpvsub(a, center) to:cpvsub(b, center) radius:10.0]];
+	ChipmunkShape *shape = [self.space add:[ChipmunkSegmentShape segmentWithBody:body from:cpvsub(a, center) to:cpvsub(b, center) radius:10.0]];
+	shape.filter = cpShapeFilterNew(group, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
 	return body;
 }
@@ -60,20 +61,22 @@
 {
 	ChipmunkBody *staticBody = self.staticBody;
 	
-	ChipmunkBody *body1  = [self addBar:cpv(-240,  160) to:cpv(-160,   80) group:1];
-	ChipmunkBody *body2  = [self addBar:cpv(-160,   80) to:cpv( -80,  160) group:1];
-	ChipmunkBody *body3  = [self addBar:cpv(   0,  160) to:cpv(  80,    0) group:0];
-	ChipmunkBody *body4  = [self addBar:cpv( 160,  160) to:cpv( 240,  160) group:0];
-	ChipmunkBody *body5  = [self addBar:cpv(-240,    0) to:cpv(-160,  -80) group:2];
-	ChipmunkBody *body6  = [self addBar:cpv(-160,  -80) to:cpv( -80,    0) group:2];
-	ChipmunkBody *body7  = [self addBar:cpv( -80,    0) to:cpv(   0,    0) group:2];
-	ChipmunkBody *body8  = [self addBar:cpv(   0,  -80) to:cpv(  80,  -80) group:0];
-	ChipmunkBody *body9  = [self addBar:cpv( 240,   80) to:cpv( 160,    0) group:3];
-	ChipmunkBody *body10 = [self addBar:cpv( 160,    0) to:cpv( 240,  -80) group:3];
-	ChipmunkBody *body11 = [self addBar:cpv(-240,  -80) to:cpv(-160, -160) group:4];
-	ChipmunkBody *body12 = [self addBar:cpv(-160, -160) to:cpv( -80, -160) group:0];
-	ChipmunkBody *body13 = [self addBar:cpv(   0, -160) to:cpv(  80, -160) group:0];
-	ChipmunkBody *body14 = [self addBar:cpv( 160, -160) to:cpv( 240, -160) group:0];
+	NSArray *groups = @[@0, @1, @2, @3, @4];
+	
+	ChipmunkBody *body1  = [self addBar:cpv(-240,  160) to:cpv(-160,   80) group:groups[1]];
+	ChipmunkBody *body2  = [self addBar:cpv(-160,   80) to:cpv( -80,  160) group:groups[1]];
+	ChipmunkBody *body3  = [self addBar:cpv(   0,  160) to:cpv(  80,    0) group:groups[0]];
+	ChipmunkBody *body4  = [self addBar:cpv( 160,  160) to:cpv( 240,  160) group:groups[0]];
+	ChipmunkBody *body5  = [self addBar:cpv(-240,    0) to:cpv(-160,  -80) group:groups[2]];
+	ChipmunkBody *body6  = [self addBar:cpv(-160,  -80) to:cpv( -80,    0) group:groups[2]];
+	ChipmunkBody *body7  = [self addBar:cpv( -80,    0) to:cpv(   0,    0) group:groups[2]];
+	ChipmunkBody *body8  = [self addBar:cpv(   0,  -80) to:cpv(  80,  -80) group:groups[0]];
+	ChipmunkBody *body9  = [self addBar:cpv( 240,   80) to:cpv( 160,    0) group:groups[3]];
+	ChipmunkBody *body10 = [self addBar:cpv( 160,    0) to:cpv( 240,  -80) group:groups[3]];
+	ChipmunkBody *body11 = [self addBar:cpv(-240,  -80) to:cpv(-160, -160) group:groups[4]];
+	ChipmunkBody *body12 = [self addBar:cpv(-160, -160) to:cpv( -80, -160) group:groups[0]];
+	ChipmunkBody *body13 = [self addBar:cpv(   0, -160) to:cpv(  80, -160) group:groups[0]];
+	ChipmunkBody *body14 = [self addBar:cpv( 160, -160) to:cpv( 240, -160) group:groups[0]];
 	
 	ChipmunkSpace *space = self.space;
 	

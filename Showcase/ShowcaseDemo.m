@@ -437,10 +437,17 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 		cpArray *arbiters = _space.space->arbiters;
 		for(int i=0; i<arbiters->num; i++){
 			cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
+			cpVect n = arb->n;
 			
 			for(int i=0; i<arb->count; i++){
-#warning TODO
-//				[renderer drawDot:arb->contacts[i].p radius:2.5 color:CONTACT_COLOR];
+				cpVect p1 = cpvadd(arb->body_a->p, arb->contacts[i].r1);
+				cpVect p2 = cpvadd(arb->body_b->p, arb->contacts[i].r2);
+				
+				cpFloat d = 2.0f;
+				cpVect a = cpvadd(p1, cpvmult(n, -d));
+				cpVect b = cpvadd(p2, cpvmult(n,  d));
+				
+				[renderer drawSegmentFrom:a to:b radius:1.0 color:CONTACT_COLOR];
 			}
 		}
 	}

@@ -190,7 +190,7 @@
 	arm1Remote.position = cpvadd(cpv(0, 0), offset);
 	
 	ChipmunkShape *arm1RemoteShape = [self.space add:[ChipmunkSegmentShape segmentWithBody:arm1Remote from:armVertA to:armVertB radius:10.0]];
-	arm1RemoteShape.filter = cpShapeFilterNew(masterGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
+	arm1RemoteShape.filter = cpShapeFilterNew(remoteGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
 	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:self.staticBody bodyB:arm1Remote pivot:[arm1Remote localToWorld:armVertB]]];
 	[self.space add:[RemoteJoint remoteJointWithBodyA:self.staticBody bodyB:arm1Remote master:arm1MasterFriction]];
@@ -199,7 +199,7 @@
 	arm2Remote.position = cpvadd(cpv(0, -armLength), offset);
 	
 	ChipmunkShape *arm2RemoteShape = [self.space add:[ChipmunkSegmentShape segmentWithBody:arm2Remote from:armVertA to:armVertB radius:10.0]];
-	arm2RemoteShape.filter = cpShapeFilterNew(masterGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
+	arm2RemoteShape.filter = cpShapeFilterNew(remoteGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
 	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm1Remote bodyB:arm2Remote pivot:[arm2Remote localToWorld:armVertB]]];
 	[self.space add:[RemoteJoint remoteJointWithBodyA:arm1Remote bodyB:arm2Remote master:arm2MasterFriction]];
@@ -208,7 +208,7 @@
 	arm3Remote.position = cpvadd(cpv(0, -2.0*armLength), offset);
 	
 	ChipmunkShape *arm3RemoteShape = [self.space add:[ChipmunkSegmentShape segmentWithBody:arm3Remote from:armVertA to:armVertB radius:10.0]];
-	arm3RemoteShape.filter = cpShapeFilterNew(masterGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
+	arm3RemoteShape.filter = cpShapeFilterNew(remoteGroup, CP_ALL_CATEGORIES, CP_ALL_CATEGORIES);
 	
 	[self.space add:[ChipmunkPivotJoint pivotJointWithBodyA:arm2Remote bodyB:arm3Remote pivot:[arm3Remote localToWorld:armVertB]]];
 	[self.space add:[RemoteJoint remoteJointWithBodyA:arm2Remote bodyB:arm3Remote master:arm3MasterFriction]];

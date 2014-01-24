@@ -70,7 +70,7 @@
 	// This simulates their squishy sticky surface, and more importantly
 	// keeps them from separating and destroying the joint.
 	
-	const cpFloat STICK_SENSOR_THICKNESS = 30.0;
+	const cpFloat skin_thickness = 5.0;
 	
 	// Track the deepest collision point and use that to determine if a rigid collision should occur.
 	cpFloat deepest = INFINITY;
@@ -79,39 +79,39 @@
 	cpContactPointSet contacts = cpArbiterGetContactPointSet(arb);
 	for(int i=0; i<contacts.count; i++){
 		// Sink the contact points into the surface of each shape.
-		contacts.points[i].pointA = cpvsub(contacts.points[i].pointA, cpvmult(contacts.normal, STICK_SENSOR_THICKNESS));
-		contacts.points[i].pointB = cpvadd(contacts.points[i].pointB, cpvmult(contacts.normal, STICK_SENSOR_THICKNESS));
+		contacts.points[i].pointA = cpvsub(contacts.points[i].pointA, cpvmult(contacts.normal, skin_thickness));
+		contacts.points[i].pointB = cpvadd(contacts.points[i].pointB, cpvmult(contacts.normal, skin_thickness));
 		deepest = cpfmin(deepest, contacts.points[i].distance);// + 2.0f*STICK_SENSOR_THICKNESS);
 	}
 	
 	// Set the new contact point data.
 	cpArbiterSetContactPointSet(arb, &contacts);
 	
-//	// If the shapes are overlapping enough, then create a
-//	// joint that sticks them together at the first contact point.
-//	if(!cpArbiterGetUserData(arb) && deepest <= 0.0f){
-//		CHIPMUNK_ARBITER_GET_BODIES(arb, bodyA, bodyB);
-//		cpVect anchorA = [bodyA worldToLocal:cpArbiterGetPointA(arb, 0)];
-//		cpVect anchorB = [bodyB worldToLocal:cpArbiterGetPointB(arb, 0)];
-//		
-//		// Create a joint at the contact point to hold the body in place.
-//		ChipmunkConstraint *joint = [ChipmunkPivotJoint pivotJointWithBodyA:bodyA bodyB:bodyB anchorA:anchorA anchorB:anchorB];
-//		
-//		// Give it a finite force for the stickyness.
-//		joint.maxForce = 6e3;
-//		
-//		// Schedule a post-step() callback to add the joint.
-//		[space smartAdd:joint];
-//		
-//		// Store the joint on the arbiter so we can remove it later.
-//		// This is an __unsafe_unretained pointer.
-//		cpArbiterSetUserData(arb, joint);
-//	}
+	// If the shapes are overlapping enough, then create a
+	// joint that sticks them together at the first contact point.
+	if(!cpArbiterGetUserData(arb) && deepest <= 0.0f){
+		CHIPMUNK_ARBITER_GET_BODIES(arb, bodyA, bodyB);
+		cpVect anchorA = [bodyA worldToLocal:contacts.points[0].pointA];
+		cpVect anchorB = [bodyB worldToLocal:contacts.points[0].pointB];
+		
+		// Create a joint at the contact point to hold the body in place.
+		ChipmunkConstraint *joint = [ChipmunkPivotJoint pivotJointWithBodyA:bodyA bodyB:bodyB anchorA:anchorA anchorB:anchorB];
+		
+		// Give it a finite force for the stickyness.
+		joint.maxForce = 6e3;
+		
+		// Schedule a post-step() callback to add the joint.
+		[space smartAdd:joint];
+		
+		// Store the joint on the arbiter so we can remove it later.
+		// This is an __unsafe_unretained pointer.
+		cpArbiterSetUserData(arb, joint);
+	}
 	
 	// Position correction and velocity are handled separately so changing
 	// the overlap distance alone won't prevent the collision from occuring.
 	// Explicitly the collision for this frame if the shapes don't overlap using the new distance.
-	return (deepest <= 0.0f);
+	return (deepest <= -skin_thickness);
 }
 
 -(void)stickySeparate:(cpArbiter *)arb space:(ChipmunkSpace *)space

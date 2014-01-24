@@ -112,20 +112,6 @@ RenderDot(cpBody *body, struct RenderContext *context)
 -(void)render:(PolyRenderer *)renderer showContacts:(BOOL)showContacts;
 {
 	cpSpaceEachBody(self.space.space, (cpSpaceBodyIteratorFunc)RenderDot, &(struct RenderContext){renderer, self.accumulator});
-	
-	if(showContacts){
-		// This is using the private API to efficiently render the collision points.
-		// Don't do this in a real game!
-		cpArray *arbiters = self.space.space->arbiters;
-		for(int i=0; i < arbiters->num; i++){
-			cpArbiter *arb = (cpArbiter*)arbiters->arr[i];
-			
-			for(int i=0; i < arb->count; i++){
-#warning TODO
-//				[renderer drawDot:arb->contacts[i]. radius:2.0 color:CONTACT_COLOR];
-			}
-		}
-	}
 }
 
 @end
