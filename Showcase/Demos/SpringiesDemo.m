@@ -74,7 +74,7 @@
 	ChipmunkBody *body9  = [self addBar:cpv( 240,   80) to:cpv( 160,    0) group:groups[3]];
 	ChipmunkBody *body10 = [self addBar:cpv( 160,    0) to:cpv( 240,  -80) group:groups[3]];
 	ChipmunkBody *body11 = [self addBar:cpv(-240,  -80) to:cpv(-160, -160) group:groups[4]];
-	ChipmunkBody *body12 = [self addBar:cpv(-160, -160) to:cpv( -80, -160) group:groups[0]];
+	ChipmunkBody *body12 = [self addBar:cpv(-160, -160) to:cpv( -80, -160) group:groups[4]];
 	ChipmunkBody *body13 = [self addBar:cpv(   0, -160) to:cpv(  80, -160) group:groups[0]];
 	ChipmunkBody *body14 = [self addBar:cpv( 160, -160) to:cpv( 240, -160) group:groups[0]];
 	
