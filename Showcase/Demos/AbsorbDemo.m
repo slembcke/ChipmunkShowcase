@@ -84,7 +84,7 @@ NSString *COLLISION_ID = @"COLLISION_ID";
 
 -(void)setup
 {
-	CGRect bounds = self.demoBounds;
+	cpBB bounds = self.demoBounds;
 	cpShapeFilter filter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
 	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 filter:filter collisionType:nil];
 	
@@ -93,7 +93,8 @@ NSString *COLLISION_ID = @"COLLISION_ID";
 		cpFloat mass = DENSITY*radius*radius;
 		
 		ChipmunkBody *body = [ChipmunkBody bodyWithMass:mass andMoment:INFINITY];
-		body.position = cpv(frand()*(bounds.size.width - 2.0*radius) + bounds.origin.x, frand()*(bounds.size.height - 2.0*radius) + bounds.origin.y);
+		body.position = cpv(cpflerp(bounds.l, bounds.r, frand()), cpflerp(bounds.b, bounds.t, frand()));
+//		body.position = cpv(frand()*(bounds.size.width - 2.0*radius) + bounds.origin.x, frand()*(bounds.size.height - 2.0*radius) + bounds.origin.y);
 		body.velocity = cpvmult(frand_unit_circle(), 2.0);
 		
 		ChipmunkShape *shape = [ChipmunkCircleShape circleWithBody:body radius:radius offset:cpvzero];

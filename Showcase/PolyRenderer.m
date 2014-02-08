@@ -46,8 +46,8 @@ struct VertexBuffer {
 	GLuint vao, vbo;
 	Vertex *verts;
 	
-	NSUInteger vboCapacity;
-	NSUInteger capacity, count;
+	GLsizei vboCapacity;
+	GLsizei capacity, count;
 };
 
 #define BUFFER_COUNT 2

@@ -125,7 +125,7 @@ enum DemoReveal {
 	
 	NSTimer *_statsTimer;
 	IBOutlet UITextView *_statsView;
-	int _physicsTicks, _renderTicks;
+	NSUInteger _physicsTicks, _renderTicks;
 }
 
 @property(nonatomic, readonly) ShowcaseGLView *glView;
@@ -275,12 +275,12 @@ enum DemoReveal {
 	cpSpace *space = _demo.space.space;
 	
 	// Dig out these numbers using the private API to avoid generating full lists.
-	NSUInteger bodies = space->dynamicBodies->num;
-	NSUInteger activeShapes = cpSpatialIndexCount(space->dynamicShapes);
-	NSUInteger staticShapes = activeShapes + cpSpatialIndexCount(space->staticShapes);
-	NSUInteger constraints = space->constraints->num;
+	uint bodies = space->dynamicBodies->num;
+	uint activeShapes = cpSpatialIndexCount(space->dynamicShapes);
+	uint staticShapes = activeShapes + cpSpatialIndexCount(space->staticShapes);
+	uint constraints = space->constraints->num;
 	
-	NSUInteger contacts = 0;
+	uint contacts = 0;
 	cpArray *arbiters = space->arbiters;
 	for(int i=0; i<arbiters->num; i++){
 		contacts += ((cpArbiter *)arbiters->arr[i])->count;

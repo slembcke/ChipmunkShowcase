@@ -29,6 +29,10 @@
 #import "ChipmunkHastySpace.h"
 #import "PolyRenderer.h"
 
+@interface ChipmunkSpace()
+- (id)initWithSpace:(cpSpace *)space;
+@end
+
 @implementation ChipmunkBody(DemoRenderer)
 
 -(cpTransform)extrapolatedTransform:(NSTimeInterval)dt
@@ -354,12 +358,17 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 	}
 }
 
--(CGRect)demoBounds
+-(cpBB)demoBounds
 {
 	CGSize size = [UIScreen mainScreen].bounds.size;
-	CGFloat width = size.height*480.0/size.width;
+	cpFloat width = size.height*480.0/size.width;
 	
-	return CGRectMake(-width/2.0, -240, width, 480);
+	cpFloat l = -width/2.0;
+	cpFloat b = -240;
+	cpFloat r = l + width;
+	cpFloat t = b + 480;
+	
+	return cpBBNew(l, b, r, t);
 }
 
 -(void)setup {}
@@ -372,11 +381,12 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 -(id)init
 {
 	if((self = [super init])){
+//		_space = [[ChipmunkSpace alloc] initWithSpace:cpSpaceNew()];
 		_space = [[self.spaceClass alloc] init];
 		// On iOS and OS X, 0 threads will automatically select the number of threads to use.
 		_space.threads = 0;
 		
-		NSLog(@"cpHastySpace solver running on %d threads.", _space.threads);
+		NSLog(@"cpHastySpace solver running on %lu threads.", (unsigned long)_space.threads);
 		
 		cpFloat grabForce = 1e5;
 		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:self.space withSmoothing:cpfpow(0.3, 60) withGrabForce:grabForce];
@@ -457,7 +467,8 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 
 -(cpVect)convertTouch:(UITouch *)touch;
 {
-	return cpTransformPoint(_touchTransform, [touch locationInView:touch.view]);
+	CGPoint p = [touch locationInView:touch.view];
+	return cpTransformPoint(_touchTransform, cpv(p.x, p.y));
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;

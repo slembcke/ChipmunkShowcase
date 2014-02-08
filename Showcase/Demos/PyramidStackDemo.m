@@ -36,8 +36,8 @@
 	self.space.sleepTimeThreshold = 0.5f;
 	self.space.collisionSlop = 0.5f;
 	
-	CGRect bounds = self.demoBounds;
-	bounds.size.height = bounds.size.width;
+	cpBB bounds = self.demoBounds;
+	bounds.t = bounds.b + (bounds.r - bounds.l);
 	cpShapeFilter filter = cpShapeFilterNew(CP_NO_GROUP, NOT_GRABABLE_MASK, NOT_GRABABLE_MASK);
 	[self.space addBounds:bounds thickness:10.0 elasticity:1.0 friction:1.0 filter:filter collisionType:nil];
 	
