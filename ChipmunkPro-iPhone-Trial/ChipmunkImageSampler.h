@@ -87,7 +87,7 @@
 
 /// Initialize a context based sampler. Must provide options for a valid context.
 /// Find out more here in the Quartz 2D Programming Guide.
--(id)initWithWidth:(int)width height:(int)height colorSpace:(CGColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo component:(NSUInteger)component;
+-(id)initWithWidth:(unsigned long)width height:(unsigned long)height colorSpace:(CGColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo component:(NSUInteger)component;
 
 @end
 

@@ -18,10 +18,10 @@ void cpHastySpaceFree(cpSpace *space);
 /// Currently Chipmunk is limited to 2 threads as using more generally provides very minimal performance gains.
 /// Passing 0 as the thread count on iOS or OS X will cause Chipmunk to automatically detect the number of threads it should use.
 /// On other platforms passing 0 for the thread count will set 1 thread.
-void cpHastySpaceSetThreads(cpSpace *space, unsigned int threads);
+void cpHastySpaceSetThreads(cpSpace *space, unsigned long threads);
 
 /// Returns the number of threads the solver is using to run.
-unsigned int cpHastySpaceGetThreads(cpSpace *space);
+unsigned long cpHastySpaceGetThreads(cpSpace *space);
 
 /// When stepping a hasty space, you must use this function.
 void cpHastySpaceStep(cpSpace *space, cpFloat dt);

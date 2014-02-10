@@ -36,8 +36,13 @@ static inline Color LAColor(GLfloat l, GLfloat a){
 	return (Color){a*l, a*l, a*l, a};
 }
 
+#if CP_USE_DOUBLES
+	typedef struct GLfloatx2 {GLfloat x, y;} GLfloatx2;
+#else
+	#define GLfloatx2 cpVect
+#endif
 
-typedef struct Vertex {cpVect vertex, texcoord; Color color;} Vertex;
+typedef struct Vertex {GLfloatx2 vertex, texcoord; Color color;} Vertex;
 typedef struct Triangle {Vertex a, b, c;} Triangle;
 
 typedef struct VertexBuffer VertexBuffer;

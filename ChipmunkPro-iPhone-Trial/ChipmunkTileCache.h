@@ -55,7 +55,7 @@
 
 /// Override this in a subclass to make custom polygon simplification behavior.
 /// Defaults to cpPolylineSimplifyCurves(polyline, 2.0f)
--(cpPolyline)simplify:(cpPolyline)polyline;
+-(cpPolyline *)simplify:(cpPolyline *)polyline;
 
 /// Override this method to construct the segment shapes.
 /// By default, it creates a 0 radius segment and sets 1.0 for friction and elasticity and nothing else.

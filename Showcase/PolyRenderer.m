@@ -69,7 +69,7 @@ struct VertexBuffer {
 	_projection = p;
 
 	glUseProgram(_program);
-	float mat[] = {
+	GLfloat mat[] = {
 		p.a , p.b , 0.0, 0.0,
 		p.c , p.d , 0.0, 0.0,
 		0.0 , 0.0 , 1.0, 0.0,
@@ -321,6 +321,14 @@ EnsureCapacity(VertexBuffer *buffer, NSUInteger count)
 
 //MARK: Immediate Mode
 
+#if CP_USE_DOUBLES
+	static inline GLfloatx2 GLF2(cpVect v){return (GLfloatx2){v.x, v.y};};
+	static GLfloatx2 GLF2zero = {0, 0};
+#else
+	#define GLF2(v) v
+	#define GLF2zero cpvzero
+#endif
+
 -(void)drawDot:(cpVect)pos radius:(cpFloat)radius color:(Color)color;
 {
 	Vertex a = {{pos.x - radius, pos.y - radius}, {-1.0, -1.0}, color};
@@ -350,12 +358,12 @@ EnsureCapacity(VertexBuffer *buffer, NSUInteger count)
 	cpVect v7 = cpvadd(a, cpvadd(nw, tw));
 	
 	Triangle *triangles = (Triangle *)[self bufferVertexes:6*3];
-	triangles[0] = (Triangle){{v0, cpvneg(cpvadd(n, t)), color}, {v1, cpvsub(n, t), color}, {v2, cpvneg(n), color},};
-	triangles[1] = (Triangle){{v3, n, color}, {v1, cpvsub(n, t), color}, {v2, cpvneg(n), color},};
-	triangles[2] = (Triangle){{v3, n, color}, {v4, cpvneg(n), color}, {v2, cpvneg(n), color},};
-	triangles[3] = (Triangle){{v3, n, color}, {v4, cpvneg(n), color}, {v5, n, color},};
-	triangles[4] = (Triangle){{v6, cpvsub(t, n), color}, {v4, cpvneg(n), color}, {v5, n, color},};
-	triangles[5] = (Triangle){{v6, cpvsub(t, n), color}, {v7, cpvadd(n, t), color}, {v5, n, color},};
+	triangles[0] = (Triangle){{GLF2(v0), GLF2(cpvneg(cpvadd(n, t))), color}, {GLF2(v1), GLF2(cpvsub(n, t)), color}, {GLF2(v2), GLF2(cpvneg(n)), color},};
+	triangles[1] = (Triangle){{GLF2(v3), GLF2(n), color}, {GLF2(v1), GLF2(cpvsub(n, t)), color}, {GLF2(v2), GLF2(cpvneg(n)), color},};
+	triangles[2] = (Triangle){{GLF2(v3), GLF2(n), color}, {GLF2(v4), GLF2(cpvneg(n)), color}, {GLF2(v2), GLF2(cpvneg(n)), color},};
+	triangles[3] = (Triangle){{GLF2(v3), GLF2(n), color}, {GLF2(v4), GLF2(cpvneg(n)), color}, {GLF2(v5), GLF2(n), color},};
+	triangles[4] = (Triangle){{GLF2(v6), GLF2(cpvsub(t, n)), color}, {GLF2(v4), GLF2(cpvneg(n)), color}, {GLF2(v5), GLF2(n), color},};
+	triangles[5] = (Triangle){{GLF2(v6), GLF2(cpvsub(t, n)), color}, {GLF2(v7), GLF2(cpvadd(n, t)), color}, {GLF2(v5), GLF2(n), color},};
 }
 
 -(void)drawPolyWithVerts:(cpVect *)verts count:(NSUInteger)count width:(cpFloat)width fill:(Color)fill line:(Color)line;
@@ -392,7 +400,7 @@ EnsureCapacity(VertexBuffer *buffer, NSUInteger count)
 			cpVect v1 = cpvsub(verts[i+1], cpvmult(extrude[i+1].offset, inset));
 			cpVect v2 = cpvsub(verts[i+2], cpvmult(extrude[i+2].offset, inset));
 			
-			*cursor++ = (Triangle){{v0, cpvzero, fill}, {v1, cpvzero, fill}, {v2, cpvzero, fill},};
+			*cursor++ = (Triangle){{GLF2(v0), GLF2zero, fill}, {GLF2(v1), GLF2zero, fill}, {GLF2(v2), GLF2zero, fill},};
 		}
 	}
 	
@@ -412,16 +420,16 @@ EnsureCapacity(VertexBuffer *buffer, NSUInteger count)
 			cpVect outer0 = cpvadd(v0, cpvmult(offset0, width));
 			cpVect outer1 = cpvadd(v1, cpvmult(offset1, width));
 			
-			*cursor++ = (Triangle){{inner0, cpvneg(n0), line}, {inner1, cpvneg(n0), line}, {outer1, n0, line}};
-			*cursor++ = (Triangle){{inner0, cpvneg(n0), line}, {outer0, n0, line}, {outer1, n0, line}};
+			*cursor++ = (Triangle){{GLF2(inner0), GLF2(cpvneg(n0)), line}, {GLF2(inner1), GLF2(cpvneg(n0)), line}, {GLF2(outer1), GLF2(n0), line}};
+			*cursor++ = (Triangle){{GLF2(inner0), GLF2(cpvneg(n0)), line}, {GLF2(outer0), GLF2(n0), line}, {GLF2(outer1), GLF2(n0), line}};
 		} else if(filled){
 			cpVect inner0 = cpvsub(v0, cpvmult(offset0, 0.5));
 			cpVect inner1 = cpvsub(v1, cpvmult(offset1, 0.5));
 			cpVect outer0 = cpvadd(v0, cpvmult(offset0, 0.5));
 			cpVect outer1 = cpvadd(v1, cpvmult(offset1, 0.5));
 			
-			*cursor++ = (Triangle){{inner0, cpvzero, fill}, {inner1, cpvzero, fill}, {outer1, n0, fill}};
-			*cursor++ = (Triangle){{inner0, cpvzero, fill}, {outer0, n0, fill}, {outer1, n0, fill}};
+			*cursor++ = (Triangle){{GLF2(inner0), GLF2zero, fill}, {GLF2(inner1), GLF2zero, fill}, {GLF2(outer1), GLF2(n0), fill}};
+			*cursor++ = (Triangle){{GLF2(inner0), GLF2zero, fill}, {GLF2(outer0), GLF2(n0), fill}, {GLF2(outer1), GLF2(n0), fill}};
 		}
 	}
 	

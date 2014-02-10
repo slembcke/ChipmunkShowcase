@@ -387,6 +387,7 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 		_space.threads = 0;
 		
 		NSLog(@"cpHastySpace solver running on %lu threads.", (unsigned long)_space.threads);
+		NSLog(@"sizeof(cpFloat): %d\n", (int)sizeof(cpFloat));
 		
 		cpFloat grabForce = 1e5;
 		_multiGrab = [[ChipmunkMultiGrab alloc] initForSpace:self.space withSmoothing:cpfpow(0.3, 60) withGrabForce:grabForce];

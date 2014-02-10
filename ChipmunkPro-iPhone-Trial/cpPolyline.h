@@ -6,35 +6,35 @@
 // cpPolyline structs are intended to be passed by value and destroyed when you are done with them.
 typedef struct cpPolyline {
   int count, capacity;
-  cpVect *verts;
+  cpVect verts[];
 } cpPolyline;
 
-/// PRO: Destroy a polyline instance.
-void cpPolylineDestroy(cpPolyline line);
+/// PRO: Destroy and free a polyline instance.
+void cpPolylineFree(cpPolyline *line);
 
 /// PRO: Returns true if the first vertex is equal to the last.
-cpBool cpPolylineIsLooped(cpPolyline line);
+cpBool cpPolylineIsClosed(cpPolyline *line);
 
 /**
 	PRO: Returns a copy of a polyline simplified by using the Douglas-Peucker algorithm.
 	This works very well on smooth or gently curved shapes, but not well on straight edged or angular shapes.
 */
-cpPolyline cpPolylineSimplifyCurves(cpPolyline line, cpFloat tol);
+cpPolyline *cpPolylineSimplifyCurves(cpPolyline *line, cpFloat tol);
 
 /**
 	PRO: Returns a copy of a polyline simplified by discarding "flat" vertexes.
 	This works well on straigt edged or angular shapes, not as well on smooth shapes.
 */
-cpPolyline cpPolylineSimplifyVertexes(cpPolyline line, cpFloat tol);
+cpPolyline *cpPolylineSimplifyVertexes(cpPolyline *line, cpFloat tol);
 
 /// PRO: Get the convex hull of a polyline as a looped polyline.
-cpPolyline cpPolylineToConvexHull(cpPolyline line, cpFloat tol);
+cpPolyline *cpPolylineToConvexHull(cpPolyline *line, cpFloat tol);
 
 
 /// PRO: Polyline sets are collections of polylines, generally built by cpMarchSoft() or cpMarchHard().
 typedef struct cpPolylineSet {
   int count, capacity;
-  cpPolyline *lines;
+  cpPolyline **lines;
 } cpPolylineSet;
 
 /// PRO: Allocate a new polyline set.
@@ -67,5 +67,5 @@ void cpPolylineSetCollectSegment(cpVect v0, cpVect v1, cpPolylineSet *lines);
 		If the input is a self intersecting polygon, the output might end up overly simplified. 
 */
 
-cpPolylineSet *cpPolylineConvexDecomposition_BETA(cpPolyline line, cpFloat tol);
+cpPolylineSet *cpPolylineConvexDecomposition_BETA(cpPolyline *line, cpFloat tol);
 

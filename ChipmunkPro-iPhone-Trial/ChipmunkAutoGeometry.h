@@ -11,25 +11,25 @@
 /// PRO: Wrapper for the cpPolyline type.
 @interface ChipmunkPolyline : NSObject {
 @private
-	cpPolyline _line;
+	cpPolyline *_line;
 	cpFloat _area;
 }
 
--(id)initWithPolyline:(cpPolyline)line;
-+(ChipmunkPolyline *)fromPolyline:(cpPolyline)line;
+-(id)initWithPolyline:(cpPolyline *)line;
++(ChipmunkPolyline *)fromPolyline:(cpPolyline *)line;
 
 /// Returns true if the first and last vertex are equal.
-@property(nonatomic, readonly) bool isLooped;
+@property(nonatomic, readonly) bool isClosed;
 
 /// Returns the signed area of the polyline calculated by cpAreaForPoly.
-/// Non-looped polylines return an area of 0.
+/// Non-closed polylines return an area of 0.
 @property(nonatomic, readonly) cpFloat area;
 
 /// Centroid of the polyline calculated by cpCentroidForPoly.
-/// It is an error to call this on a non-looped polyline.
+/// It is an error to call this on a non-closed polyline.
 @property(nonatomic, readonly) cpVect centroid;
 
-/// Calculates the moment of inertia for a looped polyline with the given mass and offset.
+/// Calculates the moment of inertia for a closed polyline with the given mass and offset.
 -(cpFloat)momentForMass:(cpFloat)mass offset:(cpVect)offset;
 
 
@@ -51,10 +51,10 @@
 */
 -(ChipmunkPolyline *)simplifyVertexes:(cpFloat)tolerance;
 
-/// Generate a convex hull that contains a polyline. (looped or not)
+/// Generate a convex hull that contains a polyline. (closed or not)
 -(ChipmunkPolyline *)toConvexHull;
 
-/// Generate an approximate convex hull that contains a polyline. (looped or not)
+/// Generate an approximate convex hull that contains a polyline. (closed or not)
 -(ChipmunkPolyline *)toConvexHull:(cpFloat)tolerance;
 
 /// Generate a set of convex hulls for a polyline.
