@@ -31,8 +31,8 @@
 
 @property (nonatomic, retain) EAGLContext *context;
 
-@property (nonatomic, readonly) NSInteger drawableWidth;
-@property (nonatomic, readonly) NSInteger drawableHeight;
+@property (nonatomic, readonly) int drawableWidth;
+@property (nonatomic, readonly) int drawableHeight;
 
 @property(nonatomic, readonly) BOOL isRendering;
 
