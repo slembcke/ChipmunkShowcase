@@ -22,6 +22,7 @@
 #import "PolyRenderer.h"
 
 #import <GLKit/GLKit.h>
+#import <OpenGLES/es2/glext.h>
 
 #import "ObjectiveChipmunk/ObjectiveChipmunk.h"
 

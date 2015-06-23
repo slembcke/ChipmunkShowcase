@@ -22,7 +22,6 @@
 #define CP_ALLOW_PRIVATE_ACCESS
 
 #import "ShowcaseDemo.h"
-#import "ChipmunkHastySpace.h"
 
 @interface LogoSmashDemo : ShowcaseDemo @end
 @implementation LogoSmashDemo

@@ -21,7 +21,7 @@
 
 #import "ShowcaseDemo.h"
 
-#import "ChipmunkAutoGeometry.h"
+#import "ObjectiveChipmunk/ChipmunkAutoGeometry.h"
 
 @interface DeformableBitmapDemo : ShowcaseDemo @end
 @implementation DeformableBitmapDemo {

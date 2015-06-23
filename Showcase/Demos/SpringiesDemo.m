@@ -21,8 +21,6 @@
 
 #import "ShowcaseDemo.h"
 
-#import "ChipmunkAutoGeometry.h"
-
 @interface SpringiesDemo : ShowcaseDemo @end
 @implementation SpringiesDemo
 

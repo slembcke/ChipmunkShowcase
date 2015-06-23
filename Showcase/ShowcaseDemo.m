@@ -26,7 +26,6 @@
 #import "ShowcaseDemo.h"
 
 #import "ObjectiveChipmunk/ObjectiveChipmunk.h"
-#import "ChipmunkHastySpace.h"
 #import "PolyRenderer.h"
 
 @interface ChipmunkSpace()

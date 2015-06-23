@@ -23,7 +23,7 @@
 
 // You need to import this if you want to modify shapes.
 // It's an "unsafe" API (read the comments) so it doesn't contain an Obj-C wrapper.
-#import "chipmunk_unsafe.h"
+#import "chipmunk/chipmunk_unsafe.h"
 
 @interface AbsorbDemo : ShowcaseDemo @end
 @implementation AbsorbDemo

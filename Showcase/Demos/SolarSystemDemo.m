@@ -20,7 +20,6 @@
  */
 
 #import "ShowcaseDemo.h"
-#import "ChipmunkHastySpace.h"
 
 
 @interface PlanetoidBody : ChipmunkBody
