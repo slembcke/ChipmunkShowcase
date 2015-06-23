@@ -23,6 +23,7 @@
 
 #define CP_ALLOW_PRIVATE_ACCESS
 
+#import "AppDelegate.h"
 #import "ShowcaseDemo.h"
 
 #import "ObjectiveChipmunk/ObjectiveChipmunk.h"
@@ -359,8 +360,8 @@ static const int SPRING_COUNT = sizeof(SPRING_VERTS)/sizeof(cpVect);
 
 -(cpBB)demoBounds
 {
-	CGSize size = [UIScreen mainScreen].bounds.size;
-	cpFloat width = size.height*480.0/size.width;
+	CGSize size = [UIScreen mainScreen].landscapeBounds.size;
+	cpFloat width = size.width*480.0/size.height;
 	
 	cpFloat l = -width/2.0;
 	cpFloat b = -240;

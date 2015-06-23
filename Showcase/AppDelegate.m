@@ -30,6 +30,28 @@
 #import "ShowcaseDemo.h"
 #import <objc/runtime.h>
 
+
+@implementation UIScreen(Landscape)
+
+-(CGRect)landscapeBounds
+{
+	CGFloat scale = 1.0;
+	CGRect bounds = self.bounds;
+	
+	// iOS 8 decided to redefine the bounds property. :(
+	if([self respondsToSelector:@selector(nativeBounds)]){
+		scale = self.scale;
+		bounds = self.nativeBounds;
+	}
+	
+	bounds.origin = CGPointMake(bounds.origin.x/scale, bounds.origin.y/scale);
+	bounds.size = CGSizeMake(bounds.size.height/scale, bounds.size.width/scale);
+	return bounds;
+}
+
+@end
+
+
 @implementation AppDelegate
 
 @synthesize window = _window;
@@ -124,9 +146,10 @@ NSArray *DEMO_CLASS_NAMES = nil;
 {
 	[Accelerometer installWithInterval:1.0/60.0 andAlpha:0.2];
 	
-	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	CGRect bounds = [UIScreen mainScreen].landscapeBounds;
+	self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 	
-	self.demoList = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 300.0, self.window.bounds.size.width) style:UITableViewStylePlain];
+	self.demoList = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, 300.0, bounds.size.height) style:UITableViewStylePlain];
 	self.demoList.backgroundColor = [UIColor colorWithWhite:0.25 alpha:1.0];
 	self.demoList.indicatorStyle = UIScrollViewIndicatorStyleWhite;
 	self.demoList.rowHeight = 96.0;

@@ -23,6 +23,14 @@
 
 @class ViewController;
 
+
+@interface UIScreen(Landscape)
+
+@property(nonatomic, readonly) CGRect landscapeBounds;
+
+@end
+
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property(nonatomic, strong) UIWindow *window;
