@@ -21,7 +21,7 @@
 
 #import <sys/utsname.h>
 
-#define CP_ALLOW_PRIVATE_ACCESS
+#define CP_ALLOW_PRIVATE_ACCESS 1
 
 #import "AppDelegate.h"
 #import "ShowcaseDemo.h"

@@ -19,8 +19,6 @@
  * SOFTWARE.
  */
 
-#define THREADS 1
-
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/EAGLDrawable.h>
 
@@ -30,10 +28,8 @@
 	GLuint _framebuffer;
 	GLuint _renderbuffer;
 	
-#if THREADS
 	BOOL _isRendering;
 	dispatch_queue_t _renderQueue;
-#endif
 }
 
 @synthesize isRendering = _isRendering;
@@ -44,17 +40,13 @@
 
 -(void)sync
 {
-#if THREADS
 	dispatch_sync(_renderQueue, ^{});
-#endif
 }
 
 -(void)runInRenderQueue:(void (^)(void))block sync:(BOOL)sync;
 {
-#if THREADS
 	(sync ? dispatch_sync : dispatch_async)(_renderQueue, ^{
 		[EAGLContext setCurrentContext:_context];
-#endif
 		
 		block();
 		
@@ -62,10 +54,8 @@
 		for(err = glGetError(); err; err = glGetError()) NSLog(@"GLError: 0x%04X", err);
 		NSAssert(err == GL_NO_ERROR, @"Aborting due to GL Errors.");
 		
-#if THREADS
 		[EAGLContext setCurrentContext:nil];
 	});
-#endif
 }
 
 //MARK: Framebuffer
@@ -121,16 +111,13 @@
 
 -(void)setContext:(EAGLContext *)context
 {
-#if THREADS
-	(sync ? dispatch_sync : dispatch_async)(_renderQueue, ^{
-#endif
-		_context = context;
-		[EAGLContext setCurrentContext:_context];
-		
-		NSAssert(_context && [EAGLContext setCurrentContext:_context] && [self createFramebuffer], @"Failed to set up context.");
-#if THREADS
-	});
-#endif
+	_context = context;
+//	(sync ? dispatch_sync : dispatch_async)(_renderQueue, ^{
+//		_context = context;
+//		[EAGLContext setCurrentContext:_context];
+//		
+//		NSAssert(_context && [EAGLContext setCurrentContext:_context] && [self createFramebuffer], @"Failed to set up context.");
+//	});
 }
 
 //MARK: Memory methods
@@ -154,9 +141,7 @@
 		
 		layer.contentsScale = [UIScreen mainScreen].scale;
 		
-#if THREADS
 		_renderQueue = dispatch_queue_create("net.chipmunk-physics.showcase-renderqueue", DISPATCH_QUEUE_SERIAL);
-#endif
 	}
 	
 	return self;
@@ -167,10 +152,6 @@
 	[self runInRenderQueue:^{
 		[self destroyFramebuffer];
 	} sync:TRUE];
-	
-#if THREADS
-	dispatch_release(_renderQueue);
-#endif
 }
 
 //MARK: Render methods

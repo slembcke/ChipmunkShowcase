@@ -19,7 +19,7 @@
  * SOFTWARE.
  */
 
-#define CP_ALLOW_PRIVATE_ACCESS 1
+#define CP_ALLOW_PRIVATE_ACCESS
 
 #import "ShowcaseDemo.h"
 #import "util.h"
