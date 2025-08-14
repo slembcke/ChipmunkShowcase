@@ -4,7 +4,13 @@ You can find the new project page on the [Chipmunk2D Website](https://chipmunk-p
 
 To migrate an existing checkout, you can use the following command, or make a new checkout of the project from the new location.
 
-`git remote set-url origin https://chipmunk-physics.net/git/ChipmunkShowcase`
+```
+git remote set-url origin https://chipmunk-physics.net/git/ChipmunkShowcase
+git fetch origin master
+git reset origin/master
+```
+
+You may additionally need to run `git checkout .` to cleanup the deleted files. *This will also discard your local changes if you have made any.*
 
 # But _WHY_?
 
